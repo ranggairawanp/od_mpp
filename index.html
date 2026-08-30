@@ -466,8 +466,16 @@ h1, h2, h3, h4, .nb-head { font-family: var(--nb-font-head); letter-spacing: -.0
    RESPONSIF
    ========================================================================== */
 
+@media (max-width: 1024px) {
+  /* Baris identitas boleh membungkus. Tanpa ini kelompok kanan menolak menyusut
+     dan mendorong logo keluar dari layar pada panel pratinjau yang sempit. */
+  .nb-appbar.is-stacked .nb-appbar-row { flex-wrap: wrap; row-gap: 10px; }
+  .nb-appbar.is-stacked .nb-appbar-row > div:last-child { flex-wrap: wrap; justify-content: flex-end; }
+  .nb-brand-sub { display: none; }
+}
 @media (max-width: 900px) {
   .nb-appbar { flex-wrap: wrap; gap: var(--nb-sp-3); }
+  .nb-appbar.is-stacked { padding: 10px var(--nb-sp-4); }
   .nb-nav { order: 3; width: 100%; overflow-x: auto; justify-content: flex-start; }
   .nb-pagehead { flex-direction: column; }
   .nb-fields { grid-template-columns: 1fr; }
@@ -479,9 +487,22 @@ h1, h2, h3, h4, .nb-head { font-family: var(--nb-font-head); letter-spacing: -.0
 }
 @media (max-width: 640px) {
   :root { --nb-fs-display: 22px; --nb-fs-metric: 22px; }
+  .nb-pagehead { gap: var(--nb-sp-3); }
+  /* minmax(220px) tidak muat dua kolom di lebar ponsel dan membuat kisi meluber,
+     jadi lebar minimumnya dilepas pada breakpoint ini. */
+  .nb-kpigrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--nb-sp-3); }
+  .nb-kpi { padding: var(--nb-sp-4); }
+  .nb-toolbar { gap: var(--nb-sp-3); }
+  .nb-search { min-width: 100%; }
   .nb-container { padding: 0 var(--nb-sp-4); }
   .nb-tablewrap { overflow-x: auto; }
   .nb-table { min-width: 720px; }
+}
+
+@media (max-width: 440px) {
+  /* Satu kolom penuh. Dua kartu berdampingan di bawah lebar ini membuat angkanya terpotong. */
+  .nb-kpigrid { grid-template-columns: minmax(0, 1fr); }
+  .nb-pagehead { flex-direction: column; align-items: flex-start; }
 }
 
 </style>
@@ -489,6 +510,11 @@ h1, h2, h3, h4, .nb-head { font-family: var(--nb-font-head); letter-spacing: -.0
   #nbToast { position: fixed; right: 24px; bottom: 24px; z-index: 80; display: none; box-shadow: var(--nb-sh-raise); }
   #nbUser > div { white-space: nowrap; }
   #nbUser .nb-cell-sub { max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+  /* Pada layar sempit blok identitas menyusut bertahap: lingkup dulu, lalu namanya,
+     menyisakan avatar. Tombol keluar tidak pernah ikut hilang. */
+  @media (max-width: 1024px) { #nbUser .nb-cell-sub { display: none; } }
+  @media (max-width: 760px)  { #nbUser > div { display: none; } }
+  @media (max-width: 560px)  { #nbCycle { display: none !important; } }
   #nbUser { display: flex; align-items: center; gap: 10px; }
   .nb-empty svg { width: 20px; height: 20px; }
   td .nb-muted svg { width: 15px; height: 15px; vertical-align: middle; }
@@ -3872,6 +3898,80 @@ window.NB_DATA.cost_assumptions = [
       "audit.d.excReject": "Menolak exception {id} dan membatalkan realisasinya",
       "audit.d.denyActual": "Percobaan mencatat realisasi tanpa hak",
       "audit.d.denyException": "Percobaan memutuskan exception tanpa hak",
+      // Modul 9: laporan, notifikasi, administrasi, penutupan
+      "umum.peranLabel": "Peran",
+      "lap.judul": "Laporan",
+      "lap.sub": "Sembilan laporan {name}, semuanya memakai angka yang sama dengan yang tampil di aplikasi.",
+      "lap.aturanJudul": "Laporan tidak menghitung ulang apa pun",
+      "lap.aturanIsi": "Setiap laporan membaca fungsi yang sama dengan layarnya, jadi angka di ekspor tidak mungkin berbeda dari angka di layar. Lingkup akses baris dan hak kolom biaya tetap berlaku.",
+      "lap.R1": "Struktur organisasi berjalan",
+      "lap.R2": "Usulan MPP per baris",
+      "lap.R3": "Requested, Approved, Variance",
+      "lap.R4": "Biaya per departemen",
+      "lap.R5": "Beban biaya per bulan",
+      "lap.R6": "Status alokasi yang disetujui",
+      "lap.R7": "Realisasi terhadap alokasi",
+      "lap.R8": "Catatan exception",
+      "lap.R9": "Jejak audit",
+      "lap.ekspor": "Ekspor CSV",
+      "lap.jumlah": "{n} baris",
+      "lap.potong": "Menampilkan 100 baris pertama dari {n}. Ekspor memuat seluruhnya.",
+      "lap.terunduh": "Berkas {n} diunduh",
+      "lap.gagalUnduh": "Unduhan diblokir lingkungan. Buka berkas dari luar peramban terbatas.",
+      "lap.kosong": "Laporan ini belum berisi data",
+      "lap.kosongSub": "Isi laporan mengikuti tahap siklus yang sudah dilewati.",
+      "notif.judul": "{n} hal menunggu Anda",
+      "notif.sub": "Dihitung dari keadaan data saat ini. Pengiriman surel belum ada di prototipe.",
+      "notif.buka": "Buka",
+      "notif.jPLAN": "Usulan",
+      "notif.jRETURN": "Dikembalikan",
+      "notif.jTRANSFER": "Mutasi",
+      "notif.jREVIEW": "Review",
+      "notif.jKONSOLIDASI": "Konsolidasi",
+      "notif.jKEPUTUSAN": "Keputusan",
+      "notif.jDISTRIBUSI": "Distribusi",
+      "notif.jEXCEPTION": "Exception",
+      "notif.jREALISASI": "Realisasi",
+      "notif.usulanDraft": "Usulan {d} belum dikirim ke OD",
+      "notif.dikembalikan": "Usulan {d} dikembalikan dan menunggu perbaikan",
+      "notif.mutasi": "Ada mutasi masuk dari {d} yang menunggu konfirmasi Anda",
+      "notif.reviewOd": "{n} usulan departemen menunggu review Anda",
+      "notif.konsolidasi": "{n} usulan sudah diterima dan siap dikonsolidasikan",
+      "notif.keputusan": "{n} baris menunggu keputusan manajemen",
+      "notif.distribusi": "Paket sudah disetujui tetapi alokasinya belum dibagikan",
+      "notif.exception": "{n} exception menunggu keputusan Anda",
+      "notif.realisasi": "{n} alokasi masih punya sisa kuota yang belum direalisasikan",
+      "adm.judul": "Administrasi",
+      "adm.sub": "Pengguna, parameter biaya, penutupan siklus, dan pengelolaan data prototipe.",
+      "adm.tabPengguna": "Pengguna dan hak akses",
+      "adm.tabParameter": "Parameter biaya",
+      "adm.tabPenutupan": "Penutupan siklus",
+      "adm.tabPrototipe": "Data prototipe",
+      "adm.thPengguna": "Pengguna",
+      "adm.thLingkup": "Lingkup akses",
+      "adm.thBiaya": "Melihat nominal",
+      "adm.thParameter": "Parameter",
+      "adm.thNilai": "Nilai",
+      "adm.biayaYa": "Ya",
+      "adm.biayaTidak": "Tidak",
+      "adm.pAsumsi": "Paket asumsi berlaku",
+      "adm.pThr": "Accrual THR",
+      "adm.paramKet": "Parameter hanya bisa dibaca di sini. Perubahannya dibuat sebagai paket asumsi baru dengan tanggal berlaku sendiri, bukan dengan menimpa angka lama.",
+      "adm.tutupJudul": "Pemeriksaan sebelum menutup {name}",
+      "adm.tutupSub": "Siklus yang ditutup bersifat read only. Hal yang menghalangi ditandai merah.",
+      "adm.blokir": "Menghalangi",
+      "adm.catatan": "Catatan",
+      "adm.siap": "Siap",
+      "adm.siapKet": "Tidak ada yang menghalangi penutupan siklus.",
+      "adm.sudahTutup": "Siklus ditutup pada {t}",
+      "adm.protoJudul": "Data prototipe",
+      "adm.protoIsi": "Mengembalikan seluruh data ke kondisi awal, termasuk siklus, snapshot, usulan, alokasi, realisasi, dan audit.",
+      "tutup.exception": "{n} exception masih menunggu keputusan",
+      "tutup.review": "{n} usulan masih menunggu review OD",
+      "tutup.mutasi": "{n} mutasi masih menunggu konfirmasi departemen penerima",
+      "tutup.sisa": "Sisa kuota {n} tidak akan terealisasi setelah siklus ditutup",
+      "tutup.errBlokir": "Masih ada {n} hal yang menghalangi penutupan siklus",
+      "audit.d.ekspor": "Mengekspor laporan {id} berisi {n} baris",
       "audit.d.denyScope": "Percobaan mengubah data di luar lingkup akses",
       "audit.d.denyCap": "Peran tidak memiliki kapabilitas {cap}",
       "audit.d.denyScreen": "Percobaan membuka layar tanpa kapabilitas",
@@ -4571,6 +4671,80 @@ window.NB_DATA.cost_assumptions = [
       "audit.d.excReject": "Rejected exception {id} and cancelled its actual",
       "audit.d.denyActual": "Attempted to record an actual without the right",
       "audit.d.denyException": "Attempted to decide an exception without the right",
+      // Module 9: reports, notifications, administration, closure
+      "umum.peranLabel": "Role",
+      "lap.judul": "Reports",
+      "lap.sub": "Nine {name} reports, all using the same figures shown in the application.",
+      "lap.aturanJudul": "Reports never recompute anything",
+      "lap.aturanIsi": "Every report reads the same functions as its screen, so exported figures cannot differ from what is on screen. Row scope and cost column rights still apply.",
+      "lap.R1": "Current organization structure",
+      "lap.R2": "MPP proposals by row",
+      "lap.R3": "Requested, Approved, Variance",
+      "lap.R4": "Cost by department",
+      "lap.R5": "Monthly cost load",
+      "lap.R6": "Approved allocation status",
+      "lap.R7": "Execution against allocation",
+      "lap.R8": "Exception log",
+      "lap.R9": "Audit trail",
+      "lap.ekspor": "Export CSV",
+      "lap.jumlah": "{n} rows",
+      "lap.potong": "Showing the first 100 of {n} rows. The export contains all of them.",
+      "lap.terunduh": "File {n} downloaded",
+      "lap.gagalUnduh": "The download was blocked by this environment. Open the file outside a restricted browser view.",
+      "lap.kosong": "This report has no data yet",
+      "lap.kosongSub": "Report content follows the cycle stages already completed.",
+      "notif.judul": "{n} things waiting for you",
+      "notif.sub": "Computed from the current state of the data. Email delivery is not part of the prototype.",
+      "notif.buka": "Open",
+      "notif.jPLAN": "Proposal",
+      "notif.jRETURN": "Returned",
+      "notif.jTRANSFER": "Transfer",
+      "notif.jREVIEW": "Review",
+      "notif.jKONSOLIDASI": "Consolidation",
+      "notif.jKEPUTUSAN": "Decision",
+      "notif.jDISTRIBUSI": "Distribution",
+      "notif.jEXCEPTION": "Exception",
+      "notif.jREALISASI": "Execution",
+      "notif.usulanDraft": "The {d} proposal has not been sent to OD",
+      "notif.dikembalikan": "The {d} proposal was returned and awaits correction",
+      "notif.mutasi": "An incoming transfer from {d} awaits your confirmation",
+      "notif.reviewOd": "{n} department proposals await your review",
+      "notif.konsolidasi": "{n} proposals are accepted and ready to consolidate",
+      "notif.keputusan": "{n} rows await a management decision",
+      "notif.distribusi": "The package is approved but its allocation has not been distributed",
+      "notif.exception": "{n} exceptions await your decision",
+      "notif.realisasi": "{n} allocations still carry unused quota",
+      "adm.judul": "Administration",
+      "adm.sub": "Users, cost parameters, cycle closure, and prototype data management.",
+      "adm.tabPengguna": "Users and access",
+      "adm.tabParameter": "Cost parameters",
+      "adm.tabPenutupan": "Cycle closure",
+      "adm.tabPrototipe": "Prototype data",
+      "adm.thPengguna": "User",
+      "adm.thLingkup": "Access scope",
+      "adm.thBiaya": "Sees amounts",
+      "adm.thParameter": "Parameter",
+      "adm.thNilai": "Value",
+      "adm.biayaYa": "Yes",
+      "adm.biayaTidak": "No",
+      "adm.pAsumsi": "Assumption package in effect",
+      "adm.pThr": "THR accrual",
+      "adm.paramKet": "Parameters are read only here. Changes are made as a new assumption package with its own effective date, never by overwriting the old figures.",
+      "adm.tutupJudul": "Checks before closing {name}",
+      "adm.tutupSub": "A closed cycle is read only. Blocking items are marked in red.",
+      "adm.blokir": "Blocking",
+      "adm.catatan": "Note",
+      "adm.siap": "Ready",
+      "adm.siapKet": "Nothing is blocking the closure of this cycle.",
+      "adm.sudahTutup": "Cycle closed on {t}",
+      "adm.protoJudul": "Prototype data",
+      "adm.protoIsi": "Restores all data to its initial state, including cycles, snapshots, proposals, allocations, actuals, and the audit log.",
+      "tutup.exception": "{n} exceptions still await a decision",
+      "tutup.review": "{n} proposals still await OD review",
+      "tutup.mutasi": "{n} transfers still await confirmation from the receiving department",
+      "tutup.sisa": "{n} units of quota will go unrealised once the cycle closes",
+      "tutup.errBlokir": "{n} items still block the closure of this cycle",
+      "audit.d.ekspor": "Exported report {id} containing {n} rows",
       "audit.d.denyScope": "Attempted to change data outside the access scope",
       "audit.d.denyCap": "Role lacks the capability {cap}",
       "audit.d.denyScreen": "Attempted to open a screen without the capability",
@@ -4896,7 +5070,8 @@ window.NB_DATA.cost_assumptions = [
     "ACTUAL_CANCEL":    { label: "Actual Cancel", badge: "is-plain" },
     "ACTUAL_BLOCKED":   { label: "Actual Blocked", badge: "is-red" },
     "ACTUAL_EXCEPTION": { label: "Exception",   badge: "is-amber" },
-    "EXCEPTION_DECISION": { label: "Exc Decision", badge: "is-indigo" }
+    "EXCEPTION_DECISION": { label: "Exc Decision", badge: "is-indigo" },
+    "REPORT_EXPORT":  { label: "Report Export", badge: "is-teal" }
   };
 
   // detail boleh berupa string, atau objek { key, vars, reason } supaya pesan log
@@ -5337,6 +5512,49 @@ window.NB_DATA.cost_assumptions = [
 
 </script>
 <script>
+/* js/domain/report.js */
+// Pembangun laporan dan ekspor. Sembilan laporan bab 30, semuanya diturunkan dari data
+// yang sudah ada, tanpa satu pun angka yang dihitung ulang di sini dengan cara berbeda.
+//
+// Ekspor memakai titik koma sebagai pemisah kolom, karena Excel dengan locale Indonesia
+// membaca koma sebagai pemisah desimal. Angka diekspor mentah tanpa titik ribuan supaya
+// tetap bisa dijumlahkan di spreadsheet.
+(function (global) {
+  "use strict";
+
+  function sel(v) {
+    if (v === null || v === undefined) return "";
+    var t = String(v);
+    return /[";\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+  }
+
+  function keCsv(kolom, baris) {
+    var isi = [kolom.map(function (k) { return sel(k.label); }).join(";")];
+    baris.forEach(function (b) {
+      isi.push(kolom.map(function (k) { return sel(b[k.kunci]); }).join(";"));
+    });
+    return "\uFEFF" + isi.join("\r\n");   // BOM supaya Excel membaca UTF-8 dengan benar
+  }
+
+  // Unduh berkas di sisi klien. Kalau lingkungan memblokir unduhan, kembalikan false
+  // supaya layar bisa menawarkan salin ke papan klip.
+  function unduh(namaBerkas, isi, tipe) {
+    try {
+      var blob = new Blob([isi], { type: (tipe || "text/csv") + ";charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = namaBerkas;
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 500);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  global.NBReport = { keCsv: keCsv, unduh: unduh };
+})(window);
+
+</script>
+<script>
 /* js/core/store.js */
 // Store. Satu-satunya jalur data masuk dan keluar layar.
 // Alasan lapisan ini ada: saat prototipe berpindah ke API sungguhan, hanya berkas ini
@@ -5598,8 +5816,20 @@ window.NB_DATA.cost_assumptions = [
       c.closed_by = null; c.closed_at = null;
     }
     if (statusBaru === "CLOSED") {
+      var jaga = periksaPenutupan(cycleId);
+      if (!jaga.bolehTutup) {
+        return { ok: false, kunci: "tutup.errBlokir",
+                 vars: { n: jaga.masalah.filter(function (m) { return m.blokir; }).length } };
+      }
       c.closed_by = sesi.user.user_id;
       c.closed_at = new Date().toISOString();
+      // Ringkasan akhir tahun dibekukan bersama penutupan.
+      var m = ringkasMonitoring(cycleId);
+      c.closure_summary = {
+        kuota: m.total.kuota, realisasi: m.total.terpakai, utilisasi: m.total.utilisasi,
+        biaya_alokasi: m.total.biayaAlokasi, biaya_actual: m.total.biayaActual,
+        ditutup_pada: new Date().toISOString()
+      };
     }
     var sebelum = c.status;
     c.status = statusBaru;
@@ -6830,6 +7060,230 @@ window.NB_DATA.cost_assumptions = [
     };
   }
 
+  // --- Laporan, notifikasi, dan penutupan siklus (bab 30, 31, 65) -----------
+
+  // Semua laporan memakai fungsi yang sama dengan yang dipakai layar, jadi angka di
+  // laporan tidak mungkin berbeda dari angka di aplikasi.
+  function dataLaporan(kode, cycleId) {
+    var c = _sik(cycleId);
+    if (!c) return { kolom: [], baris: [] };
+
+    if (kode === "R1") {
+      var snap = snapshotAktif(cycleId);
+      var lines = snap ? snapshotBarisTerlihat(snap.snapshot_id) : [];
+      return {
+        kolom: [{ kunci: "employee_id", label: "NIK" }, { kunci: "employee_name", label: "Nama" },
+                { kunci: "position_title", label: "Posisi" }, { kunci: "grade_id", label: "Grade" },
+                { kunci: "departemen", label: "Departemen" }, { kunci: "cost_center_id", label: "Cost Center" }],
+        baris: lines.map(function (l) {
+          l.departemen = (_dep(l.department_id) || {}).name; return l;
+        })
+      };
+    }
+
+    if (kode === "R2") {
+      var baris = barisSiklusTerlihat(cycleId);
+      return {
+        kolom: [{ kunci: "line_item_id", label: "ID" }, { kunci: "departemen", label: "Departemen" },
+                { kunci: "action_type", label: "Action" }, { kunci: "sasaran", label: "Sasaran" },
+                { kunci: "quantity", label: "Kuantitas" }, { kunci: "effective_month", label: "Bulan efektif" },
+                { kunci: "hc", label: "Dampak HC" }, { kunci: "status", label: "Status" }],
+        baris: baris.map(function (l) {
+          return Object.assign({}, l, {
+            departemen: (_dep(l.department_id) || {}).name,
+            sasaran: namaSasaranBaris(l),
+            hc: NBActions.dampakHc(l).perusahaan
+          });
+        })
+      };
+    }
+
+    if (kode === "R3") {
+      var r = ringkasAlokasi(cycleId);
+      return {
+        kolom: [{ kunci: "name", label: "Departemen" }, { kunci: "cost_center_id", label: "Cost Center" },
+                { kunci: "requested", label: "Requested" }, { kunci: "approved", label: "Approved" },
+                { kunci: "variance", label: "Variance" }],
+        baris: r.perDept
+      };
+    }
+
+    if (kode === "R4") {
+      var h = biayaSiklus(cycleId);
+      return {
+        kolom: [{ kunci: "name", label: "Departemen" }, { kunci: "cost_center_id", label: "Cost Center" },
+                { kunci: "baris", label: "Baris" }, { kunci: "monthly", label: "Biaya bulanan" },
+                { kunci: "annualized", label: "Biaya tahunan" }],
+        baris: h ? h.perDept : []
+      };
+    }
+
+    if (kode === "R5") {
+      var h5 = biayaSiklus(cycleId);
+      return {
+        kolom: [{ kunci: "bulan", label: "Bulan" }, { kunci: "nama", label: "Nama bulan" },
+                { kunci: "biaya", label: "Beban bulanan" }],
+        baris: h5 ? h5.perBulan.map(function (b) {
+          return { bulan: b.bulan, nama: NBFormat.bulanNama(b.bulan), biaya: Math.round(b.biaya) };
+        }) : []
+      };
+    }
+
+    if (kode === "R6") {
+      return {
+        kolom: [{ kunci: "allocation_id", label: "Alokasi" }, { kunci: "departemen", label: "Departemen" },
+                { kunci: "action_type", label: "Action" }, { kunci: "sasaran", label: "Sasaran" },
+                { kunci: "approved_qty", label: "Kuota" }, { kunci: "consumed_qty", label: "Terpakai" },
+                { kunci: "remaining_qty", label: "Sisa" }, { kunci: "status", label: "Status" }],
+        baris: alokasiTerlihat(cycleId).map(function (a) {
+          return Object.assign({}, a, {
+            departemen: (_dep(a.department_id) || {}).name, sasaran: namaSasaranBaris(a)
+          });
+        })
+      };
+    }
+
+    if (kode === "R7") {
+      var m = ringkasMonitoring(cycleId);
+      return {
+        kolom: [{ kunci: "name", label: "Departemen" }, { kunci: "kuota", label: "Kuota" },
+                { kunci: "terpakai", label: "Realisasi" }, { kunci: "sisa", label: "Sisa" },
+                { kunci: "utilisasi", label: "Utilisasi persen" },
+                { kunci: "hcRealisasi", label: "Realisasi HC" }],
+        baris: m.perDept
+      };
+    }
+
+    if (kode === "R8") {
+      return {
+        kolom: [{ kunci: "exception_id", label: "Exception" }, { kunci: "departemen", label: "Departemen" },
+                { kunci: "allocation_id", label: "Alokasi" }, { kunci: "kelebihan", label: "Kelebihan" },
+                { kunci: "status", label: "Status" }, { kunci: "reason", label: "Alasan" }],
+        baris: exceptionTerlihat(cycleId).map(function (e) {
+          return Object.assign({}, e, { departemen: (_dep(e.department_id) || {}).name });
+        })
+      };
+    }
+
+    if (kode === "R9") {
+      return {
+        kolom: [{ kunci: "timestamp", label: "Waktu" }, { kunci: "actor_email", label: "Aktor" },
+                { kunci: "actor_role", label: "Peran" }, { kunci: "event_type", label: "Event" },
+                { kunci: "objek", label: "Objek" }, { kunci: "rincian", label: "Rincian" },
+                { kunci: "before", label: "Nilai lama" }, { kunci: "after", label: "Nilai baru" }],
+        baris: NBAudit.untuk(sesi.user, departemenDariAudit).map(function (e) {
+          return Object.assign({}, e, {
+            objek: e.object_type + " " + e.object_id,
+            rincian: e.detail_key ? NBi18n.t(e.detail_key, e.detail_vars || {}) : e.detail
+          });
+        })
+      };
+    }
+
+    return { kolom: [], baris: [] };
+  }
+
+  function namaSasaranBaris(l) {
+    if (l.employee_id) return (_kar(l.employee_id) || {}).name || l.employee_id;
+    if (l.new_position_title) return l.new_position_title;
+    if (l.position_id) return (_pos(l.position_id) || {}).title || l.position_id;
+    if (l.vacancy_id) return l.vacancy_id;
+    return "-";
+  }
+
+  // Daftar pekerjaan yang menunggu pengguna ini. Menggantikan notifikasi surel yang
+  // belum ada di prototipe, dan sengaja dihitung dari keadaan data, bukan disimpan.
+  function notifikasi(cycleId) {
+    var u = sesi.user;
+    if (!u) return [];
+    var out = [];
+    var c = _sik(cycleId);
+    if (!c) return out;
+
+    if (NBRbac.can(u, "plan.create")) {
+      departemenTerlihat().forEach(function (d) {
+        var sub = db.submissions.filter(function (s) {
+          return s.cycle_id === cycleId && s.department_id === d.department_id;
+        })[0];
+        if (c.status === "OPEN" && (!sub || sub.status === "DRAFT")) {
+          out.push({ jenis: "PLAN", kunci: "notif.usulanDraft", vars: { d: d.name }, rute: "planning" });
+        }
+        if (sub && sub.status === "RETURNED") {
+          out.push({ jenis: "RETURN", kunci: "notif.dikembalikan", vars: { d: d.name }, rute: "planning" });
+        }
+      });
+      mutasiMasuk(cycleId).filter(function (b) { return b.transfer_status === "PENDING"; })
+        .forEach(function (b) {
+          out.push({ jenis: "TRANSFER", kunci: "notif.mutasi",
+                     vars: { d: (_dep(b.department_id) || {}).name }, rute: "planning" });
+        });
+    }
+
+    if (NBRbac.can(u, "plan.review")) {
+      var menunggu = db.submissions.filter(function (s) {
+        return s.cycle_id === cycleId && s.status === "SUBMITTED";
+      }).length;
+      if (menunggu) out.push({ jenis: "REVIEW", kunci: "notif.reviewOd", vars: { n: menunggu }, rute: "usulan" });
+      var siap = db.submissions.filter(function (s) {
+        return s.cycle_id === cycleId && s.status === "OD_ACCEPTED";
+      }).length;
+      if (siap) out.push({ jenis: "KONSOLIDASI", kunci: "notif.konsolidasi", vars: { n: siap }, rute: "konsolidasi" });
+    }
+
+    if (NBRbac.can(u, "review.decide")) {
+      var belum = barisReview(cycleId).filter(function (l) { return !l.decision; }).length;
+      if (belum) out.push({ jenis: "KEPUTUSAN", kunci: "notif.keputusan", vars: { n: belum }, rute: "review" });
+    }
+
+    if (NBRbac.can(u, "approved.distribute")) {
+      var apr = approvalSiklus(cycleId);
+      if (apr.length && !alokasiSiklus(cycleId).length) {
+        out.push({ jenis: "DISTRIBUSI", kunci: "notif.distribusi", vars: {}, rute: "approved" });
+      }
+      var exc = db.exceptions.filter(function (e) {
+        return e.cycle_id === cycleId && e.status === "PENDING";
+      }).length;
+      if (exc) out.push({ jenis: "EXCEPTION", kunci: "notif.exception", vars: { n: exc }, rute: "monitoring" });
+    }
+
+    if (NBRbac.can(u, "actual.record")) {
+      var sisa = alokasiTerlihat(cycleId).filter(function (a) { return a.remaining_qty > 0; }).length;
+      if (sisa) out.push({ jenis: "REALISASI", kunci: "notif.realisasi", vars: { n: sisa }, rute: "monitoring" });
+    }
+
+    return out;
+  }
+
+  // Pemeriksaan sebelum siklus ditutup (bab 65). Menutup siklus dengan exception yang
+  // masih menggantung akan meninggalkan angka yang tidak pernah bisa direkonsiliasi.
+  function periksaPenutupan(cycleId) {
+    var masalah = [];
+    var exc = db.exceptions.filter(function (e) {
+      return e.cycle_id === cycleId && e.status === "PENDING";
+    }).length;
+    if (exc) masalah.push({ kunci: "tutup.exception", vars: { n: exc }, blokir: true });
+
+    var belumReview = db.submissions.filter(function (s) {
+      return s.cycle_id === cycleId && s.status === "SUBMITTED";
+    }).length;
+    if (belumReview) masalah.push({ kunci: "tutup.review", vars: { n: belumReview }, blokir: true });
+
+    var mut = db.line_items.filter(function (l) {
+      var sub = _sub(l.submission_id);
+      return sub && sub.cycle_id === cycleId && l.action_type === "TRANSFER" &&
+             l.transfer_status === "PENDING";
+    }).length;
+    if (mut) masalah.push({ kunci: "tutup.mutasi", vars: { n: mut }, blokir: true });
+
+    var sisa = alokasiSiklus(cycleId).filter(function (a) { return a.remaining_qty > 0; });
+    if (sisa.length) {
+      masalah.push({ kunci: "tutup.sisa",
+                     vars: { n: sisa.reduce(function (t, a) { return t + a.remaining_qty; }, 0) },
+                     blokir: false });
+    }
+    return { masalah: masalah, bolehTutup: !masalah.some(function (m) { return m.blokir; }) };
+  }
+
   // --- Perubahan data master ---------------------------------------------
   // Tidak ada jalur tulis lain. Setiap perubahan wajib lewat sini supaya
   // audit tidak bisa dilewati (BR-08).
@@ -6905,6 +7359,7 @@ window.NB_DATA.cost_assumptions = [
     distribusikanAlokasi: distribusikanAlokasi, alokasiTerlihat: alokasiTerlihat,
     catatActual: catatActual, batalkanActual: batalkanActual, putuskanException: putuskanException,
     ringkasMonitoring: ringkasMonitoring, actualTerlihat: actualTerlihat,
+    dataLaporan: dataLaporan, notifikasi: notifikasi, periksaPenutupan: periksaPenutupan,
     exceptionTerlihat: exceptionTerlihat,
     alokasiBaris: alokasiBaris, ringkasAlokasi: ringkasAlokasi,
     kirimSubmission: kirimSubmission, reviewSubmission: reviewSubmission,
@@ -7070,6 +7525,25 @@ window.NB_DATA.cost_assumptions = [
       }).join("") + "</div></div>";
   }
 
+  // Daftar pekerjaan yang menunggu pengguna. Menggantikan notifikasi surel yang belum ada,
+  // dan dihitung dari keadaan data, bukan dari catatan notifikasi yang bisa basi.
+  function panelNotifikasi() {
+    var c = NBStore.siklusAktif();
+    if (!c) return "";
+    var n = NBStore.notifikasi(c.cycle_id);
+    if (!n.length) return "";
+    return "<div class='nb-card nb-card-pad' style='margin-bottom:24px'>" +
+      "<div class='nb-card-head'>" + NBUi.svg("shield") + "<div>" +
+      "<h3>" + NBUi.esc(NBi18n.t("notif.judul", { n: n.length })) + "</h3>" +
+      "<p>" + NBUi.esc(NBi18n.t("notif.sub")) + "</p></div></div>" +
+      n.map(function (x) {
+        return "<a class='nb-setting' href='#" + x.rute + "' style='margin-bottom:8px;text-decoration:none;color:inherit'>" +
+          NBUi.badge(NBi18n.t("notif.j" + x.jenis), "is-blue") +
+          "<div style='flex:1'>" + NBUi.esc(NBi18n.t(x.kunci, x.vars)) + "</div>" +
+          "<span class='nb-cell-sub'>" + NBUi.esc(NBi18n.t("notif.buka")) + "</span></a>";
+      }).join("") + "</div>";
+  }
+
   function render() {
     var u = NBStore.user();
     var karyawan = NBStore.karyawanTerlihat();
@@ -7106,6 +7580,8 @@ window.NB_DATA.cost_assumptions = [
     "</div>" +
 
     "<div class='nb-kpigrid'>" + kpi + "</div>" +
+
+    panelNotifikasi() +
 
     "<div class='nb-card' style='margin-bottom:24px'>" +
       "<div class='nb-toolbar'><div><div style='font-weight:600'>" + NBUi.esc(T("dash.tabelJudul")) + "</div>" +
@@ -9508,6 +9984,297 @@ window.NB_DATA.cost_assumptions = [
 
 </script>
 <script>
+/* js/pages/laporan.js */
+// Layar Laporan (bab 30). Sembilan laporan, semuanya memakai fungsi yang sama dengan
+// yang dipakai layar lain, sehingga angka di laporan tidak mungkin berbeda dari angka
+// di aplikasi. Lingkup baris dan hak kolom biaya tetap berlaku.
+(function (global) {
+  "use strict";
+
+  var T = function (k, v) { return NBi18n.t(k, v); };
+  var state = { laporan: "R3" };
+
+  // cap: kapabilitas minimal. biaya: laporan memuat nominal.
+  var DAFTAR = [
+    { kode: "R1", i18n: "lap.R1", biaya: false },
+    { kode: "R2", i18n: "lap.R2", biaya: false },
+    { kode: "R3", i18n: "lap.R3", biaya: false },
+    { kode: "R4", i18n: "lap.R4", biaya: true },
+    { kode: "R5", i18n: "lap.R5", biaya: true },
+    { kode: "R6", i18n: "lap.R6", biaya: false },
+    { kode: "R7", i18n: "lap.R7", biaya: false },
+    { kode: "R8", i18n: "lap.R8", biaya: false },
+    { kode: "R9", i18n: "lap.R9", biaya: false }
+  ];
+
+  function bolehBiaya(u) {
+    return NBStore.departemenTerlihat().every(function (d) { return NBRbac.canSeeCost(u, d.department_id); });
+  }
+
+  function tersedia(u) {
+    return DAFTAR.filter(function (l) { return !l.biaya || bolehBiaya(u); });
+  }
+
+  // Daftar kunci uang ditulis eksplisit. Pencocokan pola sempat membuat kolom
+  // cost_center_id ikut diformat sebagai rupiah, dan isinya hilang jadi tanda hubung.
+  var KUNCI_UANG = ["biaya", "monthly", "annualized", "monthly_cost", "annualized_cost",
+                    "biayaAlokasi", "biayaActual"];
+
+  function nilaiSel(kunci, v) {
+    if (v === null || v === undefined || v === "") return "<span class='nb-muted'>-</span>";
+    if (KUNCI_UANG.indexOf(kunci) !== -1) return "<span class='nb-mono'>" + NBFormat.rupiah(v) + "</span>";
+    if (kunci === "action_type") return NBUi.badge(NBi18n.t("act." + v), (NBActions.def(v) || {}).badge);
+    if (kunci === "timestamp") return NBUi.esc(NBFormat.tanggalPendek(v) + " " + NBFormat.jam(v));
+    if (typeof v === "number") return NBFormat.angka(v);
+    return NBUi.esc(String(v));
+  }
+
+  // Kolom dianggap angka bila kuncinya memang berisi angka, bukan karena labelnya
+  // kebetulan mengandung kata tertentu.
+  var KUNCI_ANGKA = ["quantity", "effective_month", "hc", "requested", "approved", "variance",
+                     "approved_qty", "consumed_qty", "remaining_qty", "kuota", "terpakai", "sisa",
+                     "utilisasi", "hcRealisasi", "kelebihan", "bulan", "baris"];
+  function angka(k) {
+    return KUNCI_ANGKA.indexOf(k.kunci) !== -1 || KUNCI_UANG.indexOf(k.kunci) !== -1;
+  }
+
+  function render() {
+    var u = NBStore.user();
+    var c = NBStore.siklusAktif();
+    if (!c) return "<div class='nb-card'>" + NBUi.kosong(T("dash.siklusKosong"), T("dash.siklusKosongSub")) + "</div>";
+
+    var daftar = tersedia(u);
+    if (!daftar.some(function (l) { return l.kode === state.laporan; })) state.laporan = daftar[0].kode;
+    var data = NBStore.dataLaporan(state.laporan, c.cycle_id);
+
+    var isi = data.baris.length
+      ? "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+        data.kolom.map(function (k) {
+          return "<th" + (angka(k) ? " class='nb-num'" : "") + ">" + NBUi.esc(k.label) + "</th>";
+        }).join("") + "</tr></thead><tbody>" +
+        data.baris.slice(0, 100).map(function (b) {
+          return "<tr>" + data.kolom.map(function (k) {
+            return "<td" + (angka(k) ? " class='nb-num'" : "") + ">" +
+                   nilaiSel(k.kunci, b[k.kunci]) + "</td>";
+          }).join("") + "</tr>";
+        }).join("") + "</tbody></table></div>" +
+        (data.baris.length > 100
+          ? "<p class='nb-cell-sub' style='padding:12px 20px;margin:0'>" +
+            NBUi.esc(T("lap.potong", { n: data.baris.length })) + "</p>"
+          : "")
+      : NBUi.kosong(T("lap.kosong"), T("lap.kosongSub"), NBUi.svg("layers"));
+
+    return "" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("lap.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("lap.sub", { name: c.name })) + "</p></div>" +
+      (data.baris.length
+        ? "<button class='nb-btn nb-btn-primary' id='lEkspor'>" + NBUi.esc(T("lap.ekspor")) + "</button>"
+        : "") +
+    "</div>" +
+
+    "<div class='nb-card nb-card-pad' style='margin-bottom:24px;background:var(--nb-gray-50)'>" +
+      "<div class='nb-note'>" + NBUi.svg("shield") + "<div>" +
+      "<div style='font-weight:600'>" + NBUi.esc(T("lap.aturanJudul")) + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("lap.aturanIsi")) + "</div></div></div></div>" +
+
+    "<div class='nb-card'>" +
+      "<div class='nb-toolbar'>" +
+        "<select class='nb-select' id='lPilih' style='width:340px'>" + daftar.map(function (l) {
+          return "<option value='" + l.kode + "'" + (l.kode === state.laporan ? " selected" : "") + ">" +
+                 NBUi.esc(l.kode + ". " + T(l.i18n)) + "</option>";
+        }).join("") + "</select>" +
+        "<div class='nb-cell-sub'>" + NBUi.esc(T("lap.jumlah", { n: data.baris.length })) + "</div>" +
+      "</div>" + isi +
+    "</div>";
+  }
+
+  function mount() {
+    var pilih = document.getElementById("lPilih");
+    if (pilih) pilih.onchange = function () { state.laporan = this.value; NBApp.ulang(); };
+
+    var ekspor = document.getElementById("lEkspor");
+    if (ekspor) ekspor.onclick = function () {
+      var c = NBStore.siklusAktif();
+      var data = NBStore.dataLaporan(state.laporan, c.cycle_id);
+      var nama = state.laporan + "-" + c.cycle_id + ".csv";
+      var berhasil = NBReport.unduh(nama, NBReport.keCsv(data.kolom, data.baris));
+      NBUi.toast(berhasil ? T("lap.terunduh", { n: nama }) : T("lap.gagalUnduh"),
+                 berhasil ? "ok" : "error");
+      NBAudit.tulis(NBStore.user(), "REPORT_EXPORT", "Report", state.laporan,
+        { key: "audit.d.ekspor", vars: { id: state.laporan, n: data.baris.length } });
+    };
+  }
+
+  global.NBPages = global.NBPages || {};
+  global.NBPages.laporan = { render: render, mount: mount };
+})(window);
+
+</script>
+<script>
+/* js/pages/admin.js */
+// Layar Administrasi (bab 64 dan 65). Milik OD.
+// Isinya sengaja hanya membaca dan satu aksi berat, yaitu penutupan siklus, karena
+// perubahan master data yang sesungguhnya seharusnya berasal dari HRIS, bukan diketik di sini.
+(function (global) {
+  "use strict";
+
+  var T = function (k, v) { return NBi18n.t(k, v); };
+  var state = { tab: "pengguna" };
+
+  function tabelPengguna() {
+    return "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+      "<th>" + NBUi.esc(T("adm.thPengguna")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.peranLabel")) + "</th>" +
+      "<th>" + NBUi.esc(T("adm.thLingkup")) + "</th>" +
+      "<th>" + NBUi.esc(T("adm.thBiaya")) + "</th>" +
+      "</tr></thead><tbody>" + NBStore.semuaPengguna().map(function (u) {
+        var deps = NBRbac.scopeDepartments(u, NBStore.semuaDepartemen());
+        var lihatBiaya = deps.some(function (id) { return NBRbac.canSeeCost(u, id); });
+        return "<tr><td><div class='nb-cell-person'>" +
+            "<span class='nb-avatar nb-avatar-sm nb-avatar-soft'>" + NBUi.esc(u.name.charAt(0)) + "</span>" +
+            "<div><div class='nb-cell-title'>" + NBUi.esc(u.name) + "</div>" +
+            "<div class='nb-cell-sub nb-mono'>" + NBUi.esc(u.email) + "</div></div></div></td>" +
+          "<td>" + NBUi.badge(NBRbac.roleLabel(u.role), "is-plain") +
+            "<div class='nb-cell-sub'>" + NBUi.esc(u.title) + "</div></td>" +
+          "<td>" + NBUi.esc(u.scope.type === "ALL"
+              ? T("umum.nDept", { n: deps.length })
+              : deps.map(function (id) { return (NBStore.departemen(id) || {}).name; }).join(", ")) + "</td>" +
+          "<td>" + (lihatBiaya ? NBUi.badge(T("adm.biayaYa"), "is-emerald")
+                               : NBUi.badge(T("adm.biayaTidak"), "is-plain")) + "</td></tr>";
+      }).join("") + "</tbody></table></div>";
+  }
+
+  function tabelParameter(c) {
+    var ctx = NBStore.konteksBiaya(c.cycle_id);
+    var p = ctx.param || {};
+    var baris = [
+      ["adm.pAsumsi", ctx.assumption_id + ", " + T("biaya.paket", { id: ctx.assumption_id, t: NBFormat.tanggal(ctx.tanggal) })],
+      ["komp.bpjs_kes", p.bpjs_kes_pct + " persen, " + T("biaya.batasUpah", { n: NBFormat.rupiah(p.bpjs_kes_cap) })],
+      ["komp.jht", p.jht_pct + " persen"],
+      ["komp.jkk", p.jkk_pct + " persen"],
+      ["komp.jkm", p.jkm_pct + " persen"],
+      ["komp.jp", p.jp_pct + " persen, " + T("biaya.batasUpah", { n: NBFormat.rupiah(p.jp_cap) })],
+      ["komp.jkp", p.jkp_pct + " persen"],
+      ["adm.pThr", p.thr_x_upah + " kali upah tetap"]
+    ];
+    return "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+      "<th>" + NBUi.esc(T("adm.thParameter")) + "</th><th>" + NBUi.esc(T("adm.thNilai")) + "</th>" +
+      "</tr></thead><tbody>" + baris.map(function (b) {
+        return "<tr><td>" + NBUi.esc(T(b[0])) + "</td><td class='nb-mono'>" + NBUi.esc(b[1]) + "</td></tr>";
+      }).join("") + "</tbody></table></div>" +
+      "<p class='nb-cell-sub' style='padding:16px 20px;margin:0'>" + NBUi.esc(T("adm.paramKet")) + "</p>";
+  }
+
+  function tabelPenutupan(c) {
+    var j = NBStore.periksaPenutupan(c.cycle_id);
+    var m = NBStore.ringkasMonitoring(c.cycle_id);
+    var sudahTutup = c.status === "CLOSED";
+
+    var daftar = j.masalah.length
+      ? j.masalah.map(function (x) {
+          return "<div class='nb-setting' style='margin-bottom:8px'>" +
+            NBUi.badge(T(x.blokir ? "adm.blokir" : "adm.catatan"), x.blokir ? "is-red" : "is-amber") +
+            "<div style='flex:1'>" + NBUi.esc(T(x.kunci, x.vars)) + "</div></div>";
+        }).join("")
+      : "<div class='nb-setting'>" + NBUi.badge(T("adm.siap"), "is-emerald") +
+        "<div style='flex:1'>" + NBUi.esc(T("adm.siapKet")) + "</div></div>";
+
+    var ringkas = sudahTutup && c.closure_summary
+      ? "<div class='nb-kpigrid' style='margin-top:20px'>" +
+        NBUi.kpi(T("alok.thKuota"), NBFormat.angka(c.closure_summary.kuota), "layers", "", "") +
+        NBUi.kpi(T("mon.thRealisasi"), NBFormat.angka(c.closure_summary.realisasi), "check", "is-emerald", "") +
+        NBUi.kpi(T("mon.thUtilisasi"), c.closure_summary.utilisasi + " persen", "chart", "", "") +
+        NBUi.kpi(T("mon.thBiayaActual"), NBFormat.rupiahRingkas(c.closure_summary.biaya_actual),
+                 "shield", "is-amber", "", true) +
+        "</div>"
+      : "";
+
+    return "<div style='padding:20px'>" +
+      "<div style='font-weight:600;margin-bottom:4px'>" + NBUi.esc(T("adm.tutupJudul", { name: c.name })) + "</div>" +
+      "<div class='nb-cell-sub' style='margin-bottom:14px'>" + NBUi.esc(T("adm.tutupSub")) + "</div>" +
+      daftar + ringkas +
+      (sudahTutup
+        ? "<div style='margin-top:16px'>" + NBUi.badge(T("adm.sudahTutup",
+            { t: NBFormat.tanggal(c.closed_at) }), "is-emerald") + "</div>"
+        : "<div class='nb-formfoot'><button class='nb-btn nb-btn-soft-danger' id='aTutup'" +
+          (j.bolehTutup ? "" : " disabled") + ">" + NBUi.esc(T("siklus.aksiTutup")) + "</button></div>") +
+    "</div>";
+  }
+
+  function tabelPrototipe() {
+    return "<div style='padding:20px'>" +
+      "<div class='nb-note' style='margin-bottom:16px'>" + NBUi.svg("shield") + "<div>" +
+      "<div style='font-weight:600'>" + NBUi.esc(T("adm.protoJudul")) + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("adm.protoIsi")) + "</div></div></div>" +
+      "<button class='nb-btn nb-btn-quiet' id='aReset'>" + NBUi.esc(T("siklus.aksiReset")) + "</button>" +
+    "</div>";
+  }
+
+  function render() {
+    var c = NBStore.siklusAktif();
+    if (!c) return "<div class='nb-card'>" + NBUi.kosong(T("dash.siklusKosong"), T("dash.siklusKosongSub")) + "</div>";
+
+    var tabs = [["pengguna", "adm.tabPengguna"], ["parameter", "adm.tabParameter"],
+                ["penutupan", "adm.tabPenutupan"], ["prototipe", "adm.tabPrototipe"]];
+    var isi = state.tab === "parameter" ? tabelParameter(c)
+            : (state.tab === "penutupan" ? tabelPenutupan(c)
+            : (state.tab === "prototipe" ? tabelPrototipe() : tabelPengguna()));
+
+    return "" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("adm.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("adm.sub")) + "</p></div>" +
+      NBUi.badge(c.name + " " + T({ DRAFT: "siklus.stDraft", OPEN: "siklus.stOpen",
+        LOCKED: "siklus.stLocked", CLOSED: "siklus.stClosed" }[c.status] || c.status), "is-plain") +
+    "</div>" +
+
+    "<div class='nb-card'>" +
+      "<div class='nb-toolbar'><div class='nb-tabs'>" + tabs.map(function (t) {
+        return "<button class='nb-tab" + (state.tab === t[0] ? " is-active" : "") +
+               "' data-tab='" + t[0] + "'>" + NBUi.esc(T(t[1])) + "</button>";
+      }).join("") + "</div></div>" + isi +
+    "</div>";
+  }
+
+  function mount() {
+    document.querySelectorAll("button[data-tab]").forEach(function (b) {
+      b.onclick = function () { state.tab = b.dataset.tab; NBApp.ulang(); };
+    });
+
+    var tutup = document.getElementById("aTutup");
+    if (tutup) tutup.onclick = function () {
+      var c = NBStore.siklusAktif();
+      NBUi.konfirmasi({
+        judul: T("siklus.aksiTutup"), pesan: T("siklus.tutupTanya", { name: c.name }),
+        ok: T("siklus.aksiTutup"), batal: T("umum.batal"), gaya: "nb-btn-soft-danger"
+      }, function () {
+        var res = NBStore.ubahStatusSiklus(c.cycle_id, "CLOSED", null);
+        NBUi.toast(res.ok ? T("siklus.statusBerhasil")
+                          : (res.kunci ? T(res.kunci, res.vars || {}) : res.alasan), res.ok ? "ok" : "error");
+        if (res.ok) NBApp.ulang();
+      });
+    };
+
+    var reset = document.getElementById("aReset");
+    if (reset) reset.onclick = function () {
+      NBUi.konfirmasi({
+        judul: T("siklus.aksiReset"), pesan: T("siklus.resetTanya"),
+        ok: T("siklus.aksiReset"), batal: T("umum.batal"), gaya: "nb-btn-soft-danger"
+      }, function () {
+        var res = NBStore.reset();
+        NBUi.toast(res.ok ? T("siklus.resetBerhasil") : T(res.kunci || "mgmt.errPeran"), res.ok ? "ok" : "error");
+        if (res.ok) NBApp.ulang();
+      });
+    };
+  }
+
+  global.NBPages = global.NBPages || {};
+  global.NBPages.admin = { render: render, mount: mount };
+})(window);
+
+</script>
+<script>
 /* js/pages/audit.js */
 // Layar 11 dari inventaris bab 25. Audit log (BR-08) dan pembeda dengan Revision History (bab 47).
 (function (global) {
@@ -9578,7 +10345,7 @@ window.NB_DATA.cost_assumptions = [
   "use strict";
 
   var MODUL = {
-    laporan: 9, admin: 9
+    // seluruh layar sudah dibangun
   };
 
   function buat(kunci) {
@@ -9597,6 +10364,7 @@ window.NB_DATA.cost_assumptions = [
 
   global.NBPages = global.NBPages || {};
   Object.keys(MODUL).forEach(function (k) { global.NBPages[k] = buat(k); });
+  global.NBStub = { buat: buat, MODUL: MODUL };
 })(window);
 
 </script>
