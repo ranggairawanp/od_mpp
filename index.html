@@ -439,7 +439,7 @@ h1, h2, h3, h4, .nb-head { font-family: var(--nb-font-head); letter-spacing: -.0
    LOG AKTIVITAS
    ========================================================================== */
 
-.nb-ts { font-family: var(--nb-font-mono); font-size: var(--nb-fs-sub); color: var(--nb-gray-700); }
+.nb-ts { font-family: var(--nb-font-mono); font-size: var(--nb-fs-sub); color: var(--nb-gray-700); white-space: nowrap; }
 .nb-ts small { display: block; color: var(--nb-gray-400); font-size: var(--nb-fs-label); margin-top: 2px; }
 .nb-actor { font-family: var(--nb-font-mono); font-size: var(--nb-fs-sub); color: var(--nb-gray-800); }
 .nb-role { display: block; font-size: var(--nb-fs-micro); letter-spacing: .06em; text-transform: uppercase;
@@ -510,7 +510,7 @@ h1, h2, h3, h4, .nb-head { font-family: var(--nb-font-head); letter-spacing: -.0
     <span id="nbChrome" style="display:flex;align-items:center;gap:12px">
     <span class="nb-badge" id="nbCycle" style="display:none"></span>
     <div id="nbUser"></div>
-    <button class="nb-iconbtn" id="nbLogout" title="Keluar">
+    <button class="nb-iconbtn" id="nbLogout" data-i18n-title="umum.keluar" title="Keluar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <path d="M15 17l5-5-5-5"/><path d="M20 12H9"/><path d="M12 19H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6"/>
       </svg>
@@ -2719,9 +2719,16 @@ window.NB_DATA.vacancies = [
 (function (global) {
   "use strict";
 
-  var BULAN = ["Januari","Februari","Maret","April","Mei","Juni",
-               "Juli","Agustus","September","Oktober","November","Desember"];
-  var BULAN_PENDEK = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+  var BULAN_ID = ["Januari","Februari","Maret","April","Mei","Juni",
+                  "Juli","Agustus","September","Oktober","November","Desember"];
+  var BULAN_PENDEK_ID = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+  var BULAN_EN = ["January","February","March","April","May","June",
+                  "July","August","September","October","November","December"];
+  var BULAN_PENDEK_EN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  function en() { return global.NBi18n && NBi18n.get() === "en"; }
+  function bulanPanjangSet() { return en() ? BULAN_EN : BULAN_ID; }
+  function bulanPendekSet() { return en() ? BULAN_PENDEK_EN : BULAN_PENDEK_ID; }
 
   function angka(n) {
     if (n === null || n === undefined || isNaN(n)) return "-";
@@ -2753,7 +2760,7 @@ window.NB_DATA.vacancies = [
     if (!iso) return "-";
     var d = new Date(iso);
     if (isNaN(d)) return "-";
-    return d.getDate() + " " + BULAN[d.getMonth()] + " " + d.getFullYear();
+    return d.getDate() + " " + bulanPanjangSet()[d.getMonth()] + " " + d.getFullYear();
   }
 
   // "2026-08-30" menjadi "30 Agu 2026"
@@ -2761,7 +2768,7 @@ window.NB_DATA.vacancies = [
     if (!iso) return "-";
     var d = new Date(iso);
     if (isNaN(d)) return "-";
-    return d.getDate() + " " + BULAN_PENDEK[d.getMonth()] + " " + d.getFullYear();
+    return d.getDate() + " " + bulanPendekSet()[d.getMonth()] + " " + d.getFullYear();
   }
 
   // Jam gaya log aplikasi: 13.35.37 WIB
@@ -2772,8 +2779,8 @@ window.NB_DATA.vacancies = [
   }
 
   // Bulan efektif 1 sampai 12 (BR-01). Bulan 6 berarti berlaku Juni.
-  function bulanNama(n) { return BULAN[n - 1] || "-"; }
-  function bulanPendek(n) { return BULAN_PENDEK[n - 1] || "-"; }
+  function bulanNama(n) { return bulanPanjangSet()[n - 1] || "-"; }
+  function bulanPendek(n) { return bulanPendekSet()[n - 1] || "-"; }
 
   // Jumlah bulan biaya yang berlaku dalam satu tahun siklus (BR-E).
   // Efektif Juni berarti 7 bulan, bukan 12. Dipakai penuh di Modul 5.
@@ -2787,23 +2794,51 @@ window.NB_DATA.vacancies = [
     angka: angka, rupiah: rupiah, rupiahRingkas: rupiahRingkas, delta: delta,
     tanggal: tanggal, tanggalPendek: tanggalPendek, jam: jam,
     bulanNama: bulanNama, bulanPendek: bulanPendek, bulanBerlaku: bulanBerlaku,
-    BULAN: BULAN, BULAN_PENDEK: BULAN_PENDEK
+    bulanPanjangSet: bulanPanjangSet, bulanPendekSet: bulanPendekSet
   };
 })(window);
 
 </script>
 <script>
 /* js/core/i18n.js */
-// Bilingual ID dan EN. Sakelar dipasang di shell sejak Modul 0, bukan ditambal belakangan.
-// Cara pakai di HTML: <span data-i18n="nav.dashboard"></span>
+// Bilingual ID dan EN untuk seluruh teks antarmuka.
+//
+// Aturan: tidak ada kalimat berbahasa Indonesia yang ditulis langsung di berkas layar.
+// Semua lewat NBi18n.t. Yang tetap berbahasa aslinya hanya data, misalnya nama
+// departemen, nama jabatan, dan nama orang, karena itu isi basis data, bukan label.
+//
+// Penanda {x} di dalam teks diisi lewat argumen kedua: t("kunci", { x: nilai }).
 (function (global) {
   "use strict";
 
   var DICT = {
     id: {
-      "app.name": "MPP Micro-App",
+      // Umum
       "app.entity": "PT Kaldu Sari Nabati Indonesia",
       "app.simulasi": "Data Simulasi",
+      "umum.semua": "Seluruh departemen",
+      "umum.nDept": "{n} departemen",
+      "umum.satuDept": "1 departemen",
+      "umum.departemen": "Departemen",
+      "umum.karyawan": "Karyawan",
+      "umum.posisi": "Posisi",
+      "umum.grade": "Grade",
+      "umum.status": "Status",
+      "umum.nik": "NIK",
+      "umum.aksi": "Aksi",
+      "umum.ubah": "Ubah",
+      "umum.simpan": "Simpan",
+      "umum.batal": "Batal",
+      "umum.tutup": "Tutup",
+      "umum.belumDihitung": "Belum dihitung",
+      "umum.belumAda": "Belum ada",
+      "umum.baris": "{n} baris",
+      "umum.tidakBerubah": "Tidak ada perubahan",
+      "umum.keluar": "Keluar",
+      "umum.layarTidakAda": "Layar tidak ditemukan",
+      "umum.aksesDitolak": "Layar itu di luar hak akses peran Anda",
+
+      // Navigasi
       "nav.dashboard": "Dashboard",
       "nav.organisasi": "Organisasi",
       "nav.siklus": "Siklus",
@@ -2816,34 +2851,137 @@ window.NB_DATA.vacancies = [
       "nav.laporan": "Laporan",
       "nav.audit": "Audit",
       "nav.admin": "Administrasi",
-      "aksi.keluar": "Keluar",
-      "aksi.simpan": "Simpan",
-      "aksi.batal": "Batal",
-      "aksi.cari": "Cari",
-      "umum.peran": "Peran",
-      "umum.lingkup": "Lingkup akses",
-      "umum.departemen": "Departemen",
-      "umum.semua": "Semua departemen",
-      "umum.karyawan": "Karyawan",
-      "umum.posisi": "Posisi",
-      "umum.grade": "Grade",
-      "umum.status": "Status",
-      "umum.kosong": "Belum ada data untuk ditampilkan",
-      "umum.belumDihitung": "Belum dihitung",
+
+      // Login
       "login.judul": "Masuk sebagai persona",
       "login.sub": "Prototipe tanpa autentikasi. Pilih peran untuk melihat perbedaan hak akses dan lingkup data.",
+      "login.lingkup": "Lingkup: {s} ({d})",
+      "login.batasJudul": "Batas prototipe.",
+      "login.batasTeks": "Tidak ada kata sandi, tidak ada server, dan seluruh data karyawan di sini fiktif. Penyaringan lingkup akses berjalan di browser sehingga hanya berfungsi sebagai simulasi kontrol, bukan kontrol keamanan. Versi produksi wajib memakai SSO korporat dan menyaring data di sisi server.",
+
+      // Dashboard
       "dash.judul": "Dashboard",
       "dash.sub": "Ringkasan sesuai peran dan lingkup akses Anda.",
+      "dash.kpiKaryawan": "Karyawan dalam lingkup",
+      "dash.kpiDepartemen": "Departemen",
+      "dash.kpiPosisi": "Posisi terdaftar",
+      "dash.kpiTetap": "Karyawan tetap",
+      "dash.kpiTetapNote": "{p} persen dari lingkup",
+      "dash.tabelJudul": "Headcount berjalan per departemen",
+      "dash.tabelSub": "Sumber: data master organisasi, bukan usulan MPP.",
+      "dash.thCostCenter": "Cost Center",
+      "dash.thHc": "Current HC",
+      "dash.thCost": "People Cost",
+      "dash.rantaiJudul": "Rantai state {name}",
+      "dash.rantaiSub": "Empat state berdiri sendiri dan tidak saling menimpa. Selisih di antaranya adalah inti nilai aplikasi ini.",
+      "dash.hc": "{n} HC",
+      "dash.noteCurrent": "Snapshot {id}",
+      "dash.noteCurrentScoped": "Snapshot {id}, terbatas pada lingkup Anda",
+      "dash.noteCurrentNone": "Snapshot belum dirilis",
+      "dash.noteProposed": "Terbentuk saat departemen menyusun usulan (Modul 2)",
+      "dash.noteApproved": "Terbentuk setelah keputusan manajemen (Modul 6)",
+      "dash.noteActual": "Terbentuk saat realisasi dicatat (Modul 8)",
+      "dash.siklusKosong": "Belum ada siklus MPP",
+      "dash.siklusKosongSub": "OD belum membuat siklus perencanaan.",
+
+      // Organisasi
       "org.judul": "Data Organisasi",
       "org.sub": "Struktur karyawan berjalan. Sumber data master, belum ada usulan MPP di sini.",
+      "org.barisLingkup": "{n} baris dalam lingkup Anda",
+      "org.thRentang": "Rentang Gaji Grade",
+      "org.rentang": "{min} sampai {max}",
+      "org.cari": "Cari nama, NIK, posisi",
+      "org.kosong": "Tidak ada karyawan yang cocok",
+      "org.kosongSub": "Ubah kata kunci atau filter departemen.",
       "org.catatan": "Catatan departemen",
       "org.catatanSub": "Catatan bebas milik pemilik departemen. Setiap perubahan tercatat di audit.",
+      "org.catatanPlaceholder": "Contoh: fokus 2027 pada penguatan tim digital.",
+      "org.catatanTersimpan": "Tersimpan dan tercatat di audit",
+      "org.koreksiJudul": "Koreksi data master",
+      "org.koreksiAlasan": "Alasan koreksi",
+      "org.koreksiAlasanPlaceholder": "Contoh: koreksi data dari HRIS",
+      "org.koreksiAlasanWajib": "Alasan koreksi wajib diisi",
+      "org.koreksiCatatan": "Perubahan ini hanya mengubah data master hari ini. Snapshot yang sudah dirilis tetap menyimpan nilai lama.",
+      "org.koreksiSimpan": "Simpan koreksi",
+      "org.koreksiBerhasil": "Master diperbarui. Snapshot yang sudah dirilis tidak ikut berubah.",
+
+      // Siklus dan snapshot
       "siklus.judul": "Siklus MPP & Snapshot",
       "siklus.sub": "Pengelolaan siklus perencanaan dan pembekuan struktur organisasi sebagai baseline Current.",
+      "siklus.kpiAktif": "Siklus aktif",
+      "siklus.kpiVersi": "Versi siklus",
+      "siklus.kpiSnapshot": "Snapshot Current",
+      "siklus.kpiBatas": "Batas pengumpulan",
+      "siklus.pernahBuka": "Pernah dibuka ulang",
+      "siklus.belumBuka": "Belum pernah dibuka ulang",
+      "siklus.snapshotNote": "{id}, beku sejak {tgl}",
+      "siklus.snapshotBelum": "Departemen belum bisa merencanakan",
       "siklus.daftar": "Daftar siklus",
       "siklus.daftarSub": "Klik baris untuk berpindah siklus.",
-      "siklus.snapshot": "Snapshot struktur organisasi",
+      "siklus.thSiklus": "Siklus",
+      "siklus.thPeriode": "Periode",
+      "siklus.thBatas": "Batas pengumpulan",
+      "siklus.thSnapshot": "Snapshot aktif",
+      "siklus.periode": "{a} sampai {b}",
+      "siklus.stDraft": "Draft",
+      "siklus.stDraftKet": "Belum dibuka untuk departemen",
+      "siklus.stOpen": "Terbuka",
+      "siklus.stOpenKet": "Departemen boleh menyusun usulan",
+      "siklus.stLocked": "Pengumpulan ditutup",
+      "siklus.stLockedKet": "Usulan baru tidak diterima",
+      "siklus.stClosed": "Ditutup",
+      "siklus.stClosedKet": "Read only sesuai BR-09",
+      "siklus.aksiBuka": "Buka siklus",
+      "siklus.aksiTutupKumpul": "Tutup pengumpulan",
+      "siklus.aksiBukaKumpul": "Buka lagi pengumpulan",
+      "siklus.aksiTutup": "Tutup siklus",
+      "siklus.aksiBukaUlang": "Buka ulang siklus",
+      "siklus.aksiReset": "Reset data prototipe",
+      "siklus.hanyaBaca": "Peran Anda hanya membaca siklus. Pengelolaan siklus milik OD.",
       "siklus.buatJudul": "Buat siklus baru",
+      "siklus.buatSub": "Satu siklus per tahun perencanaan. Batas pengumpulan dipakai untuk penanda keterlambatan (BR-H).",
+      "siklus.fTahun": "Tahun",
+      "siklus.fMulai": "Mulai",
+      "siklus.fSelesai": "Selesai",
+      "siklus.fBatas": "Batas pengumpulan",
+      "siklus.buatTombol": "Buat siklus",
+      "siklus.buatBerhasil": "Siklus dibuat dalam status Draft",
+      "siklus.statusBerhasil": "Status siklus diperbarui",
+      "siklus.resetTanya": "Reset seluruh data prototipe ke kondisi awal? Siklus, snapshot, koreksi master, dan audit akan hilang.",
+      "siklus.resetBerhasil": "Data prototipe dikembalikan ke kondisi awal",
+      "siklus.tutupTanya": "Tutup siklus {name}? Setelah ditutup, siklus hanya bisa dibaca (BR-09).",
+      "siklus.bukaUlangTanya": "Alasan membuka ulang siklus {name}. Alasan wajib diisi dan tercatat di audit.",
+
+      "snap.judul": "Snapshot struktur organisasi",
+      "snap.sub": "State Current untuk {name}. Sekali dirilis, isinya tidak ikut berubah walaupun data master berubah.",
+      "snap.belumJudul": "Snapshot belum dirilis",
+      "snap.belumSub": "Selama snapshot belum ada, departemen tidak punya baseline Current untuk direncanakan. Ini prasyarat Modul 2.",
+      "snap.rilisJudul": "Rilis snapshot baru",
+      "snap.rilisSub": "Menyalin seluruh data master organisasi menjadi baris beku. Versi sebelumnya tidak dihapus.",
+      "snap.rilisTombol": "Rilis V{v}",
+      "snap.rilisBerhasil": "Snapshot {id} dirilis dan dibekukan",
+      "snap.thSnapshot": "Snapshot",
+      "snap.thBerlaku": "Berlaku",
+      "snap.thDirilis": "Dirilis",
+      "snap.thSumber": "Sumber",
+      "snap.thBaris": "Baris",
+      "snap.thVacancy": "Vacancy",
+      "snap.aktif": "Aktif",
+      "snap.lihat": "Lihat isi",
+      "snap.isiJudul": "Isi {id}",
+      "snap.isiSub": "Berlaku {tgl}. Menampilkan {n} baris dalam lingkup akses Anda.",
+      "snap.thGrade": "Grade saat snapshot",
+      "snap.thHc": "HC",
+      "snap.kosong": "Tidak ada baris dalam lingkup Anda",
+      "snap.potong": "Menampilkan {n} baris pertama dari {total} baris dalam lingkup Anda. Ekspor lengkap menyusul di Modul 9.",
+      "snap.buktiJudul": "Bukti pembekuan: snapshot dibanding master",
+      "snap.buktiSub": "Daftar ini dihitung ulang setiap kali layar dibuka. Kalau data master diubah setelah rilis, perbedaannya muncul di sini, bukan menimpa snapshot.",
+      "snap.buktiKosong": "Tidak ada perbedaan. Snapshot ini masih identik dengan master.",
+      "snap.thField": "Field",
+      "snap.thNilaiSnap": "Nilai di snapshot",
+      "snap.thNilaiMaster": "Nilai di master hari ini",
+
+      // Audit
       "audit.judul": "Audit & Riwayat Perubahan",
       "audit.sub": "Rekaman jejak setiap aksi dan setiap perubahan nilai data.",
       "audit.waktu": "Waktu",
@@ -2851,13 +2989,77 @@ window.NB_DATA.vacancies = [
       "audit.aksi": "Tipe Event",
       "audit.rincian": "Rincian",
       "audit.nilai": "Perubahan Nilai",
-      "stub.judul": "Modul belum dibangun",
-      "stub.sub": "Layar ini disiapkan pada modul berikutnya."
+      "audit.peran": "Peran: {r}",
+      "audit.event": "{n} event",
+      "audit.kosong": "Belum ada aktivitas",
+      "audit.kosongSub": "Lakukan satu perubahan data, lalu kembali ke layar ini.",
+      "audit.catatan": "Audit bersifat append only. Revision History yang mencatat versi usulan dibangun terpisah pada Modul 6, sesuai pembedaan di bab 47.",
+      "audit.ke": "ke",
+      "audit.nilaiKosong": "(kosong)",
+      "audit.alasan": "Alasan: {r}",
+      "audit.d.login": "Sesi simulasi dimulai sebagai {r}",
+      "audit.d.logout": "Sesi diakhiri",
+      "audit.d.cycleCreate": "Membuat siklus {name}, batas pengumpulan {tgl}",
+      "audit.d.cycleStatus": "Status siklus {name} berubah",
+      "audit.d.snapshotRelease": "Merilis snapshot {id} berisi {n} baris karyawan dan {v} vacancy, berlaku {tgl}",
+      "audit.d.editField": "Mengubah {field}",
+      "audit.d.deptNote": "Mengubah catatan departemen {name}",
+      "audit.d.masterFix": "Koreksi master {field} untuk {name}",
+      "audit.d.reset": "Mereset seluruh data prototipe ke kondisi awal",
+      "audit.d.denyScope": "Percobaan mengubah data di luar lingkup akses",
+      "audit.d.denyCap": "Peran tidak memiliki kapabilitas {cap}",
+      "audit.d.denyScreen": "Percobaan membuka layar tanpa kapabilitas",
+      "audit.d.denyCycleCreate": "Peran tidak berhak membuat siklus",
+      "audit.d.denyCycleStatus": "Peran tidak berhak mengubah status siklus",
+      "audit.d.denySnapshot": "Peran tidak berhak merilis snapshot",
+
+      // Layar yang belum dibangun
+      "stub.sub": "Layar ini disiapkan pada modul berikutnya.",
+      "stub.modul": "Modul {n}",
+      "stub.belum": "Belum dibangun",
+      "stub.planning": "MPP Planning",
+      "stub.planningKet": "Layar perencanaan mirip spreadsheet dengan tujuh action type, validasi, dan bulan efektif (FR-03, BR-01).",
+      "stub.konsolidasi": "Konsolidasi MPP",
+      "stub.konsolidasiKet": "Agregasi seluruh submission departemen tanpa penggabungan manual (FR-05).",
+      "stub.biaya": "Perhitungan Biaya",
+      "stub.biayaKet": "Cost assumption bertanggal berlaku dan prorata bulan efektif (FR-06, BR-E).",
+      "stub.review": "Management Review",
+      "stub.reviewKet": "Dashboard keputusan, approve with adjustment, dan versioning (FR-07, bab 19).",
+      "stub.approved": "Approved MPP",
+      "stub.approvedKet": "Baseline kendali dan tabel Requested, Approved, Variance per departemen (bab 20).",
+      "stub.monitoring": "Monitoring",
+      "stub.monitoringKet": "Actual dibandingkan approved, exception, dan utilisasi (FR-08, BR-06).",
+      "stub.laporan": "Laporan",
+      "stub.laporanKet": "Sembilan laporan dan ekspor (bab 30).",
+      "stub.admin": "Administrasi",
+      "stub.adminKet": "Master data, pengguna, aturan workflow, dan konfigurasi (bab 64)."
     },
+
     en: {
-      "app.name": "MPP Micro-App",
       "app.entity": "PT Kaldu Sari Nabati Indonesia",
       "app.simulasi": "Simulated Data",
+      "umum.semua": "All departments",
+      "umum.nDept": "{n} departments",
+      "umum.satuDept": "1 department",
+      "umum.departemen": "Department",
+      "umum.karyawan": "Employee",
+      "umum.posisi": "Position",
+      "umum.grade": "Grade",
+      "umum.status": "Status",
+      "umum.nik": "Employee ID",
+      "umum.aksi": "Action",
+      "umum.ubah": "Edit",
+      "umum.simpan": "Save",
+      "umum.batal": "Cancel",
+      "umum.tutup": "Close",
+      "umum.belumDihitung": "Not calculated yet",
+      "umum.belumAda": "None yet",
+      "umum.baris": "{n} rows",
+      "umum.tidakBerubah": "Nothing changed",
+      "umum.keluar": "Sign out",
+      "umum.layarTidakAda": "Screen not found",
+      "umum.aksesDitolak": "That screen is outside your role's access",
+
       "nav.dashboard": "Dashboard",
       "nav.organisasi": "Organization",
       "nav.siklus": "Cycle",
@@ -2870,51 +3072,196 @@ window.NB_DATA.vacancies = [
       "nav.laporan": "Reports",
       "nav.audit": "Audit",
       "nav.admin": "Administration",
-      "aksi.keluar": "Sign out",
-      "aksi.simpan": "Save",
-      "aksi.batal": "Cancel",
-      "aksi.cari": "Search",
-      "umum.peran": "Role",
-      "umum.lingkup": "Access scope",
-      "umum.departemen": "Department",
-      "umum.semua": "All departments",
-      "umum.karyawan": "Employees",
-      "umum.posisi": "Positions",
-      "umum.grade": "Grade",
-      "umum.status": "Status",
-      "umum.kosong": "No data to display yet",
-      "umum.belumDihitung": "Not calculated yet",
+
       "login.judul": "Sign in as a persona",
       "login.sub": "Prototype without authentication. Pick a role to see how access rights and data scope differ.",
+      "login.lingkup": "Scope: {s} ({d})",
+      "login.batasJudul": "Prototype limits.",
+      "login.batasTeks": "No password, no server, and every employee record here is fictional. Access scope is filtered in the browser, so it simulates a control rather than enforcing one. The production version must use corporate SSO and filter data on the server.",
+
       "dash.judul": "Dashboard",
       "dash.sub": "Summary based on your role and access scope.",
+      "dash.kpiKaryawan": "Employees in scope",
+      "dash.kpiDepartemen": "Departments",
+      "dash.kpiPosisi": "Registered positions",
+      "dash.kpiTetap": "Permanent employees",
+      "dash.kpiTetapNote": "{p} percent of your scope",
+      "dash.tabelJudul": "Current headcount by department",
+      "dash.tabelSub": "Source: organization master data, not MPP proposals.",
+      "dash.thCostCenter": "Cost Center",
+      "dash.thHc": "Current HC",
+      "dash.thCost": "People Cost",
+      "dash.rantaiJudul": "State chain for {name}",
+      "dash.rantaiSub": "The four states stand on their own and never overwrite each other. The gaps between them are the point of this application.",
+      "dash.hc": "{n} HC",
+      "dash.noteCurrent": "Snapshot {id}",
+      "dash.noteCurrentScoped": "Snapshot {id}, limited to your scope",
+      "dash.noteCurrentNone": "Snapshot not released yet",
+      "dash.noteProposed": "Created when departments build their proposals (Module 2)",
+      "dash.noteApproved": "Created after the management decision (Module 6)",
+      "dash.noteActual": "Created when execution is recorded (Module 8)",
+      "dash.siklusKosong": "No MPP cycle yet",
+      "dash.siklusKosongSub": "OD has not created a planning cycle.",
+
       "org.judul": "Organization Data",
       "org.sub": "Current employee structure. Master data only, no MPP proposals here.",
+      "org.barisLingkup": "{n} rows in your scope",
+      "org.thRentang": "Grade Salary Range",
+      "org.rentang": "{min} to {max}",
+      "org.cari": "Search name, ID, position",
+      "org.kosong": "No matching employees",
+      "org.kosongSub": "Change the keyword or the department filter.",
       "org.catatan": "Department note",
-      "org.catatanSub": "Free note owned by the department. Every change is recorded in the audit log.",
+      "org.catatanSub": "A free note owned by the department. Every change is recorded in the audit log.",
+      "org.catatanPlaceholder": "Example: 2027 focus is strengthening the digital team.",
+      "org.catatanTersimpan": "Saved and recorded in the audit log",
+      "org.koreksiJudul": "Master data correction",
+      "org.koreksiAlasan": "Reason for the correction",
+      "org.koreksiAlasanPlaceholder": "Example: correction from HRIS",
+      "org.koreksiAlasanWajib": "A reason is required",
+      "org.koreksiCatatan": "This only changes today's master data. Snapshots already released keep the old value.",
+      "org.koreksiSimpan": "Save correction",
+      "org.koreksiBerhasil": "Master updated. Released snapshots are unaffected.",
+
       "siklus.judul": "MPP Cycle & Snapshot",
       "siklus.sub": "Managing planning cycles and freezing the organization structure as the Current baseline.",
+      "siklus.kpiAktif": "Active cycle",
+      "siklus.kpiVersi": "Cycle version",
+      "siklus.kpiSnapshot": "Current snapshot",
+      "siklus.kpiBatas": "Submission deadline",
+      "siklus.pernahBuka": "Has been reopened",
+      "siklus.belumBuka": "Never reopened",
+      "siklus.snapshotNote": "{id}, frozen since {tgl}",
+      "siklus.snapshotBelum": "Departments cannot plan yet",
       "siklus.daftar": "Cycle list",
       "siklus.daftarSub": "Click a row to switch cycle.",
-      "siklus.snapshot": "Organization structure snapshot",
+      "siklus.thSiklus": "Cycle",
+      "siklus.thPeriode": "Period",
+      "siklus.thBatas": "Submission deadline",
+      "siklus.thSnapshot": "Active snapshot",
+      "siklus.periode": "{a} to {b}",
+      "siklus.stDraft": "Draft",
+      "siklus.stDraftKet": "Not opened to departments yet",
+      "siklus.stOpen": "Open",
+      "siklus.stOpenKet": "Departments may build proposals",
+      "siklus.stLocked": "Submission closed",
+      "siklus.stLockedKet": "New proposals are not accepted",
+      "siklus.stClosed": "Closed",
+      "siklus.stClosedKet": "Read only under BR-09",
+      "siklus.aksiBuka": "Open cycle",
+      "siklus.aksiTutupKumpul": "Close submission",
+      "siklus.aksiBukaKumpul": "Reopen submission",
+      "siklus.aksiTutup": "Close cycle",
+      "siklus.aksiBukaUlang": "Reopen cycle",
+      "siklus.aksiReset": "Reset prototype data",
+      "siklus.hanyaBaca": "Your role can only read cycles. Cycle management belongs to OD.",
       "siklus.buatJudul": "Create a new cycle",
+      "siklus.buatSub": "One cycle per planning year. The deadline drives the late marker (BR-H).",
+      "siklus.fTahun": "Year",
+      "siklus.fMulai": "Start",
+      "siklus.fSelesai": "End",
+      "siklus.fBatas": "Submission deadline",
+      "siklus.buatTombol": "Create cycle",
+      "siklus.buatBerhasil": "Cycle created in Draft status",
+      "siklus.statusBerhasil": "Cycle status updated",
+      "siklus.resetTanya": "Reset all prototype data to its initial state? Cycles, snapshots, master corrections, and the audit log will be lost.",
+      "siklus.resetBerhasil": "Prototype data restored to its initial state",
+      "siklus.tutupTanya": "Close cycle {name}? Once closed it becomes read only (BR-09).",
+      "siklus.bukaUlangTanya": "Reason for reopening cycle {name}. A reason is required and will be recorded in the audit log.",
+
+      "snap.judul": "Organization structure snapshot",
+      "snap.sub": "The Current state for {name}. Once released, its contents never change even if master data does.",
+      "snap.belumJudul": "Snapshot not released yet",
+      "snap.belumSub": "Without a snapshot, departments have no Current baseline to plan against. This is a prerequisite for Module 2.",
+      "snap.rilisJudul": "Release a new snapshot",
+      "snap.rilisSub": "Copies the whole organization master into frozen rows. Earlier versions are kept.",
+      "snap.rilisTombol": "Release V{v}",
+      "snap.rilisBerhasil": "Snapshot {id} released and frozen",
+      "snap.thSnapshot": "Snapshot",
+      "snap.thBerlaku": "Effective",
+      "snap.thDirilis": "Released",
+      "snap.thSumber": "Source",
+      "snap.thBaris": "Rows",
+      "snap.thVacancy": "Vacancies",
+      "snap.aktif": "Active",
+      "snap.lihat": "View contents",
+      "snap.isiJudul": "Contents of {id}",
+      "snap.isiSub": "Effective {tgl}. Showing {n} rows within your access scope.",
+      "snap.thGrade": "Grade at snapshot",
+      "snap.thHc": "HC",
+      "snap.kosong": "No rows within your scope",
+      "snap.potong": "Showing the first {n} of {total} rows in your scope. Full export arrives in Module 9.",
+      "snap.buktiJudul": "Proof of freezing: snapshot versus master",
+      "snap.buktiSub": "This list is recomputed every time the screen opens. If master data changes after release, the difference shows up here instead of overwriting the snapshot.",
+      "snap.buktiKosong": "No differences. This snapshot still matches the master.",
+      "snap.thField": "Field",
+      "snap.thNilaiSnap": "Value in snapshot",
+      "snap.thNilaiMaster": "Value in master today",
+
       "audit.judul": "Audit & Change History",
-      "audit.sub": "Trace of every action and every value change.",
+      "audit.sub": "A trace of every action and every value change.",
       "audit.waktu": "Time",
       "audit.aktor": "User / Actor",
       "audit.aksi": "Event Type",
       "audit.rincian": "Detail",
       "audit.nilai": "Value Change",
-      "stub.judul": "Module not built yet",
-      "stub.sub": "This screen arrives in a later module."
+      "audit.peran": "Role: {r}",
+      "audit.event": "{n} events",
+      "audit.kosong": "No activity yet",
+      "audit.kosongSub": "Make one data change, then come back to this screen.",
+      "audit.catatan": "The audit log is append only. Revision History, which tracks proposal versions, is built separately in Module 6, following the distinction in chapter 47.",
+      "audit.ke": "to",
+      "audit.nilaiKosong": "(empty)",
+      "audit.alasan": "Reason: {r}",
+      "audit.d.login": "Simulated session started as {r}",
+      "audit.d.logout": "Session ended",
+      "audit.d.cycleCreate": "Created cycle {name}, submission deadline {tgl}",
+      "audit.d.cycleStatus": "Cycle {name} changed status",
+      "audit.d.snapshotRelease": "Released snapshot {id} with {n} employee rows and {v} vacancies, effective {tgl}",
+      "audit.d.editField": "Changed {field}",
+      "audit.d.deptNote": "Changed the department note for {name}",
+      "audit.d.masterFix": "Master correction of {field} for {name}",
+      "audit.d.reset": "Reset all prototype data to its initial state",
+      "audit.d.denyScope": "Attempted to change data outside the access scope",
+      "audit.d.denyCap": "Role lacks the capability {cap}",
+      "audit.d.denyScreen": "Attempted to open a screen without the capability",
+      "audit.d.denyCycleCreate": "Role may not create cycles",
+      "audit.d.denyCycleStatus": "Role may not change cycle status",
+      "audit.d.denySnapshot": "Role may not release snapshots",
+
+      "stub.sub": "This screen arrives in a later module.",
+      "stub.modul": "Module {n}",
+      "stub.belum": "Not built yet",
+      "stub.planning": "MPP Planning",
+      "stub.planningKet": "Spreadsheet-like planning screen with seven action types, validation, and effective month (FR-03, BR-01).",
+      "stub.konsolidasi": "MPP Consolidation",
+      "stub.konsolidasiKet": "Aggregation of every department submission without manual merging (FR-05).",
+      "stub.biaya": "Cost Calculation",
+      "stub.biayaKet": "Dated cost assumptions and proration by effective month (FR-06, BR-E).",
+      "stub.review": "Management Review",
+      "stub.reviewKet": "Decision dashboard, approve with adjustment, and versioning (FR-07, chapter 19).",
+      "stub.approved": "Approved MPP",
+      "stub.approvedKet": "Control baseline and the Requested, Approved, Variance table per department (chapter 20).",
+      "stub.monitoring": "Monitoring",
+      "stub.monitoringKet": "Actual against approved, exceptions, and utilisation (FR-08, BR-06).",
+      "stub.laporan": "Reports",
+      "stub.laporanKet": "Nine reports and export (chapter 30).",
+      "stub.admin": "Administration",
+      "stub.adminKet": "Master data, users, workflow rules, and configuration (chapter 64)."
     }
   };
 
   var lang = "id";
 
-  function t(key) {
+  function t(key, vars) {
     var pack = DICT[lang] || DICT.id;
-    return pack[key] !== undefined ? pack[key] : key;
+    var teks = pack[key] !== undefined ? pack[key] : key;
+    if (vars) {
+      Object.keys(vars).forEach(function (k) {
+        teks = teks.split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return teks;
   }
 
   function set(next) {
@@ -2934,9 +3281,27 @@ window.NB_DATA.vacancies = [
     (root || document).querySelectorAll("[data-i18n-ph]").forEach(function (el) {
       el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph")));
     });
+    (root || document).querySelectorAll("[data-i18n-title]").forEach(function (el) {
+      el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
+    });
   }
 
-  global.NBi18n = { t: t, set: set, get: get, apply: apply };
+  // Daftar kunci yang hilang, dipakai saat pemeriksaan mutu.
+  function periksa() {
+    var kurang = { id: [], en: [] };
+    var semua = {};
+    Object.keys(DICT).forEach(function (l) {
+      Object.keys(DICT[l]).forEach(function (k) { semua[k] = 1; });
+    });
+    Object.keys(semua).forEach(function (k) {
+      Object.keys(DICT).forEach(function (l) {
+        if (DICT[l][k] === undefined) kurang[l].push(k);
+      });
+    });
+    return kurang;
+  }
+
+  global.NBi18n = { t: t, set: set, get: get, apply: apply, periksa: periksa };
 })(window);
 
 </script>
@@ -3124,7 +3489,14 @@ window.NB_DATA.vacancies = [
     "DATA_RESET":     { label: "Data Reset",    badge: "is-red" }
   };
 
+  // detail boleh berupa string, atau objek { key, vars, reason } supaya pesan log
+  // bisa ditampilkan dalam bahasa apa pun tanpa menerjemahkan ulang isi log lama.
   function tulis(actor, tipe, objectType, objectId, detail, before, after) {
+    var key = null, vars = null, reason = null, teks = detail;
+    if (detail && typeof detail === "object") {
+      key = detail.key; vars = detail.vars || null; reason = detail.reason || null;
+      teks = detail.key;
+    }
     seq += 1;
     var entri = {
       audit_id: "AUD-" + String(seq).padStart(5, "0"),
@@ -3135,7 +3507,10 @@ window.NB_DATA.vacancies = [
       event_type: tipe,
       object_type: objectType || "-",
       object_id: objectId || "-",
-      detail: detail || "",
+      detail: teks || "",
+      detail_key: key,
+      detail_vars: vars,
+      reason: reason,
       before: before === undefined ? null : before,
       after: after === undefined ? null : after,
       // Prototipe tidak punya IP nyata. Ditandai jelas supaya tidak dikira data riil.
@@ -3234,7 +3609,7 @@ window.NB_DATA.vacancies = [
     simpanan.hapus(KUNCI_DB);
     muat();
     if (global.NBAudit && NBAudit.reset) NBAudit.reset();
-    NBAudit.tulis(sesi.user, "DATA_RESET", "Prototype", "-", "Mereset seluruh data prototipe ke kondisi awal");
+    NBAudit.tulis(sesi.user, "DATA_RESET", "Prototype", "-", { key: "audit.d.reset" });
     return { ok: true };
   }
 
@@ -3246,7 +3621,7 @@ window.NB_DATA.vacancies = [
     sesi.mulai = new Date().toISOString();
     simpanan.set("nb_mpp_user", userId);
     NBAudit.tulis(u, "USER_LOGIN", "Session", u.user_id,
-      "Sesi simulasi dimulai sebagai " + NBRbac.roleLabel(u.role));
+      { key: "audit.d.login", vars: { r: NBRbac.roleLabel(u.role) } });
     return u;
   }
 
@@ -3259,7 +3634,7 @@ window.NB_DATA.vacancies = [
   }
 
   function keluar() {
-    if (sesi.user) NBAudit.tulis(sesi.user, "USER_LOGOUT", "Session", sesi.user.user_id, "Sesi diakhiri");
+    if (sesi.user) NBAudit.tulis(sesi.user, "USER_LOGOUT", "Session", sesi.user.user_id, { key: "audit.d.logout" });
     sesi.user = null;
     simpanan.hapus("nb_mpp_user");
   }
@@ -3360,7 +3735,7 @@ window.NB_DATA.vacancies = [
 
   function buatSiklus(data) {
     if (!NBRbac.can(sesi.user, "cycle.create")) {
-      NBAudit.tulis(sesi.user, "SCOPE_DENIED", "MPPCycle", data.year, "Peran tidak berhak membuat siklus");
+      NBAudit.tulis(sesi.user, "SCOPE_DENIED", "MPPCycle", data.year, { key: "audit.d.denyCycleCreate" });
       return { ok: false, alasan: "Hanya OD yang boleh membuat siklus" };
     }
     var tahun = Number(data.year);
@@ -3392,7 +3767,7 @@ window.NB_DATA.vacancies = [
     };
     db.cycles.push(c); simpan();
     NBAudit.tulis(sesi.user, "CYCLE_CREATE", "MPPCycle", c.cycle_id,
-      "Membuat siklus " + c.name + ", batas pengumpulan " + NBFormat.tanggal(c.submission_deadline));
+      { key: "audit.d.cycleCreate", vars: { name: c.name, tgl: NBFormat.tanggal(c.submission_deadline) } });
     return { ok: true, siklus: c };
   }
 
@@ -3408,7 +3783,7 @@ window.NB_DATA.vacancies = [
     var c = _sik(cycleId);
     if (!c) return { ok: false, alasan: "Siklus tidak ditemukan" };
     if (!NBRbac.can(sesi.user, "cycle.create")) {
-      NBAudit.tulis(sesi.user, "SCOPE_DENIED", "MPPCycle", cycleId, "Peran tidak berhak mengubah status siklus");
+      NBAudit.tulis(sesi.user, "SCOPE_DENIED", "MPPCycle", cycleId, { key: "audit.d.denyCycleStatus" });
       return { ok: false, alasan: "Hanya OD yang boleh mengubah status siklus" };
     }
     if ((TRANSISI[c.status] || []).indexOf(statusBaru) === -1) {
@@ -3430,7 +3805,7 @@ window.NB_DATA.vacancies = [
     c.status = statusBaru;
     simpan();
     NBAudit.tulis(sesi.user, "CYCLE_STATUS", "MPPCycle", c.cycle_id,
-      "Status siklus " + c.name + " berubah" + (alasan ? ". Alasan: " + alasan : ""), sebelum, statusBaru);
+      { key: "audit.d.cycleStatus", vars: { name: c.name }, reason: alasan || null }, sebelum, statusBaru);
     return { ok: true, siklus: c };
   }
 
@@ -3470,7 +3845,7 @@ window.NB_DATA.vacancies = [
     var jaga = bolehUbahSiklus(c);
     if (!jaga.ok) return jaga;
     if (!NBRbac.can(sesi.user, "snapshot.upload")) {
-      NBAudit.tulis(sesi.user, "SCOPE_DENIED", "OrgSnapshot", cycleId, "Peran tidak berhak merilis snapshot");
+      NBAudit.tulis(sesi.user, "SCOPE_DENIED", "OrgSnapshot", cycleId, { key: "audit.d.denySnapshot" });
       return { ok: false, alasan: "Hanya OD yang boleh merilis snapshot" };
     }
     if (!effectiveDate) return { ok: false, alasan: "Tanggal berlaku snapshot wajib diisi" };
@@ -3513,8 +3888,9 @@ window.NB_DATA.vacancies = [
     db.snapshots.push(s);
     simpan();
     NBAudit.tulis(sesi.user, "SNAPSHOT_RELEASE", "OrgSnapshot", s.snapshot_id,
-      "Merilis snapshot " + s.snapshot_id + " berisi " + lines.length + " baris karyawan dan " +
-      s.vacancy_ids.length + " vacancy, berlaku " + NBFormat.tanggal(effectiveDate));
+      { key: "audit.d.snapshotRelease",
+        vars: { id: s.snapshot_id, n: lines.length, v: s.vacancy_ids.length,
+                tgl: NBFormat.tanggal(effectiveDate) } });
     return { ok: true, snapshot: s };
   }
 
@@ -3560,13 +3936,12 @@ window.NB_DATA.vacancies = [
 
     var deptTarget = objectType === "Department" ? objectId : target.department_id;
     if (!NBRbac.inScope(sesi.user, semuaDepartemen(), deptTarget)) {
-      NBAudit.tulis(sesi.user, "SCOPE_DENIED", objectType, objectId,
-        "Percobaan mengubah data di luar lingkup akses");
+      NBAudit.tulis(sesi.user, "SCOPE_DENIED", objectType, objectId, { key: "audit.d.denyScope" });
       return { ok: false, alasan: "Di luar lingkup akses Anda" };
     }
     if (!NBRbac.can(sesi.user, o.capability || "dept.note.edit")) {
       NBAudit.tulis(sesi.user, "SCOPE_DENIED", objectType, objectId,
-        "Peran tidak memiliki kapabilitas " + (o.capability || "dept.note.edit"));
+        { key: "audit.d.denyCap", vars: { cap: o.capability || "dept.note.edit" } });
       return { ok: false, alasan: "Peran Anda tidak berhak melakukan ini" };
     }
 
@@ -3575,7 +3950,9 @@ window.NB_DATA.vacancies = [
     target[field] = nilaiBaru;
     simpan();
     NBAudit.tulis(sesi.user, "DATA_EDIT", objectType, objectId,
-      (o.detail || ("Mengubah " + field)) + (o.reason ? ". Alasan: " + o.reason : ""),
+      { key: o.key || "audit.d.editField",
+        vars: Object.assign({ field: field }, o.vars || {}),
+        reason: o.reason || null },
       sebelum, nilaiBaru);
     return { ok: true, sebelum: sebelum, sesudah: nilaiBaru };
   }
@@ -3610,17 +3987,20 @@ window.NB_DATA.vacancies = [
 
 <script>
 /* js/pages/login.js */
-// Pemilih persona. Sebelumnya berupa halaman terpisah, sekarang menjadi modul di dalam shell
-// supaya aplikasi hanya punya satu titik masuk. Satu berkas HTML berarti satu kemungkinan gagal
-// saat deploy, bukan dua.
+// Pemilih persona. Menjadi modul di dalam shell supaya aplikasi hanya punya satu titik masuk.
+// Seluruh teks lewat NBi18n. Nama orang, jabatan, dan nama departemen tetap apa adanya
+// karena itu isi data, bukan label antarmuka.
 (function (global) {
   "use strict";
 
+  var T = function (k, v) { return NBi18n.t(k, v); };
+
   function render() {
     var deps = NBStore.semuaDepartemen();
+
     var kartu = NBStore.semuaPengguna().map(function (u) {
-      var lingkup = u.scope.type === "ALL"
-        ? "Seluruh departemen"
+      var namaLingkup = u.scope.type === "ALL"
+        ? T("umum.semua")
         : u.scope.ids.map(function (id) {
             var d = deps.filter(function (x) { return x.department_id === id; })[0];
             return d ? d.name : id;
@@ -3632,28 +4012,29 @@ window.NB_DATA.vacancies = [
         "<div style='display:flex;align-items:center;gap:12px;margin-bottom:12px'>" +
           "<span class='nb-avatar'>" + NBUi.esc(u.name.charAt(0)) + "</span>" +
           "<div style='min-width:0'>" +
-          "<div style='font-weight:600'>" + NBUi.esc(u.name) + "</div>" +
-          "<div class='nb-mono' style='font-size:12px;color:var(--nb-gray-500);" +
-            "overflow-wrap:anywhere;line-height:1.4'>" + NBUi.esc(u.email) + "</div>" +
-        "</div></div>" +
+            "<div style='font-weight:600'>" + NBUi.esc(u.name) + "</div>" +
+            "<div class='nb-mono' style='font-size:12px;color:var(--nb-gray-500);" +
+              "overflow-wrap:anywhere;line-height:1.4'>" + NBUi.esc(u.email) + "</div>" +
+          "</div></div>" +
         "<div style='margin-bottom:8px'>" + NBUi.badge(NBRbac.roleLabel(u.role), "is-plain") + "</div>" +
-        "<div class='nb-cell-sub'>" + NBUi.esc(u.title) + "<br>Lingkup: " + NBUi.esc(lingkup) +
-        " (" + jml + " departemen)</div></button>";
+        "<div class='nb-cell-sub'>" + NBUi.esc(u.title) + "<br>" +
+          NBUi.esc(T("login.lingkup", {
+            s: namaLingkup,
+            d: jml === 1 ? T("umum.satuDept") : T("umum.nDept", { n: jml })
+          })) + "</div></button>";
     }).join("");
 
     return "" +
       "<div class='nb-pagehead'><div>" +
-        "<h1 data-i18n='login.judul'>Masuk sebagai persona</h1>" +
-        "<p data-i18n='login.sub'>Prototipe tanpa autentikasi. Pilih peran untuk melihat perbedaan hak akses dan lingkup data.</p>" +
+        "<h1>" + NBUi.esc(T("login.judul")) + "</h1>" +
+        "<p>" + NBUi.esc(T("login.sub")) + "</p>" +
       "</div></div>" +
       "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(288px,1fr));" +
         "gap:14px;max-width:1220px'>" + kartu + "</div>" +
       "<div style='margin-top:28px;max-width:1220px;padding:16px 18px;border-radius:var(--nb-r-lg);" +
         "background:var(--nb-amber-bg);border:1px solid var(--nb-amber-bd);color:var(--nb-amber-fg);" +
         "font-size:13px;line-height:1.6'>" +
-        "<b>Batas prototipe.</b> Tidak ada kata sandi, tidak ada server, dan seluruh data karyawan di sini fiktif. " +
-        "Penyaringan lingkup akses berjalan di browser sehingga hanya berfungsi sebagai simulasi kontrol, " +
-        "bukan kontrol keamanan. Versi produksi wajib memakai SSO korporat dan menyaring data di sisi server." +
+        "<b>" + NBUi.esc(T("login.batasJudul")) + "</b> " + NBUi.esc(T("login.batasTeks")) +
       "</div>";
   }
 
@@ -3674,45 +4055,55 @@ window.NB_DATA.vacancies = [
 </script>
 <script>
 /* js/pages/dashboard.js */
-// Layar 1 dari inventaris bab 25. Modul 0 hanya menampilkan yang benar-benar ada datanya.
-// KPI siklus MPP sengaja dikosongkan sampai Modul 1, bukan diisi angka contoh (prinsip 5).
+// Layar 1 dari inventaris bab 25. Modul 0 dan 1 hanya menampilkan yang benar-benar ada datanya.
+// Angka Proposed, Approved, dan Actual sengaja kosong sampai modulnya dibangun (prinsip 5).
 (function (global) {
   "use strict";
 
-  // Ringkasan siklus dan snapshot. Angka Proposed, Approved, dan Actual sengaja belum ada,
-  // karena baru terbentuk mulai Modul 2. Layar tidak menampilkan angka tebakan (prinsip 5).
+  var T = function (k, v) { return NBi18n.t(k, v); };
+
+  var STATUS = {
+    DRAFT:  ["siklus.stDraft", "is-plain"],
+    OPEN:   ["siklus.stOpen", "is-blue"],
+    LOCKED: ["siklus.stLocked", "is-amber"],
+    CLOSED: ["siklus.stClosed", "is-emerald"]
+  };
+
   function kartuSiklus() {
     var c = NBStore.siklusAktif();
-    if (!c) return "<div class='nb-card'>" + NBUi.kosong("Belum ada siklus MPP", "OD belum membuat siklus perencanaan.") + "</div>";
+    if (!c) {
+      return "<div class='nb-card'>" +
+        NBUi.kosong(T("dash.siklusKosong"), T("dash.siklusKosongSub")) + "</div>";
+    }
     var snap = NBStore.snapshotAktif(c.cycle_id);
-    var st = { DRAFT: ["Draft", "is-plain"], OPEN: ["Terbuka", "is-blue"],
-               LOCKED: ["Pengumpulan ditutup", "is-amber"], CLOSED: ["Ditutup", "is-emerald"] }[c.status] || [c.status, ""];
+    var st = STATUS[c.status] || ["", ""];
 
     var terlihat = snap ? NBStore.snapshotBarisTerlihat(snap.snapshot_id).length : 0;
-    var seluruh = snap ? snap.line_count : 0;
-    var catatanCurrent = snap
-      ? "Snapshot " + snap.snapshot_id + (terlihat < seluruh ? ", terbatas pada lingkup Anda" : "")
-      : "Snapshot belum dirilis";
+    var catatanCurrent = !snap
+      ? T("dash.noteCurrentNone")
+      : (terlihat < snap.line_count
+          ? T("dash.noteCurrentScoped", { id: snap.snapshot_id })
+          : T("dash.noteCurrent", { id: snap.snapshot_id }));
 
     var rantai = [
-      ["Current", snap ? NBFormat.angka(terlihat) + " HC" : "Belum ada", snap ? "is-blue" : "is-plain",
-       catatanCurrent],
-      ["Proposed", "Belum ada", "is-plain", "Terbentuk saat departemen menyusun usulan (Modul 2)"],
-      ["Approved", "Belum ada", "is-plain", "Terbentuk setelah keputusan manajemen (Modul 6)"],
-      ["Actual", "Belum ada", "is-plain", "Terbentuk saat realisasi dicatat (Modul 8)"]
+      ["Current",  snap ? T("dash.hc", { n: NBFormat.angka(terlihat) }) : T("umum.belumAda"), catatanCurrent],
+      ["Proposed", T("umum.belumAda"), T("dash.noteProposed")],
+      ["Approved", T("umum.belumAda"), T("dash.noteApproved")],
+      ["Actual",   T("umum.belumAda"), T("dash.noteActual")]
     ];
 
     return "<div class='nb-card nb-card-pad'>" +
       "<div class='nb-card-head'>" + NBUi.svg("layers") + "<div>" +
-        "<h3>Rantai state " + NBUi.esc(c.name) + " " + NBUi.badge(st[0], st[1]) + "</h3>" +
-        "<p>Empat state berdiri sendiri dan tidak saling menimpa. Selisih di antaranya adalah inti nilai aplikasi ini.</p>" +
+        "<h3>" + NBUi.esc(T("dash.rantaiJudul", { name: c.name })) + " " +
+          NBUi.badge(T(st[0]), st[1]) + "</h3>" +
+        "<p>" + NBUi.esc(T("dash.rantaiSub")) + "</p>" +
       "</div></div>" +
       "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px'>" +
       rantai.map(function (r) {
         return "<div class='nb-setting' style='display:block;margin:0'>" +
-          "<div class='nb-kpi-label'>" + r[0] + "</div>" +
-          "<div style='font-weight:600;margin:6px 0'>" + r[1] + "</div>" +
-          "<div class='nb-setting-desc'>" + NBUi.esc(r[3]) + "</div></div>";
+          "<div class='nb-kpi-label'>" + NBUi.esc(r[0]) + "</div>" +
+          "<div style='font-weight:600;margin:6px 0'>" + NBUi.esc(r[1]) + "</div>" +
+          "<div class='nb-setting-desc'>" + NBUi.esc(r[2]) + "</div></div>";
       }).join("") + "</div></div>";
   }
 
@@ -3724,14 +4115,13 @@ window.NB_DATA.vacancies = [
     var tetap = karyawan.filter(function (e) { return e.employment_status === "Tetap"; }).length;
 
     var kpi =
-      NBUi.kpi("Karyawan dalam lingkup", NBFormat.angka(karyawan.length), "users", "") +
-      NBUi.kpi("Departemen", NBFormat.angka(deps.length), "building", "is-blue") +
-      NBUi.kpi("Posisi terdaftar", NBFormat.angka(pos.length), "briefcase", "is-teal") +
-      NBUi.kpi("Karyawan tetap", NBFormat.angka(tetap), "check", "is-emerald",
-               karyawan.length ? Math.round(tetap / karyawan.length * 100) + " persen dari lingkup" : "");
+      NBUi.kpi(T("dash.kpiKaryawan"), NBFormat.angka(karyawan.length), "users", "") +
+      NBUi.kpi(T("dash.kpiDepartemen"), NBFormat.angka(deps.length), "building", "is-blue") +
+      NBUi.kpi(T("dash.kpiPosisi"), NBFormat.angka(pos.length), "briefcase", "is-teal") +
+      NBUi.kpi(T("dash.kpiTetap"), NBFormat.angka(tetap), "check", "is-emerald",
+               karyawan.length ? T("dash.kpiTetapNote", { p: Math.round(tetap / karyawan.length * 100) }) : "");
 
-    // Ringkasan headcount per departemen. Kolom biaya sengaja belum diisi,
-    // karena Cost Assumption baru masuk di Modul 5 (BR-11, larangan hardcode biaya).
+    // Kolom biaya belum terisi karena Cost Assumption baru masuk di Modul 5 (BR-11).
     var baris = deps.map(function (d) {
       var isi = karyawan.filter(function (e) { return e.department_id === d.department_id; });
       var div = NBStore.divisi(d.division_id);
@@ -3741,26 +4131,28 @@ window.NB_DATA.vacancies = [
              "<td class='nb-mono'>" + NBUi.esc(d.cost_center_id) + "</td>" +
              "<td class='nb-num'>" + NBFormat.angka(isi.length) + "</td>" +
              "<td class='nb-num nb-muted'>" +
-               (bolehBiaya ? "<span data-i18n='umum.belumDihitung'>Belum dihitung</span>"
-                           : NBUi.svg("lock", "") ) + "</td></tr>";
+               (bolehBiaya ? NBUi.esc(T("umum.belumDihitung")) : NBUi.svg("lock")) + "</td></tr>";
     }).join("");
 
-    return '' +
-    '<div class="nb-pagehead"><div>' +
-      '<h1 data-i18n="dash.judul">Dashboard</h1>' +
-      '<p data-i18n="dash.sub">Ringkasan sesuai peran dan lingkup akses Anda.</p>' +
+    return "" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("dash.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("dash.sub")) + "</p>" +
     "</div>" +
-      '<span class="nb-badge is-plain">' + NBUi.esc(NBRbac.roleLabel(u.role)) + "</span>" +
+      NBUi.badge(NBRbac.roleLabel(u.role), "is-plain") +
     "</div>" +
 
-    '<div class="nb-kpigrid">' + kpi + "</div>" +
+    "<div class='nb-kpigrid'>" + kpi + "</div>" +
 
-    '<div class="nb-card" style="margin-bottom:24px">' +
-      '<div class="nb-toolbar"><div><div style="font-weight:600">Headcount berjalan per departemen</div>' +
-      '<div class="nb-cell-sub">Sumber: data master organisasi, bukan usulan MPP.</div></div></div>' +
-      '<div class="nb-tablewrap"><table class="nb-table">' +
-        "<thead><tr><th>Departemen</th><th>Cost Center</th><th class='nb-num'>Current HC</th>" +
-        "<th class='nb-num'>People Cost</th></tr></thead><tbody>" + baris + "</tbody></table></div>" +
+    "<div class='nb-card' style='margin-bottom:24px'>" +
+      "<div class='nb-toolbar'><div><div style='font-weight:600'>" + NBUi.esc(T("dash.tabelJudul")) + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("dash.tabelSub")) + "</div></div></div>" +
+      "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+        "<th>" + NBUi.esc(T("umum.departemen")) + "</th>" +
+        "<th>" + NBUi.esc(T("dash.thCostCenter")) + "</th>" +
+        "<th class='nb-num'>" + NBUi.esc(T("dash.thHc")) + "</th>" +
+        "<th class='nb-num'>" + NBUi.esc(T("dash.thCost")) + "</th>" +
+      "</tr></thead><tbody>" + baris + "</tbody></table></div>" +
     "</div>" +
 
     kartuSiklus();
@@ -3773,25 +4165,30 @@ window.NB_DATA.vacancies = [
 </script>
 <script>
 /* js/pages/organisasi.js */
-// Layar 2 dari inventaris bab 25 (My Department diperluas menjadi Data Organisasi).
-// Membuktikan tiga sumbu akses sekaligus: kapabilitas, baris, dan kolom biaya.
+// Layar Data Organisasi. Membuktikan tiga sumbu akses sekaligus:
+// kapabilitas peran, lingkup baris, dan kolom biaya.
 (function (global) {
   "use strict";
 
+  var T = function (k, v) { return NBi18n.t(k, v); };
   var state = { department_id: "", q: "" };
 
   function barisKaryawan(u, list) {
-    var kolom = NBRbac.can(u, "master.employee.edit") ? 7 : 6;
-    if (!list.length) return "<tr><td colspan='" + kolom + "'>" +
-      NBUi.kosong("Tidak ada karyawan yang cocok", "Ubah kata kunci atau filter departemen.") + "</td></tr>";
+    var bolehUbah = NBRbac.can(u, "master.employee.edit");
+    var kolom = bolehUbah ? 7 : 6;
+
+    if (!list.length) {
+      return "<tr><td colspan='" + kolom + "'>" +
+        NBUi.kosong(T("org.kosong"), T("org.kosongSub")) + "</td></tr>";
+    }
 
     return list.map(function (e) {
       var p = NBStore.posisi(e.position_id);
       var d = NBStore.departemen(e.department_id);
       var g = NBStore.grade(e.grade_id);
-      var bolehBiaya = NBRbac.canSeeCost(u, e.department_id);
-      var rentang = bolehBiaya
-        ? "<span class='nb-mono'>" + NBFormat.rupiahRingkas(g.min) + " sampai " + NBFormat.rupiahRingkas(g.max) + "</span>"
+      var rentang = NBRbac.canSeeCost(u, e.department_id)
+        ? "<span class='nb-mono'>" + NBUi.esc(T("org.rentang", {
+            min: NBFormat.rupiahRingkas(g.min), max: NBFormat.rupiahRingkas(g.max) })) + "</span>"
         : "<span class='nb-muted'>" + NBUi.svg("lock") + "</span>";
 
       return "<tr>" +
@@ -3806,15 +4203,15 @@ window.NB_DATA.vacancies = [
             "<div class='nb-cell-sub'>" + NBUi.esc(g ? g.label : "") + "</div></td>" +
         "<td>" + NBUi.badge(e.employment_status, e.employment_status === "Tetap" ? "is-emerald" : "is-amber") + "</td>" +
         "<td class='nb-num'>" + rentang + "</td>" +
-        (NBRbac.can(u, "master.employee.edit")
-          ? "<td class='nb-num'><button class='nb-btn nb-btn-outline' data-edit='" + e.employee_id + "'>Ubah</button></td>"
+        (bolehUbah
+          ? "<td class='nb-num'><button class='nb-btn nb-btn-outline' data-edit='" + e.employee_id + "'>" +
+            NBUi.esc(T("umum.ubah")) + "</button></td>"
           : "") +
       "</tr>";
     }).join("");
   }
 
   function panelCatatan(u) {
-    // Hanya pemilik departemen dan OD yang boleh mengubah (kapabilitas dept.note.edit).
     if (!NBRbac.can(u, "dept.note.edit")) return "";
     var deps = NBStore.departemenTerlihat();
     if (!deps.length) return "";
@@ -3822,26 +4219,24 @@ window.NB_DATA.vacancies = [
       return "<option value='" + d.department_id + "'>" + NBUi.esc(d.name) + "</option>";
     }).join("");
 
-    return '<div class="nb-card nb-card-pad" style="margin-bottom:24px">' +
-      '<div class="nb-card-head">' + NBUi.svg("save") + "<div>" +
-        '<h3 data-i18n="org.catatan">Catatan departemen</h3>' +
-        '<p data-i18n="org.catatanSub">Catatan bebas milik pemilik departemen. Setiap perubahan tercatat di audit.</p>' +
+    return "<div class='nb-card nb-card-pad' style='margin-bottom:24px'>" +
+      "<div class='nb-card-head'>" + NBUi.svg("save") + "<div>" +
+        "<h3>" + NBUi.esc(T("org.catatan")) + "</h3>" +
+        "<p>" + NBUi.esc(T("org.catatanSub")) + "</p>" +
       "</div></div>" +
-      '<div class="nb-setting">' +
-        "<div style='flex:1'>" +
-          "<div class='nb-setting-label'>Departemen</div>" +
+      "<div class='nb-setting'><div style='flex:1'>" +
+          "<div class='nb-setting-label'>" + NBUi.esc(T("umum.departemen")) + "</div>" +
           "<select class='nb-select' id='noteDept' style='margin-top:8px;width:100%'>" + pilihan + "</select>" +
           "<textarea class='nb-input' id='noteText' rows='3' style='margin-top:12px;resize:vertical' " +
-            "placeholder='Contoh: fokus 2027 pada penguatan tim digital.'></textarea>" +
-        "</div>" +
-      "</div>" +
-      '<div class="nb-formfoot"><button class="nb-btn nb-btn-primary" id="noteSave">' +
-        NBUi.svg("save") + "<span data-i18n='aksi.simpan'>Simpan</span></button></div>" +
+            "placeholder='" + NBUi.esc(T("org.catatanPlaceholder")) + "'></textarea>" +
+      "</div></div>" +
+      "<div class='nb-formfoot'><button class='nb-btn nb-btn-primary' id='noteSave'>" +
+        NBUi.svg("save") + NBUi.esc(T("umum.simpan")) + "</button></div>" +
     "</div>";
   }
 
-  // Perubahan master mensimulasikan koreksi data dari HRIS di tengah tahun.
-  // Snapshot yang sudah dirilis tidak boleh ikut berubah (FR-02, state separation bab 5.2).
+  // Koreksi master mensimulasikan perbaikan data dari HRIS di tengah tahun.
+  // Snapshot yang sudah dirilis tidak boleh ikut berubah (FR-02, bab 5.2).
   function modalEdit() {
     return "<div class='nb-overlay' id='mEdit' hidden><div class='nb-modal' style='max-width:560px'>" +
       "<div class='nb-modal-head'><div class='nb-modal-id'>" +
@@ -3851,18 +4246,22 @@ window.NB_DATA.vacancies = [
         "<span class='nb-metachip' id='mPosisi'></span></div></div></div>" +
         "<button class='nb-iconbtn' data-tutup='1'>&times;</button></div>" +
       "<div class='nb-modal-body'><div class='nb-section'>" +
-        "<div class='nb-section-head'><span class='nb-roman'>I</span><h4>Koreksi data master</h4></div>" +
+        "<div class='nb-section-head'><span class='nb-roman'>I</span><h4>" +
+          NBUi.esc(T("org.koreksiJudul")) + "</h4></div>" +
         "<div class='nb-fields'>" +
-          "<div><div class='nb-field-label'>Grade</div><select class='nb-select' id='mGrade'></select></div>" +
-          "<div><div class='nb-field-label'>Departemen</div><select class='nb-select' id='mDept'></select></div>" +
+          "<div><div class='nb-field-label'>" + NBUi.esc(T("umum.grade")) +
+            "</div><select class='nb-select' id='mGrade'></select></div>" +
+          "<div><div class='nb-field-label'>" + NBUi.esc(T("umum.departemen")) +
+            "</div><select class='nb-select' id='mDept'></select></div>" +
         "</div>" +
-        "<div style='margin-top:16px'><div class='nb-field-label'>Alasan koreksi</div>" +
-        "<input class='nb-input' id='mAlasan' placeholder='Contoh: koreksi data dari HRIS'></div>" +
-        "<p class='nb-cell-sub' style='margin-top:12px'>Perubahan ini hanya mengubah data master hari ini. " +
-        "Snapshot yang sudah dirilis tetap menyimpan nilai lama.</p>" +
+        "<div style='margin-top:16px'><div class='nb-field-label'>" + NBUi.esc(T("org.koreksiAlasan")) + "</div>" +
+        "<input class='nb-input' id='mAlasan' placeholder='" + NBUi.esc(T("org.koreksiAlasanPlaceholder")) + "'></div>" +
+        "<p class='nb-cell-sub' style='margin-top:12px'>" + NBUi.esc(T("org.koreksiCatatan")) + "</p>" +
       "</div></div>" +
-      "<div class='nb-modal-foot'><button class='nb-btn nb-btn-quiet' data-tutup='1'>Batal</button>" +
-      "<div class='nb-group'><button class='nb-btn nb-btn-primary' id='mSimpan'>Simpan koreksi</button></div></div>" +
+      "<div class='nb-modal-foot'><button class='nb-btn nb-btn-quiet' data-tutup='1'>" +
+        NBUi.esc(T("umum.batal")) + "</button>" +
+      "<div class='nb-group'><button class='nb-btn nb-btn-primary' id='mSimpan'>" +
+        NBUi.esc(T("org.koreksiSimpan")) + "</button></div></div>" +
     "</div></div>";
   }
 
@@ -3871,76 +4270,42 @@ window.NB_DATA.vacancies = [
     var deps = NBStore.departemenTerlihat();
     var list = NBStore.karyawanTerlihat(state);
 
-    var opsiDept = "<option value=''>" + NBi18n.t("umum.semua") + "</option>" +
+    var opsiDept = "<option value=''>" + NBUi.esc(T("umum.semua")) + "</option>" +
       deps.map(function (d) {
         return "<option value='" + d.department_id + "'" +
                (state.department_id === d.department_id ? " selected" : "") + ">" +
                NBUi.esc(d.name) + "</option>";
       }).join("");
 
-    return '' +
-    '<div class="nb-pagehead"><div>' +
-      '<h1 data-i18n="org.judul">Data Organisasi</h1>' +
-      '<p data-i18n="org.sub">Struktur karyawan berjalan. Sumber data master, belum ada usulan MPP di sini.</p>' +
-    "</div>" +
-      '<span class="nb-badge is-plain">' + NBFormat.angka(list.length) + " baris dalam lingkup Anda</span>" +
+    return "" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("org.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("org.sub")) + "</p></div>" +
+      NBUi.badge(T("org.barisLingkup", { n: NBFormat.angka(list.length) }), "is-plain") +
     "</div>" +
 
     panelCatatan(u) +
 
-    '<div class="nb-card">' +
-      '<div class="nb-toolbar">' +
+    "<div class='nb-card'>" +
+      "<div class='nb-toolbar'>" +
         "<div style='display:flex;gap:12px;align-items:center'>" +
           "<select class='nb-select' id='fDept' style='width:240px'>" + opsiDept + "</select>" +
         "</div>" +
-        '<label class="nb-search">' + NBUi.svg("search") +
-          "<input class='nb-input' id='fQ' value='" + NBUi.esc(state.q) + "' placeholder='Cari nama, NIK, posisi'></label>" +
+        "<label class='nb-search'>" + NBUi.svg("search") +
+          "<input class='nb-input' id='fQ' value='" + NBUi.esc(state.q) + "' placeholder='" +
+          NBUi.esc(T("org.cari")) + "'></label>" +
       "</div>" +
-      '<div class="nb-tablewrap"><table class="nb-table"><thead><tr>' +
-        "<th>NIK</th><th>Karyawan</th><th>Departemen</th><th>Grade</th><th>Status</th>" +
-        "<th class='nb-num'>Rentang Gaji Grade</th>" +
-        (NBRbac.can(u, "master.employee.edit") ? "<th class='nb-num'>Aksi</th>" : "") +
+      "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+        "<th>" + NBUi.esc(T("umum.nik")) + "</th>" +
+        "<th>" + NBUi.esc(T("umum.karyawan")) + "</th>" +
+        "<th>" + NBUi.esc(T("umum.departemen")) + "</th>" +
+        "<th>" + NBUi.esc(T("umum.grade")) + "</th>" +
+        "<th>" + NBUi.esc(T("umum.status")) + "</th>" +
+        "<th class='nb-num'>" + NBUi.esc(T("org.thRentang")) + "</th>" +
+        (NBRbac.can(u, "master.employee.edit") ? "<th class='nb-num'>" + NBUi.esc(T("umum.aksi")) + "</th>" : "") +
       "</tr></thead><tbody>" + barisKaryawan(u, list) + "</tbody></table></div>" +
     "</div>" +
     (NBRbac.can(u, "master.employee.edit") ? modalEdit() : "");
-  }
-
-  function mount() {
-    var u = NBStore.user();
-
-    var fd = document.getElementById("fDept");
-    if (fd) fd.onchange = function () { state.department_id = this.value; NBApp.ulang(); };
-
-    var fq = document.getElementById("fQ");
-    if (fq) {
-      fq.oninput = function () {
-        state.q = this.value;
-        var tbody = document.querySelector(".nb-table tbody");
-        if (tbody) tbody.innerHTML = barisKaryawan(u, NBStore.karyawanTerlihat(state));
-      };
-    }
-
-    var sel = document.getElementById("noteDept");
-    var txt = document.getElementById("noteText");
-    if (sel && txt) {
-      var muat = function () {
-        var d = NBStore.departemen(sel.value);
-        txt.value = d ? (d.note || "") : "";
-      };
-      sel.onchange = muat; muat();
-
-      document.getElementById("noteSave").onclick = function () {
-        var hasil = NBStore.ubah("Department", sel.value, "note", txt.value.trim(), {
-          capability: "dept.note.edit",
-          detail: "Mengubah catatan departemen " + (NBStore.departemen(sel.value) || {}).name
-        });
-        if (!hasil.ok) { NBUi.toast(hasil.alasan, "error"); return; }
-        if (hasil.tidakBerubah) { NBUi.toast("Tidak ada perubahan"); return; }
-        NBUi.toast("Tersimpan dan tercatat di audit");
-      };
-    }
-
-    pasangEdit();
   }
 
   function pasangEdit() {
@@ -3979,23 +4344,61 @@ window.NB_DATA.vacancies = [
     document.getElementById("mSimpan").onclick = function () {
       if (!aktif) return;
       var alasan = document.getElementById("mAlasan").value.trim();
-      if (!alasan) { NBUi.toast("Alasan koreksi wajib diisi", "error"); return; }
-      var g = document.getElementById("mGrade").value;
-      var d = document.getElementById("mDept").value;
+      if (!alasan) { NBUi.toast(T("org.koreksiAlasanWajib"), "error"); return; }
       var berubah = false;
-      [["grade_id", g], ["department_id", d]].forEach(function (pair) {
+      [["grade_id", document.getElementById("mGrade").value],
+       ["department_id", document.getElementById("mDept").value]].forEach(function (pair) {
         var hasil = NBStore.ubah("Employee", aktif.employee_id, pair[0], pair[1], {
           capability: "master.employee.edit",
-          detail: "Koreksi master " + pair[0] + " untuk " + aktif.name,
+          key: "audit.d.masterFix", vars: { name: aktif.name },
           reason: alasan
         });
         if (hasil.ok && !hasil.tidakBerubah) berubah = true;
         if (!hasil.ok) NBUi.toast(hasil.alasan, "error");
       });
       modal.hidden = true;
-      NBUi.toast(berubah ? "Master diperbarui. Snapshot yang sudah dirilis tidak ikut berubah." : "Tidak ada perubahan");
+      NBUi.toast(berubah ? T("org.koreksiBerhasil") : T("umum.tidakBerubah"));
       if (berubah) NBApp.ulang();
     };
+  }
+
+  function mount() {
+    var u = NBStore.user();
+
+    var fd = document.getElementById("fDept");
+    if (fd) fd.onchange = function () { state.department_id = this.value; NBApp.ulang(); };
+
+    var fq = document.getElementById("fQ");
+    if (fq) {
+      fq.oninput = function () {
+        state.q = this.value;
+        var tbody = document.querySelector(".nb-table tbody");
+        if (tbody) tbody.innerHTML = barisKaryawan(u, NBStore.karyawanTerlihat(state));
+        pasangEdit();
+      };
+    }
+
+    var sel = document.getElementById("noteDept");
+    var txt = document.getElementById("noteText");
+    if (sel && txt) {
+      var muat = function () {
+        var d = NBStore.departemen(sel.value);
+        txt.value = d ? (d.note || "") : "";
+      };
+      sel.onchange = muat; muat();
+
+      document.getElementById("noteSave").onclick = function () {
+        var hasil = NBStore.ubah("Department", sel.value, "note", txt.value.trim(), {
+          capability: "dept.note.edit",
+          key: "audit.d.deptNote", vars: { name: (NBStore.departemen(sel.value) || {}).name }
+        });
+        if (!hasil.ok) { NBUi.toast(hasil.alasan, "error"); return; }
+        if (hasil.tidakBerubah) { NBUi.toast(T("umum.tidakBerubah")); return; }
+        NBUi.toast(T("org.catatanTersimpan"));
+      };
+    }
+
+    pasangEdit();
   }
 
   global.NBPages = global.NBPages || {};
@@ -4010,14 +4413,15 @@ window.NB_DATA.vacancies = [
 (function (global) {
   "use strict";
 
+  var T = function (k, v) { return NBi18n.t(k, v); };
   var state = { cycle_id: null, snapshot_id: null };
   var BATAS_BARIS = 200;
 
-  var STATUS_SIKLUS = {
-    DRAFT:  { label: "Draft",             badge: "is-plain",   ket: "Belum dibuka untuk departemen" },
-    OPEN:   { label: "Terbuka",           badge: "is-blue",    ket: "Departemen boleh menyusun usulan" },
-    LOCKED: { label: "Pengumpulan Ditutup",badge: "is-amber",  ket: "Usulan baru tidak diterima" },
-    CLOSED: { label: "Ditutup",           badge: "is-emerald", ket: "Read only sesuai BR-09" }
+  var STATUS = {
+    DRAFT:  { label: "siklus.stDraft",  ket: "siklus.stDraftKet",  badge: "is-plain" },
+    OPEN:   { label: "siklus.stOpen",   ket: "siklus.stOpenKet",   badge: "is-blue" },
+    LOCKED: { label: "siklus.stLocked", ket: "siklus.stLockedKet", badge: "is-amber" },
+    CLOSED: { label: "siklus.stClosed", ket: "siklus.stClosedKet", badge: "is-emerald" }
   };
 
   function siklusTerpilih() {
@@ -4025,39 +4429,44 @@ window.NB_DATA.vacancies = [
     return c || NBStore.siklusAktif();
   }
 
-  function kartuSiklus(c, aktifId) {
-    var st = STATUS_SIKLUS[c.status] || { label: c.status, badge: "" };
+  function barisSiklus(c, aktifId) {
+    var st = STATUS[c.status] || { label: c.status, ket: "", badge: "" };
     var snap = NBStore.snapshotAktif(c.cycle_id);
-    return "<tr class='" + (c.cycle_id === aktifId ? "is-active" : "") + "' data-cycle='" + c.cycle_id + "' style='cursor:pointer'>" +
+    return "<tr class='" + (c.cycle_id === aktifId ? "is-active" : "") + "' data-cycle='" + c.cycle_id +
+      "' style='cursor:pointer'>" +
       "<td><div class='nb-cell-title'>" + NBUi.esc(c.name) + "</div>" +
         "<div class='nb-cell-sub nb-mono'>" + NBUi.esc(c.cycle_id) + " v" + c.version + "</div></td>" +
-      "<td>" + NBUi.badge(st.label, st.badge) + "<div class='nb-cell-sub'>" + NBUi.esc(st.ket) + "</div></td>" +
-      "<td>" + NBFormat.tanggalPendek(c.start_date) + " sampai " + NBFormat.tanggalPendek(c.end_date) + "</td>" +
+      "<td>" + NBUi.badge(T(st.label), st.badge) +
+        "<div class='nb-cell-sub'>" + NBUi.esc(T(st.ket)) + "</div></td>" +
+      "<td>" + NBUi.esc(T("siklus.periode", {
+          a: NBFormat.tanggalPendek(c.start_date), b: NBFormat.tanggalPendek(c.end_date) })) + "</td>" +
       "<td>" + NBFormat.tanggalPendek(c.submission_deadline) + "</td>" +
-      "<td>" + (snap ? "<span class='nb-mono'>" + NBUi.esc(snap.snapshot_id) + "</span>" +
-                 "<div class='nb-cell-sub'>" + NBFormat.angka(NBStore.snapshotBarisTerlihat(snap.snapshot_id).length) + " baris</div>"
-               : "<span class='nb-muted'>Belum ada</span>") + "</td>" +
+      "<td>" + (snap
+        ? "<span class='nb-mono'>" + NBUi.esc(snap.snapshot_id) + "</span><div class='nb-cell-sub'>" +
+          NBUi.esc(T("umum.baris", { n: NBFormat.angka(NBStore.snapshotBarisTerlihat(snap.snapshot_id).length) })) +
+          "</div>"
+        : "<span class='nb-muted'>" + NBUi.esc(T("umum.belumAda")) + "</span>") + "</td>" +
     "</tr>";
   }
 
   function aksiSiklus(u, c) {
     if (!NBRbac.can(u, "cycle.create")) {
-      return "<span class='nb-cell-sub'>Peran Anda hanya membaca siklus. Pengelolaan siklus milik OD.</span>";
+      return "<span class='nb-cell-sub'>" + NBUi.esc(T("siklus.hanyaBaca")) + "</span>";
     }
     var tombol = [];
-    if (c.status === "DRAFT") tombol.push(["OPEN", "Buka siklus", "nb-btn-primary"]);
+    if (c.status === "DRAFT") tombol.push(["OPEN", "siklus.aksiBuka", "nb-btn-primary"]);
     if (c.status === "OPEN") {
-      tombol.push(["LOCKED", "Tutup pengumpulan", "nb-btn-outline"]);
-      tombol.push(["CLOSED", "Tutup siklus", "nb-btn-soft-danger"]);
+      tombol.push(["LOCKED", "siklus.aksiTutupKumpul", "nb-btn-outline"]);
+      tombol.push(["CLOSED", "siklus.aksiTutup", "nb-btn-soft-danger"]);
     }
     if (c.status === "LOCKED") {
-      tombol.push(["OPEN", "Buka lagi pengumpulan", "nb-btn-outline"]);
-      tombol.push(["CLOSED", "Tutup siklus", "nb-btn-soft-danger"]);
+      tombol.push(["OPEN", "siklus.aksiBukaKumpul", "nb-btn-outline"]);
+      tombol.push(["CLOSED", "siklus.aksiTutup", "nb-btn-soft-danger"]);
     }
-    if (c.status === "CLOSED") tombol.push(["OPEN", "Buka ulang siklus", "nb-btn-ghost-danger"]);
+    if (c.status === "CLOSED") tombol.push(["OPEN", "siklus.aksiBukaUlang", "nb-btn-ghost-danger"]);
 
     return tombol.map(function (t) {
-      return "<button class='nb-btn " + t[2] + "' data-status='" + t[0] + "'>" + t[1] + "</button>";
+      return "<button class='nb-btn " + t[2] + "' data-status='" + t[0] + "'>" + NBUi.esc(T(t[1])) + "</button>";
     }).join("");
   }
 
@@ -4068,43 +4477,45 @@ window.NB_DATA.vacancies = [
 
     var isi;
     if (!daftar.length) {
-      isi = NBUi.kosong("Snapshot belum dirilis",
-        "Selama snapshot belum ada, departemen tidak punya baseline Current untuk direncanakan. Ini prasyarat Modul 2.",
-        NBUi.svg("layers"));
+      isi = NBUi.kosong(T("snap.belumJudul"), T("snap.belumSub"), NBUi.svg("layers"));
     } else {
       isi = "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
-        "<th>Snapshot</th><th>Berlaku</th><th>Dirilis</th><th>Sumber</th>" +
-        "<th class='nb-num'>Baris</th><th class='nb-num'>Vacancy</th><th></th>" +
+        "<th>" + NBUi.esc(T("snap.thSnapshot")) + "</th>" +
+        "<th>" + NBUi.esc(T("snap.thBerlaku")) + "</th>" +
+        "<th>" + NBUi.esc(T("snap.thDirilis")) + "</th>" +
+        "<th>" + NBUi.esc(T("snap.thSumber")) + "</th>" +
+        "<th class='nb-num'>" + NBUi.esc(T("snap.thBaris")) + "</th>" +
+        "<th class='nb-num'>" + NBUi.esc(T("snap.thVacancy")) + "</th><th></th>" +
         "</tr></thead><tbody>" +
         daftar.map(function (s) {
           var perilis = (NBStore.pengguna(s.released_by) || {}).name;
           return "<tr><td><span class='nb-code'>" + NBUi.esc(s.snapshot_id) + "</span>" +
-            (s === aktif ? " " + NBUi.badge("Aktif", "is-emerald") : "") + "</td>" +
+            (aktif && s.snapshot_id === aktif.snapshot_id ? " " + NBUi.badge(T("snap.aktif"), "is-emerald") : "") + "</td>" +
             "<td>" + NBFormat.tanggal(s.effective_date) + "</td>" +
             "<td>" + NBFormat.tanggalPendek(s.released_at) +
               "<div class='nb-cell-sub'>" + NBUi.esc(perilis || s.released_by) + "</div></td>" +
             "<td class='nb-cell-sub'>" + NBUi.esc(s.source) + "</td>" +
             "<td class='nb-num'>" + NBFormat.angka(NBStore.snapshotBarisTerlihat(s.snapshot_id).length) + "</td>" +
             "<td class='nb-num'>" + NBFormat.angka((s.vacancy_ids || []).length) + "</td>" +
-            "<td class='nb-num'><button class='nb-btn nb-btn-outline' data-lihat='" + s.snapshot_id + "'>Lihat isi</button></td>" +
+            "<td class='nb-num'><button class='nb-btn nb-btn-outline' data-lihat='" + s.snapshot_id + "'>" +
+              NBUi.esc(T("snap.lihat")) + "</button></td>" +
           "</tr>";
         }).join("") + "</tbody></table></div>";
     }
 
     var formulir = bolehRilis
       ? "<div class='nb-setting'><div style='flex:1'>" +
-          "<div class='nb-setting-label'>Rilis snapshot baru</div>" +
-          "<div class='nb-setting-desc'>Menyalin seluruh data master organisasi menjadi baris beku. " +
-          "Versi sebelumnya tidak dihapus.</div></div>" +
-          "<input type='date' class='nb-input' id='snapDate' value='" + NBUi.esc(c.start_date) + "' style='width:200px'>" +
-          "<button class='nb-btn nb-btn-primary' id='snapRilis'>Rilis V" +
-            (daftar.length + 1) + "</button></div>"
+          "<div class='nb-setting-label'>" + NBUi.esc(T("snap.rilisJudul")) + "</div>" +
+          "<div class='nb-setting-desc'>" + NBUi.esc(T("snap.rilisSub")) + "</div></div>" +
+          "<input type='date' class='nb-input' id='snapDate' value='" + NBUi.esc(c.start_date) +
+            "' style='width:200px'>" +
+          "<button class='nb-btn nb-btn-primary' id='snapRilis'>" +
+            NBUi.esc(T("snap.rilisTombol", { v: daftar.length + 1 })) + "</button></div>"
       : "";
 
     return "<div class='nb-card' style='margin-bottom:24px'>" +
-      "<div class='nb-toolbar'><div><div style='font-weight:600' data-i18n='siklus.snapshot'>Snapshot struktur organisasi</div>" +
-      "<div class='nb-cell-sub'>State Current untuk " + NBUi.esc(c.name) +
-      ". Sekali dirilis, isinya tidak ikut berubah walaupun data master berubah.</div></div></div>" +
+      "<div class='nb-toolbar'><div><div style='font-weight:600'>" + NBUi.esc(T("snap.judul")) + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("snap.sub", { name: c.name })) + "</div></div></div>" +
       (formulir ? "<div style='padding:0 20px 4px'>" + formulir + "</div>" : "") +
       isi + "</div>";
   }
@@ -4113,32 +4524,37 @@ window.NB_DATA.vacancies = [
     if (!state.snapshot_id) return "";
     var s = NBStore.snapshot(state.snapshot_id);
     if (!s) return "";
-    var u = NBStore.user();
-    var izin = NBRbac.scopeDepartments(u, NBStore.semuaDepartemen());
-    var baris = (s.lines || []).filter(function (l) { return izin.indexOf(l.department_id) !== -1; });
+    var baris = NBStore.snapshotBarisTerlihat(s.snapshot_id);
     var beda = NBStore.bandingkanSnapshot(s.snapshot_id);
 
     var tabelBeda = beda.length
       ? "<div class='nb-tablewrap' style='border:1px solid var(--nb-gray-200);margin-top:12px'>" +
-        "<table class='nb-table'><thead><tr><th>Karyawan</th><th>Field</th>" +
-        "<th>Nilai di snapshot</th><th>Nilai di master hari ini</th></tr></thead><tbody>" +
+        "<table class='nb-table'><thead><tr>" +
+        "<th>" + NBUi.esc(T("umum.karyawan")) + "</th>" +
+        "<th>" + NBUi.esc(T("snap.thField")) + "</th>" +
+        "<th>" + NBUi.esc(T("snap.thNilaiSnap")) + "</th>" +
+        "<th>" + NBUi.esc(T("snap.thNilaiMaster")) + "</th></tr></thead><tbody>" +
         beda.map(function (b) {
           return "<tr><td><div class='nb-cell-title'>" + NBUi.esc(b.nama) + "</div>" +
             "<div class='nb-cell-sub nb-mono'>" + NBUi.esc(b.employee_id) + "</div></td>" +
             "<td class='nb-mono'>" + NBUi.esc(b.field) + "</td>" +
-            "<td>" + NBUi.badge(NBUi.esc(b.snapshot), "is-blue") + "</td>" +
-            "<td>" + NBUi.badge(NBUi.esc(b.master), "is-amber") + "</td></tr>";
+            "<td>" + NBUi.badge(b.snapshot, "is-blue") + "</td>" +
+            "<td>" + NBUi.badge(b.master, "is-amber") + "</td></tr>";
         }).join("") + "</tbody></table></div>"
-      : "<p class='nb-cell-sub' style='margin-top:12px'>Tidak ada perbedaan. Snapshot ini masih identik dengan master.</p>";
+      : "<p class='nb-cell-sub' style='margin-top:12px'>" + NBUi.esc(T("snap.buktiKosong")) + "</p>";
 
     return "<div class='nb-card nb-card-pad'>" +
       "<div class='nb-card-head'>" + NBUi.svg("layers") + "<div>" +
-        "<h3>Isi " + NBUi.esc(s.snapshot_id) + "</h3>" +
-        "<p>Berlaku " + NBFormat.tanggal(s.effective_date) + ". Menampilkan " +
-        NBFormat.angka(baris.length) + " baris dalam lingkup akses Anda.</p></div></div>" +
+        "<h3>" + NBUi.esc(T("snap.isiJudul", { id: s.snapshot_id })) + "</h3>" +
+        "<p>" + NBUi.esc(T("snap.isiSub", {
+            tgl: NBFormat.tanggal(s.effective_date), n: NBFormat.angka(baris.length) })) + "</p></div></div>" +
 
       "<div class='nb-tablewrap' style='border:1px solid var(--nb-gray-200)'><table class='nb-table'><thead><tr>" +
-      "<th>NIK</th><th>Karyawan</th><th>Departemen</th><th>Grade saat snapshot</th><th class='nb-num'>HC</th>" +
+      "<th>" + NBUi.esc(T("umum.nik")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.karyawan")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.departemen")) + "</th>" +
+      "<th>" + NBUi.esc(T("snap.thGrade")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("snap.thHc")) + "</th>" +
       "</tr></thead><tbody>" +
       (baris.length ? baris.slice(0, BATAS_BARIS).map(function (l) {
         var d = NBStore.departemen(l.department_id);
@@ -4148,68 +4564,79 @@ window.NB_DATA.vacancies = [
           "<td>" + NBUi.esc(d ? d.name : l.department_id) + "</td>" +
           "<td>" + NBUi.badge(l.grade_id, "is-plain") + "</td>" +
           "<td class='nb-num'>" + l.current_hc + "</td></tr>";
-      }).join("") : "<tr><td colspan='5'>" + NBUi.kosong("Tidak ada baris dalam lingkup Anda", "") + "</td></tr>") +
+      }).join("") : "<tr><td colspan='5'>" + NBUi.kosong(T("snap.kosong"), "") + "</td></tr>") +
       "</tbody></table></div>" +
       (baris.length > BATAS_BARIS
-        ? "<p class='nb-cell-sub' style='margin-top:8px'>Menampilkan " + BATAS_BARIS + " baris pertama dari " +
-          NBFormat.angka(baris.length) + " baris dalam lingkup Anda. Ekspor lengkap menyusul di Modul 9.</p>"
+        ? "<p class='nb-cell-sub' style='margin-top:8px'>" +
+          NBUi.esc(T("snap.potong", { n: BATAS_BARIS, total: NBFormat.angka(baris.length) })) + "</p>"
         : "") +
 
-      "<h4 class='nb-head' style='font-size:14px;margin:20px 0 0'>Bukti pembekuan: snapshot dibanding master</h4>" +
-      "<p class='nb-cell-sub' style='margin:4px 0 0'>Daftar ini dihitung ulang setiap kali layar dibuka. " +
-      "Kalau data master diubah setelah rilis, perbedaannya muncul di sini, bukan menimpa snapshot.</p>" +
+      "<h4 class='nb-head' style='font-size:14px;margin:20px 0 0'>" + NBUi.esc(T("snap.buktiJudul")) + "</h4>" +
+      "<p class='nb-cell-sub' style='margin:4px 0 0'>" + NBUi.esc(T("snap.buktiSub")) + "</p>" +
       tabelBeda + "</div>";
   }
 
   function render() {
     var u = NBStore.user();
     var c = siklusTerpilih();
-    if (!c) return "<div class='nb-card'>" + NBUi.kosong("Belum ada siklus MPP", "") + "</div>";
+    if (!c) return "<div class='nb-card'>" + NBUi.kosong(T("dash.siklusKosong"), T("dash.siklusKosongSub")) + "</div>";
     state.cycle_id = c.cycle_id;
-    var st = STATUS_SIKLUS[c.status];
+    var st = STATUS[c.status];
     var snap = NBStore.snapshotAktif(c.cycle_id);
 
     var formBaru = NBRbac.can(u, "cycle.create")
       ? "<div class='nb-card nb-card-pad' style='margin-bottom:24px'>" +
-        "<div class='nb-card-head'>" + NBUi.svg("layers") + "<div><h3 data-i18n='siklus.buatJudul'>Buat siklus baru</h3>" +
-        "<p>Satu siklus per tahun perencanaan. Batas pengumpulan dipakai untuk penanda keterlambatan (BR-H).</p></div></div>" +
+        "<div class='nb-card-head'>" + NBUi.svg("layers") + "<div>" +
+        "<h3>" + NBUi.esc(T("siklus.buatJudul")) + "</h3>" +
+        "<p>" + NBUi.esc(T("siklus.buatSub")) + "</p></div></div>" +
         "<div style='display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px'>" +
-          "<div><div class='nb-field-label'>Tahun</div><input class='nb-input' id='cyYear' type='number' value='2028'></div>" +
-          "<div><div class='nb-field-label'>Mulai</div><input class='nb-input' id='cyStart' type='date' value='2027-09-01'></div>" +
-          "<div><div class='nb-field-label'>Selesai</div><input class='nb-input' id='cyEnd' type='date' value='2028-12-31'></div>" +
-          "<div><div class='nb-field-label'>Batas pengumpulan</div><input class='nb-input' id='cyDl' type='date' value='2027-10-15'></div>" +
-        "</div><div class='nb-formfoot'><button class='nb-btn nb-btn-primary' id='cyBuat'>Buat siklus</button></div></div>"
+          "<div><div class='nb-field-label'>" + NBUi.esc(T("siklus.fTahun")) +
+            "</div><input class='nb-input' id='cyYear' type='number' value='2028'></div>" +
+          "<div><div class='nb-field-label'>" + NBUi.esc(T("siklus.fMulai")) +
+            "</div><input class='nb-input' id='cyStart' type='date' value='2027-09-01'></div>" +
+          "<div><div class='nb-field-label'>" + NBUi.esc(T("siklus.fSelesai")) +
+            "</div><input class='nb-input' id='cyEnd' type='date' value='2028-12-31'></div>" +
+          "<div><div class='nb-field-label'>" + NBUi.esc(T("siklus.fBatas")) +
+            "</div><input class='nb-input' id='cyDl' type='date' value='2027-10-15'></div>" +
+        "</div><div class='nb-formfoot'><button class='nb-btn nb-btn-primary' id='cyBuat'>" +
+          NBUi.esc(T("siklus.buatTombol")) + "</button></div></div>"
       : "";
 
     return "" +
-    "<div class='nb-pagehead'><div><h1 data-i18n='siklus.judul'>Siklus MPP &amp; Snapshot</h1>" +
-    "<p data-i18n='siklus.sub'>Pengelolaan siklus perencanaan dan pembekuan struktur organisasi sebagai baseline Current.</p></div>" +
-    NBUi.badge(c.name + " " + st.label, st.badge) + "</div>" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("siklus.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("siklus.sub")) + "</p></div>" +
+    NBUi.badge(c.name + " " + T(st.label), st.badge) + "</div>" +
 
     "<div class='nb-kpigrid'>" +
-      NBUi.kpi("Siklus aktif", NBUi.esc(c.name), "layers", "", st.ket) +
-      NBUi.kpi("Versi siklus", "v" + c.version, "shield", "is-violet",
-               c.reopen_reason ? "Pernah dibuka ulang" : "Belum pernah dibuka ulang") +
-      NBUi.kpi("Snapshot Current",
-               snap ? NBFormat.angka(NBStore.snapshotBarisTerlihat(snap.snapshot_id).length) + " baris" : "Belum ada",
+      NBUi.kpi(T("siklus.kpiAktif"), NBUi.esc(c.name), "layers", "", T(st.ket)) +
+      NBUi.kpi(T("siklus.kpiVersi"), "v" + c.version, "shield", "is-violet",
+               c.reopen_reason ? T("siklus.pernahBuka") : T("siklus.belumBuka")) +
+      NBUi.kpi(T("siklus.kpiSnapshot"),
+               snap ? T("umum.baris", { n: NBFormat.angka(NBStore.snapshotBarisTerlihat(snap.snapshot_id).length) })
+                    : T("umum.belumAda"),
                "building", snap ? "is-emerald" : "is-amber",
-               snap ? snap.snapshot_id + ", beku sejak " + NBFormat.tanggalPendek(snap.released_at)
-                    : "Departemen belum bisa merencanakan") +
-      NBUi.kpi("Batas pengumpulan", NBFormat.tanggalPendek(c.submission_deadline), "chart", "is-blue") +
+               snap ? T("siklus.snapshotNote", { id: snap.snapshot_id, tgl: NBFormat.tanggalPendek(snap.released_at) })
+                    : T("siklus.snapshotBelum")) +
+      NBUi.kpi(T("siklus.kpiBatas"), NBFormat.tanggalPendek(c.submission_deadline), "chart", "is-blue") +
     "</div>" +
 
     "<div class='nb-card' style='margin-bottom:24px'>" +
-      "<div class='nb-toolbar'><div><div style='font-weight:600' data-i18n='siklus.daftar'>Daftar siklus</div>" +
-      "<div class='nb-cell-sub' data-i18n='siklus.daftarSub'>Klik baris untuk berpindah siklus.</div></div>" +
+      "<div class='nb-toolbar'><div><div style='font-weight:600'>" + NBUi.esc(T("siklus.daftar")) + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("siklus.daftarSub")) + "</div></div>" +
       "<div style='display:flex;gap:8px;flex-wrap:wrap'>" + aksiSiklus(u, c) +
         (NBRbac.can(u, "admin")
-          ? "<button class='nb-btn nb-btn-quiet' id='cyReset' title='Mengembalikan seluruh data prototipe ke kondisi awal'>Reset data prototipe</button>"
+          ? "<button class='nb-btn nb-btn-quiet' id='cyReset'>" + NBUi.esc(T("siklus.aksiReset")) + "</button>"
           : "") +
       "</div></div>" +
       "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
-      "<th>Siklus</th><th>Status</th><th>Periode</th><th>Batas pengumpulan</th><th>Snapshot aktif</th>" +
+      "<th>" + NBUi.esc(T("siklus.thSiklus")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.status")) + "</th>" +
+      "<th>" + NBUi.esc(T("siklus.thPeriode")) + "</th>" +
+      "<th>" + NBUi.esc(T("siklus.thBatas")) + "</th>" +
+      "<th>" + NBUi.esc(T("siklus.thSnapshot")) + "</th>" +
       "</tr></thead><tbody>" +
-      NBStore.semuaSiklus().map(function (x) { return kartuSiklus(x, c.cycle_id); }).join("") +
+      NBStore.semuaSiklus().map(function (x) { return barisSiklus(x, c.cycle_id); }).join("") +
       "</tbody></table></div></div>" +
 
     formBaru +
@@ -4232,21 +4659,21 @@ window.NB_DATA.vacancies = [
         var c = siklusTerpilih();
         var alasan = null;
         if (c.status === "CLOSED" && target === "OPEN") {
-          alasan = prompt("Alasan membuka ulang siklus " + c.name + ". Alasan wajib diisi dan tercatat di audit.");
+          alasan = prompt(T("siklus.bukaUlangTanya", { name: c.name }));
           if (!alasan) return;
         }
-        if (target === "CLOSED" && !confirm("Tutup siklus " + c.name + "? Setelah ditutup, siklus hanya bisa dibaca (BR-09).")) return;
+        if (target === "CLOSED" && !confirm(T("siklus.tutupTanya", { name: c.name }))) return;
         var hasil = NBStore.ubahStatusSiklus(c.cycle_id, target, alasan);
-        NBUi.toast(hasil.ok ? "Status siklus diperbarui" : hasil.alasan, hasil.ok ? "ok" : "error");
+        NBUi.toast(hasil.ok ? T("siklus.statusBerhasil") : hasil.alasan, hasil.ok ? "ok" : "error");
         if (hasil.ok) NBApp.ulang();
       };
     });
 
     var reset = document.getElementById("cyReset");
     if (reset) reset.onclick = function () {
-      if (!confirm("Reset seluruh data prototipe ke kondisi awal? Siklus, snapshot, koreksi master, dan audit akan hilang.")) return;
+      if (!confirm(T("siklus.resetTanya"))) return;
       var hasil = NBStore.reset();
-      NBUi.toast(hasil.ok ? "Data prototipe dikembalikan ke kondisi awal" : hasil.alasan, hasil.ok ? "ok" : "error");
+      NBUi.toast(hasil.ok ? T("siklus.resetBerhasil") : hasil.alasan, hasil.ok ? "ok" : "error");
       if (hasil.ok) { state.cycle_id = null; state.snapshot_id = null; NBApp.ulang(); }
     };
 
@@ -4258,7 +4685,7 @@ window.NB_DATA.vacancies = [
         end_date: document.getElementById("cyEnd").value,
         submission_deadline: document.getElementById("cyDl").value
       });
-      NBUi.toast(hasil.ok ? "Siklus dibuat dalam status Draft" : hasil.alasan, hasil.ok ? "ok" : "error");
+      NBUi.toast(hasil.ok ? T("siklus.buatBerhasil") : hasil.alasan, hasil.ok ? "ok" : "error");
       if (hasil.ok) { state.cycle_id = hasil.siklus.cycle_id; NBApp.ulang(); }
     };
 
@@ -4266,7 +4693,7 @@ window.NB_DATA.vacancies = [
     if (rilis) rilis.onclick = function () {
       var c = siklusTerpilih();
       var hasil = NBStore.rilisSnapshot(c.cycle_id, document.getElementById("snapDate").value);
-      NBUi.toast(hasil.ok ? "Snapshot " + hasil.snapshot.snapshot_id + " dirilis dan dibekukan" : hasil.alasan,
+      NBUi.toast(hasil.ok ? T("snap.rilisBerhasil", { id: hasil.snapshot.snapshot_id }) : hasil.alasan,
                  hasil.ok ? "ok" : "error");
       if (hasil.ok) { state.snapshot_id = hasil.snapshot.snapshot_id; NBApp.ulang(); }
     };
@@ -4287,9 +4714,11 @@ window.NB_DATA.vacancies = [
 (function (global) {
   "use strict";
 
+  var T = function (k, v) { return NBi18n.t(k, v); };
+
   function nilai(v) {
     if (v === null || v === undefined) return "<span class='nb-muted'>-</span>";
-    if (v === "") return "<span class='nb-muted'>(kosong)</span>";
+    if (v === "") return "<span class='nb-muted'>" + NBUi.esc(T("audit.nilaiKosong")) + "</span>";
     return "<span class='nb-mono'>" + NBUi.esc(String(v).slice(0, 60)) + "</span>";
   }
 
@@ -4301,38 +4730,40 @@ window.NB_DATA.vacancies = [
       var tipe = NBAudit.TIPE[e.event_type] || { label: e.event_type, badge: "" };
       var perubahan = (e.before === null && e.after === null)
         ? "<span class='nb-muted'>-</span>"
-        : nilai(e.before) + " <span class='nb-muted'>ke</span> " + nilai(e.after);
+        : nilai(e.before) + " <span class='nb-muted'>" + NBUi.esc(T("audit.ke")) + "</span> " + nilai(e.after);
 
       return "<tr>" +
         "<td class='nb-ts'>" + NBFormat.tanggalPendek(e.timestamp) +
           "<small>" + NBFormat.jam(e.timestamp) + "</small></td>" +
         "<td><span class='nb-actor'>" + NBUi.esc(e.actor_email) + "</span>" +
-          "<span class='nb-role'>Peran: " + NBUi.esc(e.actor_role) + "</span></td>" +
+          "<span class='nb-role'>" + NBUi.esc(T("audit.peran", { r: e.actor_role })) + "</span></td>" +
         "<td>" + NBUi.badge(tipe.label, tipe.badge) + "</td>" +
-        "<td>" + NBUi.esc(e.detail) +
+        "<td>" + NBUi.esc(e.detail_key ? T(e.detail_key, e.detail_vars || {}) : e.detail) +
+          (e.reason ? "<div class='nb-cell-sub'>" + NBUi.esc(T("audit.alasan", { r: e.reason })) + "</div>" : "") +
           "<div class='nb-cell-sub nb-mono'>" + NBUi.esc(e.object_type + " " + e.object_id) + "</div></td>" +
         "<td>" + perubahan + "</td>" +
       "</tr>";
     }).join("");
 
     var isi = data.length
-      ? '<div class="nb-tablewrap"><table class="nb-table"><thead><tr>' +
-        "<th data-i18n='audit.waktu'>Waktu</th><th data-i18n='audit.aktor'>Pengguna / Aktor</th>" +
-        "<th data-i18n='audit.aksi'>Tipe Event</th><th data-i18n='audit.rincian'>Rincian</th>" +
-        "<th data-i18n='audit.nilai'>Perubahan Nilai</th>" +
+      ? "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+        "<th>" + NBUi.esc(T("audit.waktu")) + "</th>" +
+        "<th>" + NBUi.esc(T("audit.aktor")) + "</th>" +
+        "<th>" + NBUi.esc(T("audit.aksi")) + "</th>" +
+        "<th>" + NBUi.esc(T("audit.rincian")) + "</th>" +
+        "<th>" + NBUi.esc(T("audit.nilai")) + "</th>" +
         "</tr></thead><tbody>" + baris + "</tbody></table></div>"
-      : NBUi.kosong("Belum ada aktivitas", "Lakukan satu perubahan data, lalu kembali ke layar ini.");
+      : NBUi.kosong(T("audit.kosong"), T("audit.kosongSub"));
 
-    return '' +
-    '<div class="nb-pagehead"><div>' +
-      '<h1 data-i18n="audit.judul">Audit & Riwayat Perubahan</h1>' +
-      '<p data-i18n="audit.sub">Rekaman jejak setiap aksi dan setiap perubahan nilai data.</p>' +
+    return "" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("audit.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("audit.sub")) + "</p>" +
     "</div>" +
-      '<span class="nb-badge is-plain">' + NBFormat.angka(data.length) + " event</span>" +
+      NBUi.badge(T("audit.event", { n: NBFormat.angka(data.length) }), "is-plain") +
     "</div>" +
-    '<div class="nb-card">' + isi + "</div>" +
-    '<p class="nb-cell-sub" style="margin-top:12px">Audit bersifat append only. Revision History yang mencatat versi ' +
-    "usulan dibangun terpisah pada Modul 6, sesuai pembedaan di bab 47.</p>";
+    "<div class='nb-card'>" + isi + "</div>" +
+    "<p class='nb-cell-sub' style='margin-top:12px'>" + NBUi.esc(T("audit.catatan")) + "</p>";
   }
 
   global.NBPages = global.NBPages || {};
@@ -4342,37 +4773,32 @@ window.NB_DATA.vacancies = [
 </script>
 <script>
 /* js/pages/stub.js */
-// Placeholder untuk sembilan layar sisa. Sengaja tidak diisi angka contoh:
+// Placeholder untuk delapan layar sisa. Sengaja tidak diisi angka contoh:
 // layar kosong yang jujur lebih baik daripada dashboard yang terlihat hidup padahal palsu.
 (function (global) {
   "use strict";
 
-  var INFO = {
-    planning:    { judul: "MPP Planning", modul: 2, ket: "Layar perencanaan mirip spreadsheet dengan tujuh action type, validasi, dan bulan efektif (FR-03, BR-01)." },
-    konsolidasi: { judul: "Konsolidasi MPP", modul: 4, ket: "Agregasi seluruh submission departemen tanpa penggabungan manual (FR-05)." },
-    biaya:       { judul: "Perhitungan Biaya", modul: 5, ket: "Cost assumption bertanggal berlaku dan prorata bulan efektif (FR-06, BR-E)." },
-    review:      { judul: "Management Review", modul: 6, ket: "Dashboard keputusan, approve with adjustment, dan versioning (FR-07, bab 19)." },
-    approved:    { judul: "Approved MPP", modul: 7, ket: "Baseline kendali dan tabel Requested, Approved, Variance per departemen (bab 20)." },
-    monitoring:  { judul: "Monitoring", modul: 8, ket: "Actual dibandingkan approved, exception, dan utilisasi (FR-08, BR-06)." },
-    laporan:     { judul: "Laporan", modul: 9, ket: "Sembilan laporan dan ekspor (bab 30)." },
-    admin:       { judul: "Administrasi", modul: 9, ket: "Master data, pengguna, aturan workflow, dan konfigurasi (bab 64)." }
+  var MODUL = {
+    planning: 2, konsolidasi: 4, biaya: 5, review: 6,
+    approved: 7, monitoring: 8, laporan: 9, admin: 9
   };
 
   function buat(kunci) {
     return {
       render: function () {
-        var i = INFO[kunci] || { judul: "Layar", modul: "-", ket: "" };
-        return '<div class="nb-pagehead"><div><h1>' + NBUi.esc(i.judul) + "</h1>" +
-               '<p data-i18n="stub.sub">Layar ini disiapkan pada modul berikutnya.</p></div>' +
-               '<span class="nb-badge is-amber">Modul ' + i.modul + "</span></div>" +
-               '<div class="nb-card">' +
-               NBUi.kosong("Belum dibangun", i.ket, NBUi.svg("layers")) + "</div>";
+        var T = function (k, v) { return NBi18n.t(k, v); };
+        return "<div class='nb-pagehead'><div>" +
+          "<h1>" + NBUi.esc(T("stub." + kunci)) + "</h1>" +
+          "<p>" + NBUi.esc(T("stub.sub")) + "</p></div>" +
+          NBUi.badge(T("stub.modul", { n: MODUL[kunci] }), "is-amber") + "</div>" +
+          "<div class='nb-card'>" +
+          NBUi.kosong(T("stub.belum"), T("stub." + kunci + "Ket"), NBUi.svg("layers")) + "</div>";
       }
     };
   }
 
   global.NBPages = global.NBPages || {};
-  Object.keys(INFO).forEach(function (k) { global.NBPages[k] = buat(k); });
+  Object.keys(MODUL).forEach(function (k) { global.NBPages[k] = buat(k); });
 })(window);
 
 </script>
@@ -4429,9 +4855,10 @@ window.NB_DATA.vacancies = [
     var c = NBStore.siklusAktif();
     if (!c) { el.style.display = "none"; return; }
     var peta = { DRAFT: "is-plain", OPEN: "is-blue", LOCKED: "is-amber", CLOSED: "is-emerald" };
-    var teks = { DRAFT: "Draft", OPEN: "Terbuka", LOCKED: "Terkunci", CLOSED: "Ditutup" };
+    var kunci = { DRAFT: "siklus.stDraft", OPEN: "siklus.stOpen",
+                  LOCKED: "siklus.stLocked", CLOSED: "siklus.stClosed" };
     el.className = "nb-badge " + (peta[c.status] || "");
-    el.textContent = c.name + " \u00b7 " + (teks[c.status] || c.status);
+    el.textContent = c.name + " \u00b7 " + (kunci[c.status] ? NBi18n.t(kunci[c.status]) : c.status);
     el.style.display = "inline-flex";
   }
 
@@ -4439,7 +4866,7 @@ window.NB_DATA.vacancies = [
     var u = NBStore.user();
     var deps = NBStore.departemenTerlihat();
     var lingkup = u.scope.type === "ALL"
-      ? deps.length + " departemen"
+      ? (deps.length === 1 ? NBi18n.t("umum.satuDept") : NBi18n.t("umum.nDept", { n: deps.length }))
       : deps.map(function (d) { return d.name; }).join(", ");
     document.getElementById("nbUser").innerHTML =
       "<div style='text-align:right' title='" + NBUi.esc(u.name + ", " + NBRbac.roleLabel(u.role) + ", " + lingkup) + "'>" +
@@ -4467,15 +4894,15 @@ window.NB_DATA.vacancies = [
 
     // Penjagaan rute. Peran yang tidak berhak tidak bisa masuk lewat URL.
     if (!bolehLihat(u, r)) {
-      NBAudit.tulis(u, "SCOPE_DENIED", "Screen", r.id, "Percobaan membuka layar tanpa kapabilitas");
+      NBAudit.tulis(u, "SCOPE_DENIED", "Screen", r.id, { key: "audit.d.denyScreen" });
       location.hash = "#dashboard";
-      NBUi.toast("Layar itu di luar hak akses peran Anda", "error");
+      NBUi.toast(NBi18n.t("umum.aksesDitolak"), "error");
       return;
     }
 
     var page = (global.NBPages || {})[r.id];
     var host = document.getElementById("nbPage");
-    host.innerHTML = page ? page.render() : NBUi.kosong("Layar tidak ditemukan", "");
+    host.innerHTML = page ? page.render() : NBUi.kosong(NBi18n.t("umum.layarTidakAda"), "");
     if (page && page.mount) page.mount();
     NBi18n.apply(host);
     gambarNav();
