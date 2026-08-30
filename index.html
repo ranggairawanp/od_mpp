@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MPP Micro-App: Masuk</title>
+<link rel="stylesheet" href="assets/nabati-fonts.css">
+<link rel="stylesheet" href="assets/nabati-ds.css">
+<style>
+  .wrap { max-width: 880px; margin: 0 auto; padding: 56px 24px 64px; }
+  .head { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  .head img { height: 34px; }
+  .persona { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+  .p-card { text-align: left; cursor: pointer; padding: 18px 20px; font-family: inherit;
+            background: #fff; border: 1px solid var(--nb-gray-200); border-radius: var(--nb-r-xl);
+            box-shadow: var(--nb-sh-card); transition: border-color .15s, transform .15s; }
+  .p-card:hover { border-color: var(--nb-red-200); transform: translateY(-1px); }
+  .p-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .p-name { font-weight: 600; }
+  .p-mail { font-family: var(--nb-font-mono); font-size: 12px; color: var(--nb-gray-500); }
+  .p-scope { font-size: 13px; color: var(--nb-gray-500); }
+  .warn { margin-top: 28px; padding: 16px 18px; border-radius: var(--nb-r-lg);
+          background: var(--nb-amber-bg); border: 1px solid var(--nb-amber-bd);
+          color: var(--nb-amber-fg); font-size: 13px; line-height: 1.6; }
+</style>
+</head>
+<body class="nb-app">
+<div class="wrap">
+  <div class="head">
+    <img src="assets/nabati-logo.png" alt="Nabati">
+    <div>
+      <div class="nb-brand-name">MPP Micro-App</div>
+      <div class="nb-brand-sub">PT Kaldu Sari Nabati Indonesia</div>
+    </div>
+  </div>
+
+  <h1 class="nb-head" style="font-size:26px;margin:0 0 6px" data-i18n="login.judul">Masuk sebagai persona</h1>
+  <p class="nb-muted" style="margin:0 0 24px" data-i18n="login.sub">
+    Prototipe tanpa autentikasi. Pilih peran untuk melihat perbedaan hak akses dan lingkup data.</p>
+
+  <div class="persona" id="daftar"></div>
+
+  <div class="warn">
+    <b>Batas prototipe.</b> Tidak ada kata sandi, tidak ada server, dan seluruh data karyawan di sini fiktif.
+    Penyaringan lingkup akses berjalan di browser sehingga hanya berfungsi sebagai simulasi kontrol, bukan
+    kontrol keamanan. Versi produksi wajib memakai SSO korporat dan menyaring data di sisi server sebelum
+    dikirim ke browser.
+  </div>
+</div>
+
+<script src="data/master-org.js"></script>
+<script src="data/master-people.js"></script>
+<script src="data/users.js"></script>
+<script src="data/cycles.js"></script>
+<script src="data/history.js"></script>
+<script src="js/core/simpanan.js"></script>
+<script src="js/core/format.js"></script>
+<script src="js/core/i18n.js"></script>
+<script src="js/core/ui.js"></script>
+<script src="js/core/rbac.js"></script>
+<script src="js/core/audit.js"></script>
+<script src="js/core/store.js"></script>
+<script>
+(function () {
+  var deps = NB_DATA.departments;
+  document.getElementById("daftar").innerHTML = NB_DATA.users.map(function (u) {
+    var lingkup = u.scope.type === "ALL" ? "Seluruh departemen"
+      : u.scope.ids.map(function (id) {
+          var d = deps.filter(function (x) { return x.department_id === id; })[0];
+          return d ? d.name : id;
+        }).join(", ");
+    var jml = NBRbac.scopeDepartments(u, deps).length;
+    return "<button class='p-card' data-id='" + u.user_id + "'>" +
+      "<div class='p-top'><span class='nb-avatar'>" + u.name.charAt(0) + "</span>" +
+      "<div><div class='p-name'>" + u.name + "</div><div class='p-mail'>" + u.email + "</div></div></div>" +
+      "<div style='margin-bottom:8px'><span class='nb-badge is-plain'>" + NBRbac.roleLabel(u.role) + "</span></div>" +
+      "<div class='p-scope'>" + u.title + "<br>Lingkup: " + lingkup + " (" + jml + " departemen)</div>" +
+    "</button>";
+  }).join("");
+
+  document.querySelectorAll(".p-card").forEach(function (b) {
+    b.onclick = function () {
+      NBStore.masuk(b.dataset.id);
+      location.href = "app.html";
+    };
+  });
+})();
+</script>
+</body>
+</html>

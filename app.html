@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MPP Micro-App</title>
+<link rel="stylesheet" href="assets/nabati-fonts.css">
+<link rel="stylesheet" href="assets/nabati-ds.css">
+<style>
+  #nbToast { position: fixed; right: 24px; bottom: 24px; z-index: 80; display: none; box-shadow: var(--nb-sh-raise); }
+  .nb-appbar .nb-nav { max-width: 62vw; overflow-x: auto; scrollbar-width: none; }
+  .nb-appbar .nb-nav::-webkit-scrollbar { display: none; }
+  #nbUser { display: flex; align-items: center; gap: 10px; }
+  .nb-empty svg { width: 20px; height: 20px; }
+  td .nb-muted svg { width: 15px; height: 15px; vertical-align: middle; }
+</style>
+</head>
+<body class="nb-app">
+
+<header class="nb-appbar">
+  <div class="nb-brand">
+    <img src="assets/nabati-logo.png" alt="Nabati">
+    <div>
+      <div class="nb-brand-name">MPP Micro-App</div>
+      <div class="nb-brand-sub" data-i18n="app.entity">PT Kaldu Sari Nabati Indonesia</div>
+    </div>
+  </div>
+
+  <nav class="nb-nav" id="nbNav"></nav>
+
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="nb-lang">
+      <button class="is-active" data-lang="id">ID</button>
+      <button data-lang="en">EN</button>
+    </div>
+    <span class="nb-badge" id="nbCycle" style="display:none"></span>
+    <span class="nb-badge is-amber" title="Seluruh data pada prototipe ini fiktif">
+      <span data-i18n="app.simulasi">Data Simulasi</span>
+    </span>
+    <div id="nbUser"></div>
+    <button class="nb-iconbtn" id="nbLogout" title="Keluar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M15 17l5-5-5-5"/><path d="M20 12H9"/><path d="M12 19H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main class="nb-page nb-container" id="nbPage"></main>
+
+<span id="nbToast" class="nb-badge"></span>
+
+<!-- Data mock. Berkas .js, bukan .json, supaya prototipe bisa dibuka langsung dari disk. -->
+<script src="data/master-org.js"></script>
+<script src="data/master-people.js"></script>
+<script src="data/users.js"></script>
+<script src="data/cycles.js"></script>
+<script src="data/history.js"></script>
+
+<script src="js/core/simpanan.js"></script>
+<script src="js/core/format.js"></script>
+<script src="js/core/i18n.js"></script>
+<script src="js/core/ui.js"></script>
+<script src="js/core/rbac.js"></script>
+<script src="js/core/audit.js"></script>
+<script src="js/core/store.js"></script>
+
+<script src="js/pages/dashboard.js"></script>
+<script src="js/pages/organisasi.js"></script>
+<script src="js/pages/siklus.js"></script>
+<script src="js/pages/audit.js"></script>
+<script src="js/pages/stub.js"></script>
+
+<script src="js/app.js"></script>
+<script>NBApp.mulai();</script>
+</body>
+</html>
