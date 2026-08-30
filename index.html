@@ -3266,6 +3266,7 @@ window.NB_DATA.cost_assumptions = [
       "dash.noteApproved": "Terbentuk setelah keputusan manajemen (Modul 6)",
       "dash.noteApprovedAda": "Baseline {id}, disetujui {t}",
       "dash.noteActual": "Terbentuk saat realisasi dicatat (Modul 8)",
+      "dash.noteActualAda": "Utilisasi {u} persen, sisa kuota {s}",
       "dash.siklusKosong": "Belum ada siklus MPP",
       "dash.siklusKosongSub": "OD belum membuat siklus perencanaan.",
 
@@ -3789,6 +3790,88 @@ window.NB_DATA.cost_assumptions = [
       "alok.errKosong": "Tidak ada baris disetujui yang bisa menjadi alokasi",
       "audit.d.distribusi": "Membagikan {n} alokasi dari {id} ke {d} departemen",
       "audit.d.denyDistribusi": "Percobaan membagikan alokasi tanpa hak",
+      // Modul 8: monitoring realisasi
+      "mon.judul": "Monitoring Realisasi",
+      "mon.sub": "Realisasi {name} dibandingkan terhadap alokasi yang disetujui, bukan terhadap usulan awal.",
+      "mon.aturanJudul": "Actual dihitung sejak tanggal masuk kerja",
+      "mon.aturanIsi": "Penambahan headcount yang melebihi alokasi diblokir. Jenis lain tetap dicatat tetapi memunculkan exception yang harus diputuskan OD.",
+      "mon.dasar": "Dasar: alokasi yang sudah dibagikan",
+      "mon.tabRingkas": "Ringkasan",
+      "mon.tabAlokasi": "Alokasi",
+      "mon.tabRealisasi": "Realisasi",
+      "mon.tabBulan": "Rencana dan realisasi",
+      "mon.tabException": "Exception",
+      "mon.thRealisasi": "Realisasi",
+      "mon.thUtilisasi": "Utilisasi",
+      "mon.thBiayaAlokasi": "Biaya alokasi",
+      "mon.thBiayaActual": "Biaya realisasi",
+      "mon.thTanggal": "Tanggal masuk kerja",
+      "mon.thId": "Realisasi",
+      "mon.thException": "Exception",
+      "mon.thKelebihan": "Kelebihan",
+      "mon.kpiKuotaKet": "Kuota yang dibagikan",
+      "mon.kpiRealisasiKet": "Kuota terpakai, setara {h} headcount",
+      "mon.kpiUtilisasiKet": "Sisa kuota {n}",
+      "mon.kpiBiayaKet": "Dialokasikan {n}",
+      "mon.kpiException": "Exception",
+      "mon.kpiExceptionKet": "{n} menunggu keputusan OD",
+      "mon.menunggu": "{n} exception menunggu",
+      "mon.stOPEN": "Belum terpakai",
+      "mon.stPARTIAL": "Terpakai sebagian",
+      "mon.stFULFILLED": "Terpenuhi",
+      "mon.stOVER": "Melebihi",
+      "mon.lebih": "lebih {n}",
+      "mon.catat": "Catat realisasi",
+      "mon.catatJudul": "Catat realisasi",
+      "mon.sisaKuota": "Sisa kuota {n}",
+      "mon.fTanggal": "Tanggal masuk kerja",
+      "mon.fNama": "Nama karyawan",
+      "mon.fNamaPlaceholder": "Nama orang yang benar-benar masuk",
+      "mon.fCatatan": "Bulan realisasi diambil dari tanggal masuk kerja, dan itulah yang dipakai menghitung biaya sebenarnya.",
+      "mon.tercatat": "Realisasi tercatat",
+      "mon.tercatatException": "Realisasi tercatat, tetapi melebihi alokasi dan menunggu keputusan OD",
+      "mon.actRECORDED": "Tercatat",
+      "mon.actCANCELLED": "Dibatalkan",
+      "mon.batalkan": "Batalkan",
+      "mon.batalJudul": "Batalkan pencatatan realisasi",
+      "mon.batalPesan": "Catatan tidak dihapus, hanya ditandai batal, dan kuota kembali.",
+      "mon.dibatalkan": "Realisasi dibatalkan",
+      "mon.excPENDING": "Menunggu OD",
+      "mon.excACCEPTED": "Diterima",
+      "mon.excREJECTED": "Ditolak",
+      "mon.excTerima": "Terima",
+      "mon.excTerimaJudul": "Terima kelebihan realisasi",
+      "mon.excTerimaPesan": "Kelebihan ini akan tercatat sebagai pengecualian yang disetujui, bukan pelanggaran.",
+      "mon.excTolak": "Tolak",
+      "mon.excTolakJudul": "Tolak kelebihan realisasi",
+      "mon.excTolakPesan": "Realisasi yang memicunya ikut dibatalkan supaya angkanya kembali cocok.",
+      "mon.excDiputus": "Exception diputuskan",
+      "mon.excKosong": "Belum ada exception",
+      "mon.excKosongSub": "Exception muncul kalau realisasi melebihi alokasi.",
+      "mon.kosong": "Belum ada alokasi untuk dipantau",
+      "mon.kosongSub": "Alokasi terbentuk setelah manajemen menyetujui dan OD membagikannya.",
+      "mon.belumAdaRealisasi": "Belum ada realisasi",
+      "mon.belumAdaRealisasiSub": "Catat realisasi dari tab Alokasi begitu ada orang yang benar-benar masuk kerja.",
+      "mon.kurvaKet": "Batang abu adalah rencana menurut bulan efektif, batang biru adalah realisasi menurut tanggal masuk kerja.",
+      "mon.errPeran": "Peran Anda tidak mencatat realisasi",
+      "mon.errPeranException": "Peran Anda tidak memutuskan exception",
+      "mon.errAlokasi": "Alokasi tidak ditemukan",
+      "mon.errActual": "Catatan realisasi tidak ditemukan",
+      "mon.errException": "Exception tidak ditemukan",
+      "mon.errQty": "Jumlah realisasi minimal satu",
+      "mon.errTanggal": "Tanggal masuk kerja wajib diisi",
+      "mon.errTahun": "Tanggal masuk kerja harus berada di tahun {y}",
+      "mon.errMelebihi": "Realisasi {q} melebihi sisa alokasi {s}. Penambahan headcount tidak boleh melampaui alokasi.",
+      "mon.errSudahBatal": "Catatan ini sudah dibatalkan",
+      "mon.errSudahDiputus": "Exception ini sudah diputuskan",
+      "audit.d.actual": "Mencatat realisasi {q} orang pada alokasi {a}, masuk kerja {t}",
+      "audit.d.actualBatal": "Membatalkan pencatatan realisasi {q} orang",
+      "audit.d.actualBlok": "Realisasi {q} ditolak karena sisa alokasi tinggal {s}",
+      "audit.d.exception": "Realisasi {q} melebihi sisa alokasi {s} dan menjadi exception",
+      "audit.d.excAccept": "Menerima exception {id}",
+      "audit.d.excReject": "Menolak exception {id} dan membatalkan realisasinya",
+      "audit.d.denyActual": "Percobaan mencatat realisasi tanpa hak",
+      "audit.d.denyException": "Percobaan memutuskan exception tanpa hak",
       "audit.d.denyScope": "Percobaan mengubah data di luar lingkup akses",
       "audit.d.denyCap": "Peran tidak memiliki kapabilitas {cap}",
       "audit.d.denyScreen": "Percobaan membuka layar tanpa kapabilitas",
@@ -3885,6 +3968,7 @@ window.NB_DATA.cost_assumptions = [
       "dash.noteApproved": "Created after the management decision (Module 6)",
       "dash.noteApprovedAda": "Baseline {id}, approved {t}",
       "dash.noteActual": "Created when execution is recorded (Module 8)",
+      "dash.noteActualAda": "Utilisation {u} percent, {s} quota left",
       "dash.siklusKosong": "No MPP cycle yet",
       "dash.siklusKosongSub": "OD has not created a planning cycle.",
 
@@ -4405,6 +4489,88 @@ window.NB_DATA.cost_assumptions = [
       "alok.errKosong": "There is no approved row that can become an allocation",
       "audit.d.distribusi": "Distributed {n} allocations from {id} to {d} departments",
       "audit.d.denyDistribusi": "Attempted to distribute allocations without the right",
+      // Module 8: execution monitoring
+      "mon.judul": "Execution Monitoring",
+      "mon.sub": "{name} execution measured against the approved allocation, never against the original proposal.",
+      "mon.aturanJudul": "Actual counts from the first working day",
+      "mon.aturanIsi": "Headcount additions beyond the allocation are blocked. Other types are still recorded but raise an exception for OD to decide.",
+      "mon.dasar": "Basis: distributed allocations",
+      "mon.tabRingkas": "Summary",
+      "mon.tabAlokasi": "Allocations",
+      "mon.tabRealisasi": "Execution",
+      "mon.tabBulan": "Plan versus actual",
+      "mon.tabException": "Exceptions",
+      "mon.thRealisasi": "Actual",
+      "mon.thUtilisasi": "Utilisation",
+      "mon.thBiayaAlokasi": "Allocated cost",
+      "mon.thBiayaActual": "Actual cost",
+      "mon.thTanggal": "First working day",
+      "mon.thId": "Actual",
+      "mon.thException": "Exception",
+      "mon.thKelebihan": "Excess",
+      "mon.kpiKuotaKet": "Quota distributed",
+      "mon.kpiRealisasiKet": "Quota used, equal to {h} headcount",
+      "mon.kpiUtilisasiKet": "Remaining quota {n}",
+      "mon.kpiBiayaKet": "Allocated {n}",
+      "mon.kpiException": "Exceptions",
+      "mon.kpiExceptionKet": "{n} awaiting an OD decision",
+      "mon.menunggu": "{n} exceptions pending",
+      "mon.stOPEN": "Untouched",
+      "mon.stPARTIAL": "Partly used",
+      "mon.stFULFILLED": "Fulfilled",
+      "mon.stOVER": "Exceeded",
+      "mon.lebih": "over by {n}",
+      "mon.catat": "Record actual",
+      "mon.catatJudul": "Record an actual",
+      "mon.sisaKuota": "Remaining quota {n}",
+      "mon.fTanggal": "First working day",
+      "mon.fNama": "Employee name",
+      "mon.fNamaPlaceholder": "The person who actually started",
+      "mon.fCatatan": "The actual month comes from the first working day, and that is what drives the real cost.",
+      "mon.tercatat": "Actual recorded",
+      "mon.tercatatException": "Actual recorded, but it exceeds the allocation and awaits an OD decision",
+      "mon.actRECORDED": "Recorded",
+      "mon.actCANCELLED": "Cancelled",
+      "mon.batalkan": "Cancel",
+      "mon.batalJudul": "Cancel this recorded actual",
+      "mon.batalPesan": "The record is not deleted, only marked cancelled, and the quota comes back.",
+      "mon.dibatalkan": "Actual cancelled",
+      "mon.excPENDING": "Awaiting OD",
+      "mon.excACCEPTED": "Accepted",
+      "mon.excREJECTED": "Rejected",
+      "mon.excTerima": "Accept",
+      "mon.excTerimaJudul": "Accept the excess",
+      "mon.excTerimaPesan": "The excess will stand as an approved exception rather than a breach.",
+      "mon.excTolak": "Reject",
+      "mon.excTolakJudul": "Reject the excess",
+      "mon.excTolakPesan": "The actual that triggered it is cancelled as well so the numbers reconcile.",
+      "mon.excDiputus": "Exception decided",
+      "mon.excKosong": "No exceptions",
+      "mon.excKosongSub": "Exceptions appear when execution exceeds the allocation.",
+      "mon.kosong": "Nothing to monitor yet",
+      "mon.kosongSub": "Allocations appear once management approves and OD distributes them.",
+      "mon.belumAdaRealisasi": "No actuals yet",
+      "mon.belumAdaRealisasiSub": "Record actuals from the Allocations tab as soon as someone actually starts.",
+      "mon.kurvaKet": "The grey bar is the plan by effective month, the blue bar is execution by first working day.",
+      "mon.errPeran": "Your role does not record actuals",
+      "mon.errPeranException": "Your role does not decide exceptions",
+      "mon.errAlokasi": "Allocation not found",
+      "mon.errActual": "Actual record not found",
+      "mon.errException": "Exception not found",
+      "mon.errQty": "The quantity must be at least one",
+      "mon.errTanggal": "The first working day is required",
+      "mon.errTahun": "The first working day must fall in {y}",
+      "mon.errMelebihi": "An actual of {q} exceeds the remaining allocation of {s}. Headcount additions may not exceed the allocation.",
+      "mon.errSudahBatal": "This record is already cancelled",
+      "mon.errSudahDiputus": "This exception was already decided",
+      "audit.d.actual": "Recorded {q} actual joiners on allocation {a}, starting {t}",
+      "audit.d.actualBatal": "Cancelled an actual record of {q} people",
+      "audit.d.actualBlok": "An actual of {q} was blocked because only {s} remained",
+      "audit.d.exception": "An actual of {q} exceeded the remaining {s} and raised an exception",
+      "audit.d.excAccept": "Accepted exception {id}",
+      "audit.d.excReject": "Rejected exception {id} and cancelled its actual",
+      "audit.d.denyActual": "Attempted to record an actual without the right",
+      "audit.d.denyException": "Attempted to decide an exception without the right",
       "audit.d.denyScope": "Attempted to change data outside the access scope",
       "audit.d.denyCap": "Role lacks the capability {cap}",
       "audit.d.denyScreen": "Attempted to open a screen without the capability",
@@ -4614,7 +4780,7 @@ window.NB_DATA.cost_assumptions = [
   var CAPS = {
     OD: ["cycle.create", "snapshot.upload", "view.own", "view.all", "plan.create", "plan.submit",
          "plan.review", "consolidate", "cost.view", "approved.distribute", "monitor.all",
-         "audit.all", "admin", "dept.note.edit", "master.employee.edit",
+         "audit.all", "admin", "dept.note.edit", "master.employee.edit", "actual.record",
          "cycle.manage", "snapshot.view"],
     HOD: ["view.own", "plan.create", "plan.submit", "plan.review.own", "cost.view.own",
           "monitor.own", "audit.own", "dept.note.edit"],
@@ -4622,7 +4788,7 @@ window.NB_DATA.cost_assumptions = [
          "monitor.cost", "audit.relevant"],
     MANAGEMENT: ["view.all", "cost.view", "review.decide", "approve", "adjust.approved",
                  "monitor.company", "audit.relevant"],
-    MONITOR: ["view.all", "monitor.all", "audit.all"]
+    MONITOR: ["view.all", "monitor.all", "audit.all", "actual.record"]
   };
 
   var ROLE_LABEL = {
@@ -4725,7 +4891,12 @@ window.NB_DATA.cost_assumptions = [
     "PLAN_SUBMIT":    { label: "Plan Submit",   badge: "is-blue" },
     "PLAN_ACCEPT":    { label: "Plan Accept",   badge: "is-emerald" },
     "PLAN_RETURN":    { label: "Plan Return",   badge: "is-amber" },
-    "ALLOC_DISTRIBUTE": { label: "Allocation",  badge: "is-violet" }
+    "ALLOC_DISTRIBUTE": { label: "Allocation",  badge: "is-violet" },
+    "ACTUAL_RECORD":    { label: "Actual",      badge: "is-emerald" },
+    "ACTUAL_CANCEL":    { label: "Actual Cancel", badge: "is-plain" },
+    "ACTUAL_BLOCKED":   { label: "Actual Blocked", badge: "is-red" },
+    "ACTUAL_EXCEPTION": { label: "Exception",   badge: "is-amber" },
+    "EXCEPTION_DECISION": { label: "Exc Decision", badge: "is-indigo" }
   };
 
   // detail boleh berupa string, atau objek { key, vars, reason } supaya pesan log
@@ -5216,7 +5387,9 @@ window.NB_DATA.cost_assumptions = [
       cost_assumptions: salin(D.cost_assumptions || []),
       approvals: salin(D.approvals || []),
       revisions: salin(D.revisions || []),
-      allocations: salin(D.allocations || [])
+      allocations: salin(D.allocations || []),
+      actuals: salin(D.actuals || []),
+      exceptions: salin(D.exceptions || [])
     };
     // Baris snapshot historis dipasang sekali saat inisialisasi.
     db.snapshots.forEach(function (s) {
@@ -6446,6 +6619,217 @@ window.NB_DATA.cost_assumptions = [
              terdistribusi: alokasiSiklus(cycleId).length > 0 };
   }
 
+  // --- Monitoring realisasi (FR-08, bab 21 dan 22) --------------------------
+  // Dua keputusan yang dipakai di sini, keduanya default yang disetujui Kang Rangga:
+  // 1. Actual dihitung sejak tanggal masuk kerja, bukan tanda tangan kontrak atau payroll.
+  // 2. Realisasi melebihi alokasi diblokir untuk penambahan headcount, sementara jenis lain
+  //    tetap dicatat tetapi memunculkan exception yang harus diputuskan OD (BR-06).
+
+  var AKSI_MENAMBAH = ["EXTERNAL_HIRING", "VACANCY_ACTION", "POSITION_CREATION"];
+
+  function _alok(id) { return db.allocations.filter(function (a) { return a.allocation_id === id; })[0] || null; }
+
+  function actualTerlihat(cycleId) {
+    var rows = db.actuals.filter(function (a) { return a.cycle_id === cycleId; });
+    return NBRbac.filterRows(sesi.user, db.departments, salin(rows), "department_id");
+  }
+
+  function exceptionTerlihat(cycleId) {
+    var rows = db.exceptions.filter(function (e) { return e.cycle_id === cycleId; });
+    return NBRbac.filterRows(sesi.user, db.departments, salin(rows), "department_id");
+  }
+
+  function hitungUlangAlokasi(alokasi) {
+    var dipakai = db.actuals.filter(function (a) {
+      return a.allocation_id === alokasi.allocation_id && a.status === "RECORDED";
+    }).reduce(function (n, a) { return n + Number(a.quantity || 0); }, 0);
+    alokasi.consumed_qty = dipakai;
+    alokasi.remaining_qty = Math.max(0, alokasi.approved_qty - dipakai);
+    alokasi.over_qty = Math.max(0, dipakai - alokasi.approved_qty);
+    alokasi.status = dipakai === 0 ? "OPEN"
+      : (dipakai < alokasi.approved_qty ? "PARTIAL"
+      : (dipakai === alokasi.approved_qty ? "FULFILLED" : "OVER"));
+  }
+
+  function catatActual(allocationId, data) {
+    var a = _alok(allocationId);
+    if (!a) return { ok: false, kunci: "mon.errAlokasi" };
+    if (!NBRbac.can(sesi.user, "actual.record")) {
+      NBAudit.tulis(sesi.user, "SCOPE_DENIED", "ActualAction", allocationId, { key: "audit.d.denyActual" });
+      return { ok: false, kunci: "mon.errPeran" };
+    }
+    var c = _sik(a.cycle_id);
+    if (!c || c.status === "CLOSED") return { ok: false, kunci: "plan.errTutup" };
+
+    var qty = Math.floor(Number(data.quantity || 0));
+    if (!qty || qty < 1) return { ok: false, kunci: "mon.errQty" };
+    if (!data.actual_date) return { ok: false, kunci: "mon.errTanggal" };
+    // Tanggal masuk kerja wajib berada di dalam tahun siklus.
+    if (String(data.actual_date).slice(0, 4) !== String(c.year)) {
+      return { ok: false, kunci: "mon.errTahun", vars: { y: c.year } };
+    }
+
+    var sisa = a.approved_qty - a.consumed_qty;
+    var melebihi = qty > sisa;
+    // Penambahan headcount diblokir keras. Selebihnya dicatat tetapi menjadi exception.
+    if (melebihi && AKSI_MENAMBAH.indexOf(a.action_type) !== -1) {
+      NBAudit.tulis(sesi.user, "ACTUAL_BLOCKED", "Allocation", allocationId,
+        { key: "audit.d.actualBlok", vars: { q: qty, s: Math.max(0, sisa) } });
+      return { ok: false, kunci: "mon.errMelebihi", vars: { q: qty, s: Math.max(0, sisa) } };
+    }
+
+    var rec = {
+      actual_id: "ACT-" + c.year + "-" + String(db.actuals.length + 1).padStart(4, "0"),
+      cycle_id: a.cycle_id, allocation_id: allocationId, line_item_id: a.line_item_id,
+      department_id: a.department_id, action_type: a.action_type,
+      employee_name: data.employee_name || null, quantity: qty,
+      actual_date: data.actual_date, effective_month: Number(String(data.actual_date).slice(5, 7)),
+      note: data.note || null, source: "Pencatatan manual di aplikasi",
+      status: "RECORDED", recorded_by: sesi.user.user_id, recorded_at: new Date().toISOString()
+    };
+    db.actuals.push(rec);
+    hitungUlangAlokasi(a);
+
+    if (melebihi) {
+      db.exceptions.push({
+        exception_id: "EXC-" + c.year + "-" + String(db.exceptions.length + 1).padStart(4, "0"),
+        cycle_id: a.cycle_id, allocation_id: allocationId, actual_id: rec.actual_id,
+        department_id: a.department_id, jenis: "OVER_ALLOCATION",
+        kelebihan: qty - Math.max(0, sisa), status: "PENDING",
+        raised_at: new Date().toISOString(), raised_by: sesi.user.user_id,
+        decided_by: null, decided_at: null, reason: null
+      });
+      NBAudit.tulis(sesi.user, "ACTUAL_EXCEPTION", "Allocation", allocationId,
+        { key: "audit.d.exception", vars: { q: qty, s: Math.max(0, sisa) } });
+    }
+
+    simpan();
+    NBAudit.tulis(sesi.user, "ACTUAL_RECORD", "ActualAction", rec.actual_id,
+      { key: "audit.d.actual", vars: { q: qty, a: a.allocation_id,
+        t: NBFormat.tanggal(data.actual_date) } });
+    return { ok: true, actual: salin(rec), exception: melebihi };
+  }
+
+  // Pembatalan realisasi. Catatan tidak dihapus, hanya ditandai batal, supaya jejaknya utuh.
+  function batalkanActual(actualId, alasan) {
+    var r = db.actuals.filter(function (a) { return a.actual_id === actualId; })[0];
+    if (!r) return { ok: false, kunci: "mon.errActual" };
+    if (!NBRbac.can(sesi.user, "actual.record")) return { ok: false, kunci: "mon.errPeran" };
+    if (!alasan || alasan.trim().length < 10) return { ok: false, kunci: "review.errAlasan" };
+    if (r.status !== "RECORDED") return { ok: false, kunci: "mon.errSudahBatal" };
+
+    r.status = "CANCELLED";
+    r.cancel_reason = alasan;
+    r.cancelled_by = sesi.user.user_id;
+    r.cancelled_at = new Date().toISOString();
+    var a = _alok(r.allocation_id);
+    if (a) hitungUlangAlokasi(a);
+    catatRevisi("ActualAction", actualId, "status", "RECORDED", "CANCELLED", alasan, 1);
+    simpan();
+    NBAudit.tulis(sesi.user, "ACTUAL_CANCEL", "ActualAction", actualId,
+      { key: "audit.d.actualBatal", vars: { q: r.quantity }, reason: alasan });
+    return { ok: true };
+  }
+
+  function putuskanException(exceptionId, keputusan, alasan) {
+    var e = db.exceptions.filter(function (x) { return x.exception_id === exceptionId; })[0];
+    if (!e) return { ok: false, kunci: "mon.errException" };
+    if (!NBRbac.can(sesi.user, "monitor.all") || !NBRbac.can(sesi.user, "consolidate")) {
+      NBAudit.tulis(sesi.user, "SCOPE_DENIED", "Exception", exceptionId, { key: "audit.d.denyException" });
+      return { ok: false, kunci: "mon.errPeranException" };
+    }
+    if (e.status !== "PENDING") return { ok: false, kunci: "mon.errSudahDiputus" };
+    if (!alasan || alasan.trim().length < 10) return { ok: false, kunci: "review.errAlasan" };
+
+    e.status = keputusan === "ACCEPT" ? "ACCEPTED" : "REJECTED";
+    e.reason = alasan;
+    e.decided_by = sesi.user.user_id;
+    e.decided_at = new Date().toISOString();
+    // Penolakan membatalkan realisasi yang memicunya, supaya angka kembali cocok.
+    if (keputusan === "REJECT") {
+      var r = db.actuals.filter(function (a) { return a.actual_id === e.actual_id; })[0];
+      if (r && r.status === "RECORDED") {
+        r.status = "CANCELLED";
+        r.cancel_reason = alasan;
+        r.cancelled_by = sesi.user.user_id;
+        r.cancelled_at = new Date().toISOString();
+        var a = _alok(r.allocation_id);
+        if (a) hitungUlangAlokasi(a);
+      }
+    }
+    catatRevisi("Exception", exceptionId, "status", "PENDING", e.status, alasan, 1);
+    simpan();
+    NBAudit.tulis(sesi.user, "EXCEPTION_DECISION", "Exception", exceptionId,
+      { key: keputusan === "ACCEPT" ? "audit.d.excAccept" : "audit.d.excReject",
+        vars: { id: exceptionId }, reason: alasan });
+    return { ok: true };
+  }
+
+  // Ringkasan monitoring: alokasi versus realisasi, utilisasi, dan sebaran bulan.
+  function ringkasMonitoring(cycleId) {
+    var alokasi = alokasiTerlihat(cycleId);
+    var actual = actualTerlihat(cycleId).filter(function (a) { return a.status === "RECORDED"; });
+    var deps = departemenTerlihat();
+
+    var perDept = deps.map(function (d) {
+      var al = alokasi.filter(function (a) { return a.department_id === d.department_id; });
+      var ac = actual.filter(function (a) { return a.department_id === d.department_id; });
+      var kuota = al.reduce(function (n, a) { return n + a.approved_qty; }, 0);
+      var pakai = ac.reduce(function (n, a) { return n + a.quantity; }, 0);
+      var biayaAlok = al.reduce(function (n, a) { return n + a.annualized_cost; }, 0);
+      // Biaya realisasi memakai biaya bulanan alokasi dan bulan masuk kerja sebenarnya.
+      var biayaAct = ac.reduce(function (n, a) {
+        var al1 = alokasi.filter(function (x) { return x.allocation_id === a.allocation_id; })[0];
+        if (!al1 || !al1.approved_qty) return n;
+        var perOrang = al1.monthly_cost / al1.approved_qty;
+        return n + perOrang * a.quantity * NBFormat.bulanBerlaku(a.effective_month);
+      }, 0);
+      var hcPakai = ac.reduce(function (n, a) {
+        var al1 = alokasi.filter(function (x) { return x.allocation_id === a.allocation_id; })[0];
+        if (!al1 || !al1.approved_qty) return n;
+        return n + (al1.hc_impact / al1.approved_qty) * a.quantity;
+      }, 0);
+      return {
+        department_id: d.department_id, name: d.name, cost_center_id: d.cost_center_id,
+        kuota: kuota, terpakai: pakai, sisa: Math.max(0, kuota - pakai),
+        hcAlokasi: al.reduce(function (n, x) { return n + x.hc_impact; }, 0),
+        hcRealisasi: Math.round(hcPakai),
+        utilisasi: kuota ? Math.round(pakai / kuota * 100) : 0,
+        biayaAlokasi: biayaAlok, biayaActual: Math.round(biayaAct),
+        alokasi: al.length
+      };
+    }).filter(function (d) { return d.alokasi > 0; });
+
+    var perBulan = [];
+    for (var m = 1; m <= 12; m++) perBulan.push({ bulan: m, rencana: 0, realisasi: 0 });
+    alokasi.forEach(function (a) {
+      if (a.effective_month >= 1 && a.effective_month <= 12 && a.hc_impact > 0) {
+        perBulan[a.effective_month - 1].rencana += a.approved_qty;
+      }
+    });
+    actual.forEach(function (a) {
+      if (a.effective_month >= 1 && a.effective_month <= 12) {
+        perBulan[a.effective_month - 1].realisasi += a.quantity;
+      }
+    });
+
+    var total = perDept.reduce(function (t, d) {
+      t.kuota += d.kuota; t.terpakai += d.terpakai; t.sisa += d.sisa;
+      t.hcAlokasi += d.hcAlokasi; t.hcRealisasi += d.hcRealisasi;
+      t.biayaAlokasi += d.biayaAlokasi; t.biayaActual += d.biayaActual;
+      return t;
+    }, { kuota: 0, terpakai: 0, sisa: 0, hcAlokasi: 0, hcRealisasi: 0,
+         biayaAlokasi: 0, biayaActual: 0 });
+    total.utilisasi = total.kuota ? Math.round(total.terpakai / total.kuota * 100) : 0;
+
+    return {
+      perDept: perDept, perBulan: perBulan, total: total,
+      alokasi: alokasi, actual: actual,
+      exceptions: exceptionTerlihat(cycleId),
+      menunggu: exceptionTerlihat(cycleId).filter(function (e) { return e.status === "PENDING"; }).length
+    };
+  }
+
   // --- Perubahan data master ---------------------------------------------
   // Tidak ada jalur tulis lain. Setiap perubahan wajib lewat sini supaya
   // audit tidak bisa dilewati (BR-08).
@@ -6519,6 +6903,9 @@ window.NB_DATA.cost_assumptions = [
     ringkasKeputusan: ringkasKeputusan, revisiSiklus: revisiSiklus, revisiObjek: revisiObjek,
     kuantitasUsulan: kuantitasUsulan, kuantitasDisetujui: kuantitasDisetujui,
     distribusikanAlokasi: distribusikanAlokasi, alokasiTerlihat: alokasiTerlihat,
+    catatActual: catatActual, batalkanActual: batalkanActual, putuskanException: putuskanException,
+    ringkasMonitoring: ringkasMonitoring, actualTerlihat: actualTerlihat,
+    exceptionTerlihat: exceptionTerlihat,
     alokasiBaris: alokasiBaris, ringkasAlokasi: ringkasAlokasi,
     kirimSubmission: kirimSubmission, reviewSubmission: reviewSubmission,
     mutasiMasuk: mutasiMasuk, konfirmasiMutasi: konfirmasiMutasi,
@@ -6637,6 +7024,14 @@ window.NB_DATA.cost_assumptions = [
             NBi18n.t("dash.noteApprovedAda", { id: a.approval_id, t: NBFormat.tanggalPendek(a.approved_at) })];
   }
 
+  // Actual terisi begitu ada realisasi yang dicatat.
+  function actual(c) {
+    var m = NBStore.ringkasMonitoring(c.cycle_id);
+    if (!m.total.kuota) return ["Actual", NBi18n.t("umum.belumAda"), NBi18n.t("dash.noteActual")];
+    return ["Actual", NBi18n.t("dash.hc", { n: NBFormat.delta(m.total.hcRealisasi) }),
+            NBi18n.t("dash.noteActualAda", { u: m.total.utilisasi, s: m.total.sisa })];
+  }
+
   function kartuSiklus() {
     var c = NBStore.siklusAktif();
     if (!c) {
@@ -6657,7 +7052,7 @@ window.NB_DATA.cost_assumptions = [
       ["Current",  snap ? T("dash.hc", { n: NBFormat.angka(terlihat) }) : T("umum.belumAda"), catatanCurrent],
       proposed(c),
       approved(c),
-      ["Actual",   T("umum.belumAda"), T("dash.noteActual")]
+      actual(c)
     ];
 
     return "<div class='nb-card nb-card-pad'>" +
@@ -8787,6 +9182,332 @@ window.NB_DATA.cost_assumptions = [
 
 </script>
 <script>
+/* js/pages/monitoring.js */
+// Layar Monitoring (FR-08, bab 21 dan 22).
+// Realisasi selalu dibandingkan terhadap Approved, bukan terhadap Proposed.
+// Aturan yang dipakai: penambahan headcount diblokir bila melebihi alokasi, jenis lain
+// tetap dicatat tetapi memunculkan exception yang harus diputuskan OD.
+(function (global) {
+  "use strict";
+
+  var T = function (k, v) { return NBi18n.t(k, v); };
+  var state = { tab: "ringkas" };
+
+  var ST_ALOK = {
+    OPEN:      { i18n: "mon.stOPEN",      badge: "is-plain" },
+    PARTIAL:   { i18n: "mon.stPARTIAL",   badge: "is-blue" },
+    FULFILLED: { i18n: "mon.stFULFILLED", badge: "is-emerald" },
+    OVER:      { i18n: "mon.stOVER",      badge: "is-red" }
+  };
+
+  function namaSasaran(a) {
+    if (a.employee_id) return (NBStore.karyawan(a.employee_id) || {}).name || a.employee_id;
+    if (a.new_position_title) return a.new_position_title;
+    if (a.position_id) return (NBStore.posisi(a.position_id) || {}).title || a.position_id;
+    if (a.vacancy_id) return a.vacancy_id;
+    return "-";
+  }
+
+  function bar(persen) {
+    var p = Math.min(100, persen);
+    var warna = persen > 100 ? "var(--nb-red-200)"
+      : (persen === 100 ? "var(--nb-emerald-bd)" : "var(--nb-blue-bd)");
+    return "<div style='height:6px;border-radius:999px;background:var(--nb-gray-100);margin-top:6px'>" +
+      "<div style='height:6px;width:" + p + "%;border-radius:999px;background:" + warna + "'></div></div>";
+  }
+
+  function tabelRingkas(r, bolehBiaya) {
+    if (!r.perDept.length) return NBUi.kosong(T("mon.kosong"), T("mon.kosongSub"), NBUi.svg("layers"));
+    return "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+      "<th>" + NBUi.esc(T("umum.departemen")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("alok.thKuota")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("mon.thRealisasi")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("alok.thSisa")) + "</th>" +
+      "<th>" + NBUi.esc(T("mon.thUtilisasi")) + "</th>" +
+      (bolehBiaya ? "<th class='nb-num'>" + NBUi.esc(T("mon.thBiayaAlokasi")) + "</th>" +
+                    "<th class='nb-num'>" + NBUi.esc(T("mon.thBiayaActual")) + "</th>" : "") +
+      "</tr></thead><tbody>" + r.perDept.map(function (d) {
+        return "<tr><td><div class='nb-cell-title'>" + NBUi.esc(d.name) + "</div>" +
+          "<div class='nb-cell-sub nb-mono'>" + NBUi.esc(d.cost_center_id) + "</div></td>" +
+          "<td class='nb-num'>" + NBFormat.angka(d.kuota) + "</td>" +
+          "<td class='nb-num'><b>" + NBFormat.angka(d.terpakai) + "</b></td>" +
+          "<td class='nb-num'>" + NBFormat.angka(d.sisa) + "</td>" +
+          "<td style='min-width:140px'>" + NBUi.esc(d.utilisasi + " persen") + bar(d.utilisasi) + "</td>" +
+          (bolehBiaya ? "<td class='nb-num nb-mono'>" + NBFormat.rupiahRingkas(d.biayaAlokasi) + "</td>" +
+                        "<td class='nb-num nb-mono'>" + NBFormat.rupiahRingkas(d.biayaActual) + "</td>" : "") +
+        "</tr>";
+      }).join("") +
+      "<tr><td><b>" + NBUi.esc(T("kons.totalPerusahaan")) + "</b></td>" +
+        "<td class='nb-num'><b>" + NBFormat.angka(r.total.kuota) + "</b></td>" +
+        "<td class='nb-num'><b>" + NBFormat.angka(r.total.terpakai) + "</b></td>" +
+        "<td class='nb-num'><b>" + NBFormat.angka(r.total.sisa) + "</b></td>" +
+        "<td><b>" + NBUi.esc(r.total.utilisasi + " persen") + "</b></td>" +
+        (bolehBiaya ? "<td class='nb-num'><b>" + NBFormat.rupiahRingkas(r.total.biayaAlokasi) + "</b></td>" +
+                      "<td class='nb-num'><b>" + NBFormat.rupiahRingkas(r.total.biayaActual) + "</b></td>" : "") +
+      "</tr></tbody></table></div>";
+  }
+
+  function tabelAlokasi(r, bolehCatat) {
+    if (!r.alokasi.length) return NBUi.kosong(T("mon.kosong"), T("mon.kosongSub"), NBUi.svg("layers"));
+    return "<div class='nb-tablewrap'><table class='nb-table' style='min-width:1020px'><thead><tr>" +
+      "<th>" + NBUi.esc(T("alok.thId")) + "</th>" +
+      "<th>" + NBUi.esc(T("plan.thAction")) + "</th>" +
+      "<th>" + NBUi.esc(T("plan.thSasaran")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("alok.thKuota")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("mon.thRealisasi")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("alok.thSisa")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.status")) + "</th>" +
+      (bolehCatat ? "<th class='nb-num'>" + NBUi.esc(T("umum.aksi")) + "</th>" : "") +
+      "</tr></thead><tbody>" + r.alokasi.map(function (a) {
+        var d = NBStore.departemen(a.department_id);
+        var st = ST_ALOK[a.status || "OPEN"] || ST_ALOK.OPEN;
+        return "<tr><td><span class='nb-code'>" + NBUi.esc(a.allocation_id) + "</span></td>" +
+          "<td>" + NBUi.badge(T("act." + a.action_type), (NBActions.def(a.action_type) || {}).badge) + "</td>" +
+          "<td><div class='nb-cell-title' style='white-space:nowrap'>" + NBUi.esc(namaSasaran(a)) + "</div>" +
+            "<div class='nb-cell-sub'>" + NBUi.esc(d ? d.name : a.department_id) + " &middot; " +
+            NBUi.esc(a.effective_month ? NBFormat.bulanPendek(a.effective_month) : "-") + "</div></td>" +
+          "<td class='nb-num'>" + a.approved_qty + "</td>" +
+          "<td class='nb-num'><b>" + a.consumed_qty + "</b></td>" +
+          "<td class='nb-num'>" + a.remaining_qty + "</td>" +
+          "<td>" + NBUi.badge(T(st.i18n), st.badge) +
+            (a.over_qty ? " " + NBUi.badge(T("mon.lebih", { n: a.over_qty }), "is-red") : "") + "</td>" +
+          (bolehCatat
+            ? "<td class='nb-num'><button class='nb-btn nb-btn-outline' data-catat='" + a.allocation_id + "'>" +
+              NBUi.esc(T("mon.catat")) + "</button></td>"
+            : "") + "</tr>";
+      }).join("") + "</tbody></table></div>";
+  }
+
+  function tabelRealisasi(r, bolehCatat) {
+    if (!r.actual.length) return NBUi.kosong(T("mon.belumAdaRealisasi"), T("mon.belumAdaRealisasiSub"));
+    var semua = NBStore.actualTerlihat(NBStore.siklusAktif().cycle_id);
+    return "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+      "<th>" + NBUi.esc(T("mon.thId")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.karyawan")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.departemen")) + "</th>" +
+      "<th>" + NBUi.esc(T("mon.thTanggal")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("plan.thQty")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.status")) + "</th>" +
+      (bolehCatat ? "<th class='nb-num'>" + NBUi.esc(T("umum.aksi")) + "</th>" : "") +
+      "</tr></thead><tbody>" + semua.map(function (a) {
+        var d = NBStore.departemen(a.department_id);
+        return "<tr" + (a.status === "CANCELLED" ? " style='opacity:.6'" : "") + ">" +
+          "<td><span class='nb-code'>" + NBUi.esc(a.actual_id) + "</span>" +
+            "<div class='nb-cell-sub nb-mono'>" + NBUi.esc(a.allocation_id) + "</div></td>" +
+          "<td><div class='nb-cell-title'>" + NBUi.esc(a.employee_name || "-") + "</div>" +
+            "<div class='nb-cell-sub'>" + NBUi.esc(T("act." + a.action_type)) + "</div></td>" +
+          "<td>" + NBUi.esc(d ? d.name : a.department_id) + "</td>" +
+          "<td>" + NBUi.esc(NBFormat.tanggal(a.actual_date)) + "</td>" +
+          "<td class='nb-num'>" + a.quantity + "</td>" +
+          "<td>" + NBUi.badge(T("mon.act" + a.status), a.status === "RECORDED" ? "is-emerald" : "is-plain") +
+            (a.cancel_reason ? "<div class='nb-cell-sub'>" + NBUi.esc(a.cancel_reason) + "</div>" : "") + "</td>" +
+          (bolehCatat
+            ? "<td class='nb-num'>" + (a.status === "RECORDED"
+                ? "<button class='nb-btn nb-btn-ghost-danger' data-batal='" + a.actual_id + "'>" +
+                  NBUi.esc(T("mon.batalkan")) + "</button>"
+                : "<span class='nb-muted'>-</span>") + "</td>"
+            : "") + "</tr>";
+      }).join("") + "</tbody></table></div>";
+  }
+
+  function tabelException(r, bolehPutus) {
+    if (!r.exceptions.length) return NBUi.kosong(T("mon.excKosong"), T("mon.excKosongSub"));
+    return "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+      "<th>" + NBUi.esc(T("mon.thException")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.departemen")) + "</th>" +
+      "<th class='nb-num'>" + NBUi.esc(T("mon.thKelebihan")) + "</th>" +
+      "<th>" + NBUi.esc(T("umum.status")) + "</th>" +
+      (bolehPutus ? "<th class='nb-num'>" + NBUi.esc(T("umum.aksi")) + "</th>" : "") +
+      "</tr></thead><tbody>" + r.exceptions.map(function (e) {
+        var d = NBStore.departemen(e.department_id);
+        var badge = e.status === "PENDING" ? "is-amber"
+          : (e.status === "ACCEPTED" ? "is-emerald" : "is-red");
+        return "<tr><td><span class='nb-code'>" + NBUi.esc(e.exception_id) + "</span>" +
+            "<div class='nb-cell-sub nb-mono'>" + NBUi.esc(e.allocation_id) + "</div></td>" +
+          "<td>" + NBUi.esc(d ? d.name : e.department_id) + "</td>" +
+          "<td class='nb-num'><b>" + e.kelebihan + "</b></td>" +
+          "<td>" + NBUi.badge(T("mon.exc" + e.status), badge) +
+            (e.reason ? "<div class='nb-cell-sub'>" + NBUi.esc(e.reason) + "</div>" : "") + "</td>" +
+          (bolehPutus
+            ? "<td class='nb-num' style='white-space:nowrap'>" + (e.status === "PENDING"
+                ? "<button class='nb-btn nb-btn-outline' data-exc-ok='" + e.exception_id + "'>" +
+                  NBUi.esc(T("mon.excTerima")) + "</button> " +
+                  "<button class='nb-btn nb-btn-ghost-danger' data-exc-no='" + e.exception_id + "'>" +
+                  NBUi.esc(T("mon.excTolak")) + "</button>"
+                : "<span class='nb-muted'>-</span>") + "</td>"
+            : "") + "</tr>";
+      }).join("") + "</tbody></table></div>";
+  }
+
+  function kurvaBulan(r) {
+    var maks = r.perBulan.reduce(function (m, b) { return Math.max(m, b.rencana, b.realisasi); }, 1);
+    return "<div style='padding:4px 20px 20px;display:grid;grid-template-columns:repeat(12,1fr);" +
+      "gap:6px;align-items:end'>" + r.perBulan.map(function (b) {
+        var t1 = Math.round(b.rencana / maks * 70), t2 = Math.round(b.realisasi / maks * 70);
+        return "<div style='text-align:center'>" +
+          "<div style='height:76px;display:flex;align-items:flex-end;gap:3px;justify-content:center'>" +
+            "<div style='width:40%;height:" + Math.max(2, t1) + "px;background:var(--nb-gray-200);" +
+              "border-radius:4px 4px 0 0'></div>" +
+            "<div style='width:40%;height:" + Math.max(2, t2) + "px;background:var(--nb-blue-bd);" +
+              "border-radius:4px 4px 0 0'></div>" +
+          "</div><div class='nb-kpi-label' style='margin:6px 0 2px'>" +
+          NBUi.esc(NBFormat.bulanPendek(b.bulan)) + "</div>" +
+          "<div class='nb-cell-sub'>" + b.rencana + " / " + b.realisasi + "</div></div>";
+      }).join("") + "</div>" +
+      "<p class='nb-cell-sub' style='padding:0 20px 20px;margin:0'>" + NBUi.esc(T("mon.kurvaKet")) + "</p>";
+  }
+
+  function render() {
+    var u = NBStore.user();
+    var c = NBStore.siklusAktif();
+    if (!c) return "<div class='nb-card'>" + NBUi.kosong(T("dash.siklusKosong"), T("dash.siklusKosongSub")) + "</div>";
+
+    var r = NBStore.ringkasMonitoring(c.cycle_id);
+    var deps = NBStore.departemenTerlihat();
+    var bolehBiaya = deps.every(function (d) { return NBRbac.canSeeCost(u, d.department_id); });
+    var bolehCatat = NBRbac.can(u, "actual.record") && c.status !== "CLOSED";
+    var bolehPutus = NBRbac.can(u, "consolidate") && NBRbac.can(u, "monitor.all");
+
+    var tabs = [["ringkas", "mon.tabRingkas"], ["alokasi", "mon.tabAlokasi"],
+                ["realisasi", "mon.tabRealisasi"], ["bulan", "mon.tabBulan"],
+                ["exception", "mon.tabException"]];
+    var isi = state.tab === "alokasi" ? tabelAlokasi(r, bolehCatat)
+            : (state.tab === "realisasi" ? tabelRealisasi(r, bolehCatat)
+            : (state.tab === "bulan" ? kurvaBulan(r)
+            : (state.tab === "exception" ? tabelException(r, bolehPutus) : tabelRingkas(r, bolehBiaya))));
+
+    return "" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("mon.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("mon.sub", { name: c.name })) + "</p></div>" +
+      (r.menunggu ? NBUi.badge(T("mon.menunggu", { n: r.menunggu }), "is-red") : NBUi.badge(c.name, "is-plain")) +
+    "</div>" +
+
+    "<div class='nb-kpigrid'>" +
+      NBUi.kpi(T("alok.thKuota"), NBFormat.angka(r.total.kuota), "layers", "is-blue", T("mon.kpiKuotaKet")) +
+      NBUi.kpi(T("mon.thRealisasi"), NBFormat.angka(r.total.terpakai), "check", "is-emerald",
+               T("mon.kpiRealisasiKet", { h: NBFormat.delta(r.total.hcRealisasi) })) +
+      NBUi.kpi(T("mon.thUtilisasi"), r.total.utilisasi + " persen", "chart", "",
+               T("mon.kpiUtilisasiKet", { n: r.total.sisa })) +
+      (bolehBiaya
+        ? NBUi.kpi(T("mon.thBiayaActual"), NBFormat.rupiahRingkas(r.total.biayaActual), "shield", "is-amber",
+                   T("mon.kpiBiayaKet", { n: NBFormat.rupiahRingkas(r.total.biayaAlokasi) }), true)
+        : NBUi.kpi(T("mon.kpiException"), NBFormat.angka(r.exceptions.length), "shield", "is-amber",
+                   T("mon.kpiExceptionKet", { n: r.menunggu }))) +
+    "</div>" +
+
+    "<div class='nb-card nb-card-pad' style='margin-bottom:24px;background:var(--nb-gray-50)'>" +
+      "<div class='nb-note'>" + NBUi.svg("shield") + "<div>" +
+      "<div style='font-weight:600'>" + NBUi.esc(T("mon.aturanJudul")) + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("mon.aturanIsi")) + "</div></div></div></div>" +
+
+    "<div class='nb-card'>" +
+      "<div class='nb-toolbar'><div class='nb-tabs'>" + tabs.map(function (t) {
+        return "<button class='nb-tab" + (state.tab === t[0] ? " is-active" : "") +
+               "' data-tab='" + t[0] + "'>" + NBUi.esc(T(t[1])) + "</button>";
+      }).join("") + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("mon.dasar")) + "</div></div>" + isi +
+    "</div>";
+  }
+
+  function dialogCatat(allocationId) {
+    var c = NBStore.siklusAktif();
+    var a = NBStore.alokasiTerlihat(c.cycle_id).filter(function (x) {
+      return x.allocation_id === allocationId;
+    })[0];
+    if (!a) return;
+    var host = document.createElement("div");
+    host.innerHTML =
+      "<div class='nb-overlay' id='mCatat'><div class='nb-modal' style='max-width:560px'>" +
+      "<div class='nb-modal-head'><div><div class='nb-modal-title'><h2>" +
+        NBUi.esc(T("mon.catatJudul")) + "</h2></div>" +
+        "<div class='nb-metachips'><span class='nb-metachip is-code'>" + NBUi.esc(allocationId) + "</span>" +
+        "<span class='nb-metachip'>" + NBUi.esc(T("mon.sisaKuota", { n: a.remaining_qty })) + "</span></div></div>" +
+        "<button class='nb-iconbtn' data-batal='1'>&times;</button></div>" +
+      "<div class='nb-modal-body'><div class='nb-section' style='margin-bottom:0'>" +
+        "<div class='nb-fields'>" +
+          "<div><div class='nb-field-label'>" + NBUi.esc(T("mon.fTanggal")) + "</div>" +
+          "<input class='nb-input' id='cTanggal' type='date' value='" +
+            NBUi.esc(c.year + "-0" + Math.min(9, a.effective_month || 1) + "-01") + "'></div>" +
+          "<div><div class='nb-field-label'>" + NBUi.esc(T("plan.thQty")) + "</div>" +
+          "<input class='nb-input' id='cQty' type='number' min='1' value='1'></div>" +
+        "</div>" +
+        "<div style='margin-top:14px'><div class='nb-field-label'>" + NBUi.esc(T("mon.fNama")) + "</div>" +
+        "<input class='nb-input' id='cNama' placeholder='" + NBUi.esc(T("mon.fNamaPlaceholder")) + "'></div>" +
+        "<div id='cGalat' class='nb-cell-sub' style='color:var(--nb-red-700);margin-top:10px'></div>" +
+        "<p class='nb-cell-sub' style='margin-top:10px'>" + NBUi.esc(T("mon.fCatatan")) + "</p>" +
+      "</div></div>" +
+      "<div class='nb-modal-foot'><button class='nb-btn nb-btn-quiet' data-batal='1'>" +
+        NBUi.esc(T("umum.batal")) + "</button>" +
+      "<div class='nb-group'><button class='nb-btn nb-btn-primary' id='cOk'>" +
+        NBUi.esc(T("mon.catat")) + "</button></div></div></div></div>";
+    document.body.appendChild(host.firstChild);
+    var modal = document.getElementById("mCatat");
+    modal.querySelectorAll("[data-batal]").forEach(function (x) { x.onclick = function () { modal.remove(); }; });
+    modal.onclick = function (e) { if (e.target === modal) modal.remove(); };
+    document.getElementById("cOk").onclick = function () {
+      var res = NBStore.catatActual(allocationId, {
+        quantity: document.getElementById("cQty").value,
+        actual_date: document.getElementById("cTanggal").value,
+        employee_name: document.getElementById("cNama").value.trim()
+      });
+      if (!res.ok) {
+        document.getElementById("cGalat").textContent = T(res.kunci, res.vars || {});
+        return;
+      }
+      modal.remove();
+      NBUi.toast(res.exception ? T("mon.tercatatException") : T("mon.tercatat"), res.exception ? "error" : "ok");
+      NBApp.ulang();
+    };
+  }
+
+  function mount() {
+    document.querySelectorAll("button[data-tab]").forEach(function (b) {
+      b.onclick = function () { state.tab = b.dataset.tab; NBApp.ulang(); };
+    });
+    document.querySelectorAll("button[data-catat]").forEach(function (b) {
+      b.onclick = function () { dialogCatat(b.dataset.catat); };
+    });
+    document.querySelectorAll("button[data-batal]").forEach(function (b) {
+      if (!b.dataset.batal || b.dataset.batal === "1") return;
+      b.onclick = function () {
+        NBUi.konfirmasi({
+          judul: T("mon.batalJudul"), pesan: T("mon.batalPesan"),
+          perluAlasan: true, labelAlasan: T("review.alasanLabel"),
+          pesanAlasan: T("review.errAlasan"), ok: T("mon.batalkan"),
+          batal: T("umum.batal"), gaya: "nb-btn-soft-danger"
+        }, function (alasan) {
+          var res = NBStore.batalkanActual(b.dataset.batal, alasan);
+          NBUi.toast(res.ok ? T("mon.dibatalkan") : T(res.kunci, res.vars || {}), res.ok ? "ok" : "error");
+          if (res.ok) NBApp.ulang();
+        });
+      };
+    });
+    document.querySelectorAll("button[data-exc-ok], button[data-exc-no]").forEach(function (b) {
+      var terima = !!b.dataset.excOk;
+      var id = terima ? b.dataset.excOk : b.dataset.excNo;
+      b.onclick = function () {
+        NBUi.konfirmasi({
+          judul: T(terima ? "mon.excTerimaJudul" : "mon.excTolakJudul"),
+          pesan: T(terima ? "mon.excTerimaPesan" : "mon.excTolakPesan"),
+          perluAlasan: true, labelAlasan: T("review.alasanLabel"),
+          pesanAlasan: T("review.errAlasan"), ok: T(terima ? "mon.excTerima" : "mon.excTolak"),
+          batal: T("umum.batal"), gaya: terima ? "nb-btn-primary" : "nb-btn-soft-danger"
+        }, function (alasan) {
+          var res = NBStore.putuskanException(id, terima ? "ACCEPT" : "REJECT", alasan);
+          NBUi.toast(res.ok ? T("mon.excDiputus") : T(res.kunci, res.vars || {}), res.ok ? "ok" : "error");
+          if (res.ok) NBApp.ulang();
+        });
+      };
+    });
+  }
+
+  global.NBPages = global.NBPages || {};
+  global.NBPages.monitoring = { render: render, mount: mount };
+})(window);
+
+</script>
+<script>
 /* js/pages/audit.js */
 // Layar 11 dari inventaris bab 25. Audit log (BR-08) dan pembeda dengan Revision History (bab 47).
 (function (global) {
@@ -8857,7 +9578,7 @@ window.NB_DATA.cost_assumptions = [
   "use strict";
 
   var MODUL = {
-    monitoring: 8, laporan: 9, admin: 9
+    laporan: 9, admin: 9
   };
 
   function buat(kunci) {
