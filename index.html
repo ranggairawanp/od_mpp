@@ -3972,6 +3972,65 @@ window.NB_DATA.cost_assumptions = [
       "tutup.sisa": "Sisa kuota {n} tidak akan terealisasi setelah siklus ditutup",
       "tutup.errBlokir": "Masih ada {n} hal yang menghalangi penutupan siklus",
       "audit.d.ekspor": "Mengekspor laporan {id} berisi {n} baris",
+      // Impor dan ekspor data
+      "nav.data": "Impor & Ekspor",
+      "imp.judul": "Impor & Ekspor Data",
+      "imp.sub": "Unduh templat, isi di Excel, unggah kembali. Semua unggahan melewati validasi yang sama dengan pengisian di layar.",
+      "imp.aturanJudul": "Unggahan tidak pernah melewati aturan",
+      "imp.aturanIsi": "Baris yang diunggah diperiksa dengan aturan yang sama persis dengan baris yang diketik. Baris bergalat tidak menggagalkan seluruh berkas, hanya dirinya sendiri, dan bisa diunduh kembali lengkap dengan alasannya.",
+      "imp.unduhJudul": "Templat dan ekspor",
+      "imp.unduhSub": "Templat berisi kepala kolom dan satu baris contoh. Ekspor isi berguna untuk menyunting data yang sudah ada.",
+      "imp.unggahJudul": "Unggah berkas",
+      "imp.unggahSub": "Berkas CSV dengan pemisah titik koma atau koma, keduanya dikenali otomatis.",
+      "imp.pilihBerkas": "Jenis data",
+      "imp.pilihCsv": "Pilih berkas CSV",
+      "imp.templat": "Templat",
+      "imp.eksporIsi": "Ekspor isi",
+      "imp.kolomInfo": "{n} kolom, {w} di antaranya wajib",
+      "imp.fKARYAWAN": "Master",
+      "imp.fASUMSI": "Biaya",
+      "imp.fUSULAN": "Usulan",
+      "imp.fREALISASI": "Realisasi",
+      "imp.dKARYAWAN": "Data karyawan dan penempatannya",
+      "imp.dASUMSI": "Asumsi biaya per grade",
+      "imp.dUSULAN": "Baris usulan MPP",
+      "imp.dREALISASI": "Realisasi terhadap alokasi",
+      "imp.pratinjauJudul": "Pratinjau {n}",
+      "imp.pratinjauSub": "{v} baris siap masuk, {g} baris bergalat. Tidak ada yang tersimpan sebelum Anda menerapkan.",
+      "imp.thBaris": "Baris",
+      "imp.thHasil": "Hasil pemeriksaan",
+      "imp.aTAMBAH": "Akan ditambah",
+      "imp.aPERBARUI": "Akan diperbarui",
+      "imp.aVERSI BARU": "Jadi versi baru",
+      "imp.aEXCEPTION": "Masuk dengan exception",
+      "imp.terapkan": "Terapkan {n} baris",
+      "imp.terapkanJudul": "Terapkan hasil unggahan",
+      "imp.terapkanPesan": "{n} baris akan disimpan. {g} baris bergalat dilewati dan tidak berubah.",
+      "imp.unduhGalat": "Unduh baris gagal",
+      "imp.berhasil": "{n} baris masuk, {g} baris dilewati",
+      "imp.templatTerunduh": "Templat {n} diunduh",
+      "imp.cadangan": "Unduh cadangan",
+      "imp.pulihkan": "Pulihkan cadangan",
+      "imp.pulihkanPesan": "Seluruh data saat ini akan diganti isi berkas cadangan. Tindakan ini tidak bisa dibatalkan.",
+      "imp.pulihBerhasil": "Cadangan dipulihkan",
+      "imp.tidakAda": "Tidak ada data yang bisa Anda unggah",
+      "imp.tidakAdaSub": "Hak unggah mengikuti peran. Master milik OD, asumsi biaya milik C&B, usulan milik departemen, realisasi milik HC.",
+      "imp.errBerkas": "Jenis berkas tidak dikenal",
+      "imp.errPeran": "Peran Anda tidak boleh mengunggah data ini",
+      "imp.errKolom": "Kolom wajib belum ada di berkas: {k}",
+      "imp.errBaca": "Berkas tidak bisa dibaca",
+      "imp.errJson": "Berkas cadangan bukan JSON yang sah",
+      "imp.errCadangan": "Isi berkas cadangan tidak dikenali",
+      "imp.vNik": "NIK wajib diisi",
+      "imp.vNama": "Nama wajib diisi",
+      "imp.vDept": "Departemen {v} tidak ada",
+      "imp.vGrade": "Grade {v} tidak ada",
+      "imp.vPosisi": "Posisi {v} tidak ada",
+      "imp.vGaji": "Gaji pokok wajib lebih dari nol",
+      "imp.vAction": "Jenis action {v} tidak dikenal",
+      "imp.vKaryawan": "Karyawan {v} tidak ada",
+      "audit.d.impor": "Mengimpor data {k}, {n} baris masuk dan {g} baris dilewati",
+      "audit.d.pulih": "Memulihkan cadangan bertanggal {t}",
       "audit.d.denyScope": "Percobaan mengubah data di luar lingkup akses",
       "audit.d.denyCap": "Peran tidak memiliki kapabilitas {cap}",
       "audit.d.denyScreen": "Percobaan membuka layar tanpa kapabilitas",
@@ -4745,6 +4804,65 @@ window.NB_DATA.cost_assumptions = [
       "tutup.sisa": "{n} units of quota will go unrealised once the cycle closes",
       "tutup.errBlokir": "{n} items still block the closure of this cycle",
       "audit.d.ekspor": "Exported report {id} containing {n} rows",
+      // Data import and export
+      "nav.data": "Import & Export",
+      "imp.judul": "Data Import & Export",
+      "imp.sub": "Download a template, fill it in Excel, upload it back. Every upload passes the same validation as typing on screen.",
+      "imp.aturanJudul": "Uploads never bypass the rules",
+      "imp.aturanIsi": "Uploaded rows are checked with exactly the same rules as typed rows. A bad row fails only itself, not the whole file, and can be downloaded back together with the reason.",
+      "imp.unduhJudul": "Templates and exports",
+      "imp.unduhSub": "A template carries the header row and one example row. Exporting the current content is useful for editing what already exists.",
+      "imp.unggahJudul": "Upload a file",
+      "imp.unggahSub": "CSV with semicolon or comma separators, both are detected automatically.",
+      "imp.pilihBerkas": "Data type",
+      "imp.pilihCsv": "Choose a CSV file",
+      "imp.templat": "Template",
+      "imp.eksporIsi": "Export content",
+      "imp.kolomInfo": "{n} columns, {w} of them required",
+      "imp.fKARYAWAN": "Master",
+      "imp.fASUMSI": "Cost",
+      "imp.fUSULAN": "Proposal",
+      "imp.fREALISASI": "Actual",
+      "imp.dKARYAWAN": "Employees and their placement",
+      "imp.dASUMSI": "Cost assumptions by grade",
+      "imp.dUSULAN": "MPP proposal rows",
+      "imp.dREALISASI": "Execution against allocation",
+      "imp.pratinjauJudul": "Preview of {n}",
+      "imp.pratinjauSub": "{v} rows ready, {g} rows with errors. Nothing is saved until you apply.",
+      "imp.thBaris": "Row",
+      "imp.thHasil": "Check result",
+      "imp.aTAMBAH": "Will be added",
+      "imp.aPERBARUI": "Will be updated",
+      "imp.aVERSI BARU": "Becomes a new version",
+      "imp.aEXCEPTION": "Enters with an exception",
+      "imp.terapkan": "Apply {n} rows",
+      "imp.terapkanJudul": "Apply the upload",
+      "imp.terapkanPesan": "{n} rows will be saved. {g} rows with errors are skipped and left untouched.",
+      "imp.unduhGalat": "Download failed rows",
+      "imp.berhasil": "{n} rows imported, {g} rows skipped",
+      "imp.templatTerunduh": "Template {n} downloaded",
+      "imp.cadangan": "Download backup",
+      "imp.pulihkan": "Restore backup",
+      "imp.pulihkanPesan": "All current data will be replaced by the backup file. This cannot be undone.",
+      "imp.pulihBerhasil": "Backup restored",
+      "imp.tidakAda": "There is no data you may upload",
+      "imp.tidakAdaSub": "Upload rights follow the role. Master belongs to OD, cost assumptions to C&B, proposals to departments, actuals to HC.",
+      "imp.errBerkas": "Unknown file type",
+      "imp.errPeran": "Your role may not upload this data",
+      "imp.errKolom": "Required columns are missing from the file: {k}",
+      "imp.errBaca": "The file could not be read",
+      "imp.errJson": "The backup file is not valid JSON",
+      "imp.errCadangan": "The backup content is not recognised",
+      "imp.vNik": "Employee ID is required",
+      "imp.vNama": "Name is required",
+      "imp.vDept": "Department {v} does not exist",
+      "imp.vGrade": "Grade {v} does not exist",
+      "imp.vPosisi": "Position {v} does not exist",
+      "imp.vGaji": "Base salary must be above zero",
+      "imp.vAction": "Unknown action type {v}",
+      "imp.vKaryawan": "Employee {v} does not exist",
+      "audit.d.impor": "Imported {k} data, {n} rows in and {g} rows skipped",
+      "audit.d.pulih": "Restored a backup dated {t}",
       "audit.d.denyScope": "Attempted to change data outside the access scope",
       "audit.d.denyCap": "Role lacks the capability {cap}",
       "audit.d.denyScreen": "Attempted to open a screen without the capability",
@@ -4958,7 +5076,7 @@ window.NB_DATA.cost_assumptions = [
          "cycle.manage", "snapshot.view"],
     HOD: ["view.own", "plan.create", "plan.submit", "plan.review.own", "cost.view.own",
           "monitor.own", "audit.own", "dept.note.edit"],
-    CB: ["view.all", "cost.assumption", "cost.calculate", "cost.view", "review.support",
+    CB: ["view.all", "cost.assumption", "cost.import", "cost.calculate", "cost.view", "review.support",
          "monitor.cost", "audit.relevant"],
     MANAGEMENT: ["view.all", "cost.view", "review.decide", "approve", "adjust.approved",
                  "monitor.company", "audit.relevant"],
@@ -5071,7 +5189,9 @@ window.NB_DATA.cost_assumptions = [
     "ACTUAL_BLOCKED":   { label: "Actual Blocked", badge: "is-red" },
     "ACTUAL_EXCEPTION": { label: "Exception",   badge: "is-amber" },
     "EXCEPTION_DECISION": { label: "Exc Decision", badge: "is-indigo" },
-    "REPORT_EXPORT":  { label: "Report Export", badge: "is-teal" }
+    "REPORT_EXPORT":  { label: "Report Export", badge: "is-teal" },
+    "DATA_IMPORT":    { label: "Data Import", badge: "is-violet" },
+    "DATA_RESTORE":   { label: "Data Restore", badge: "is-red" }
   };
 
   // detail boleh berupa string, atau objek { key, vars, reason } supaya pesan log
@@ -5107,7 +5227,13 @@ window.NB_DATA.cost_assumptions = [
     return entri;
   }
 
-  function semua() { return log.slice().reverse(); }
+  // Temuan uji keamanan: slice hanya menyalin daftarnya, entrinya tetap objek yang sama,
+  // sehingga isi audit bisa diubah lewat hasil pembacaan. Audit bersifat append only,
+  // jadi yang keluar harus salinan dalam.
+  function semua() {
+    try { return JSON.parse(JSON.stringify(log)).reverse(); }
+    catch (e) { return log.slice().reverse(); }
+  }
 
   // Penyaringan audit mengikuti lingkup pengguna (bab 23: HOD hanya "own relevant").
   function untuk(user, departmentResolver) {
@@ -5522,9 +5648,23 @@ window.NB_DATA.cost_assumptions = [
 (function (global) {
   "use strict";
 
+  // Temuan uji keamanan: sel yang diawali sama dengan, tambah, kurang, atau at akan
+  // dieksekusi sebagai rumus oleh Excel dan Google Sheets saat berkas dibuka. Nama karyawan
+  // atau alasan bisnis yang diketik seseorang bisa berubah menjadi perintah di mesin orang
+  // lain. Sel seperti itu diawali tanda kutip tunggal supaya dibaca sebagai teks.
+  //
+  // Angka tidak pernah ikut dilindungi, karena biaya negatif diawali tanda kurang dan
+  // harus tetap bisa dijumlahkan di spreadsheet.
+  function angkaMurni(v) {
+    if (typeof v === "number") return true;
+    var t = String(v).trim();
+    return t !== "" && /^-?\d+([.,]\d+)?$/.test(t);
+  }
+
   function sel(v) {
     if (v === null || v === undefined) return "";
     var t = String(v);
+    if (!angkaMurni(v) && /^[=+\-@\t\r]/.test(t)) t = "'" + t;
     return /[";\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
   }
 
@@ -5551,6 +5691,142 @@ window.NB_DATA.cost_assumptions = [
   }
 
   global.NBReport = { keCsv: keCsv, unduh: unduh };
+})(window);
+
+</script>
+<script>
+/* js/domain/impor.js */
+// Mesin impor. Parser CSV, pembuat templat, dan definisi berkas yang boleh diunggah.
+//
+// Prinsip yang dipegang di sini:
+// 1. Impor tidak pernah melewati validasi. Baris yang diunggah melewati aturan yang sama
+//    persis dengan baris yang diketik di layar, termasuk BR-01, BR-A, BR-I, dan V09.
+// 2. Baris bergalat tidak menggagalkan seluruh berkas. Yang lolos masuk, yang gagal
+//    dikembalikan lengkap dengan alasannya supaya bisa diperbaiki dan diunggah ulang.
+// 3. Impor selalu menambah atau membuat versi baru, tidak pernah menimpa diam-diam.
+(function (global) {
+  "use strict";
+
+  // Pemisah dideteksi dari baris pertama. Excel Indonesia menulis titik koma,
+  // ekspor dari sistem lain sering memakai koma.
+  function deteksiPemisah(teks) {
+    var baris = teks.split(/\r?\n/)[0] || "";
+    var titikKoma = (baris.match(/;/g) || []).length;
+    var koma = (baris.match(/,/g) || []).length;
+    return titikKoma >= koma ? ";" : ",";
+  }
+
+  function urai(teks) {
+    if (!teks) return { kolom: [], baris: [] };
+    if (teks.charCodeAt(0) === 0xFEFF) teks = teks.slice(1);
+    var pemisah = deteksiPemisah(teks);
+    var baris = [], sel = "", kini = [], dalamKutip = false;
+
+    for (var i = 0; i < teks.length; i++) {
+      var c = teks[i];
+      if (dalamKutip) {
+        if (c === '"' && teks[i + 1] === '"') { sel += '"'; i++; }
+        else if (c === '"') dalamKutip = false;
+        else sel += c;
+      } else if (c === '"') dalamKutip = true;
+      else if (c === pemisah) { kini.push(sel); sel = ""; }
+      else if (c === "\n") { kini.push(sel); baris.push(kini); kini = []; sel = ""; }
+      else if (c !== "\r") sel += c;
+    }
+    if (sel.length || kini.length) { kini.push(sel); baris.push(kini); }
+    baris = baris.filter(function (b) { return b.some(function (x) { return String(x).trim() !== ""; }); });
+    if (!baris.length) return { kolom: [], baris: [] };
+
+    var kepala = baris[0].map(function (h) { return String(h).trim(); });
+    var isi = baris.slice(1).map(function (b, idx) {
+      var o = { _baris: idx + 2 };   // nomor baris di berkas, kepala dihitung baris 1
+      kepala.forEach(function (h, j) { o[h] = (b[j] === undefined ? "" : String(b[j]).trim()); });
+      return o;
+    });
+    return { kolom: kepala, baris: isi, pemisah: pemisah };
+  }
+
+  // Definisi berkas yang boleh diunggah. kolom wajib ditandai w.
+  var BERKAS = {
+    KARYAWAN: {
+      kode: "KARYAWAN", cap: "master.employee.edit",
+      kolom: [
+        { k: "employee_id", w: true }, { k: "name", w: true }, { k: "position_id", w: true },
+        { k: "grade_id", w: true }, { k: "department_id", w: true },
+        { k: "employment_status", w: false }, { k: "join_date", w: false }
+      ],
+      contoh: [{ employee_id: "NBT2999", name: "Nama Karyawan Baru", position_id: "POS-MKT-004",
+                 grade_id: "G8", department_id: "D-MKT", employment_status: "Tetap",
+                 join_date: "2026-01-15" }]
+    },
+    ASUMSI: {
+      kode: "ASUMSI", cap: "cost.assumption",
+      kolom: [
+        { k: "grade_id", w: true }, { k: "gaji_pokok", w: true }, { k: "tunj_grade", w: true },
+        { k: "tunj_jabatan", w: true }, { k: "tunj_komunikasi", w: true },
+        { k: "tunj_kehadiran", w: true }, { k: "tunj_makan", w: true },
+        { k: "tunj_pph21", w: true }, { k: "tunj_cop_hop", w: true },
+        { k: "asuransi_pihak_ketiga", w: true }, { k: "bonus_x_upah", w: true }
+      ],
+      contoh: [{ grade_id: "G8", gaji_pokok: 12840000, tunj_grade: 1284000, tunj_jabatan: 0,
+                 tunj_komunikasi: 300000, tunj_kehadiran: 400000, tunj_makan: 550000,
+                 tunj_pph21: 1272000, tunj_cop_hop: 0, asuransi_pihak_ketiga: 250000,
+                 bonus_x_upah: 1 }]
+    },
+    USULAN: {
+      kode: "USULAN", cap: "plan.create",
+      kolom: [
+        { k: "department_id", w: true }, { k: "action_type", w: true },
+        { k: "employee_id", w: false }, { k: "position_id", w: false }, { k: "vacancy_id", w: false },
+        { k: "new_position_title", w: false }, { k: "target_grade_id", w: false },
+        { k: "target_department_id", w: false }, { k: "vacancy_subtype", w: false },
+        { k: "reduction_reason", w: false }, { k: "replacement_flag", w: false },
+        { k: "quantity", w: false }, { k: "effective_month", w: true },
+        { k: "fill_immediately", w: false }, { k: "justification", w: true }
+      ],
+      contoh: [{ department_id: "D-MKT", action_type: "EXTERNAL_HIRING", employee_id: "",
+                 position_id: "POS-MKT-004", vacancy_id: "", new_position_title: "",
+                 target_grade_id: "", target_department_id: "", vacancy_subtype: "",
+                 reduction_reason: "", replacement_flag: "Additional", quantity: 1,
+                 effective_month: 3, fill_immediately: "",
+                 justification: "Menambah kapasitas eksekusi kampanye digital 2027" }]
+    },
+    REALISASI: {
+      kode: "REALISASI", cap: "actual.record",
+      kolom: [
+        { k: "allocation_id", w: true }, { k: "quantity", w: true },
+        { k: "actual_date", w: true }, { k: "employee_name", w: false }
+      ],
+      contoh: [{ allocation_id: "ALO-2027-0001", quantity: 1, actual_date: "2027-03-10",
+                 employee_name: "Nama yang benar-benar masuk" }]
+    }
+  };
+
+  function def(kode) { return BERKAS[kode] || null; }
+  function daftar() { return Object.keys(BERKAS); }
+
+  // Templat berisi kepala kolom dan satu baris contoh, supaya format tidak perlu ditebak.
+  function templat(kode) {
+    var b = def(kode);
+    if (!b) return "";
+    var kolom = b.kolom.map(function (k) { return { kunci: k.k, label: k.k }; });
+    return NBReport.keCsv(kolom, b.contoh);
+  }
+
+  // Pemeriksaan bentuk berkas sebelum isinya diperiksa satu per satu.
+  function periksaKepala(kode, kolom) {
+    var b = def(kode);
+    if (!b) return { ok: false, kunci: "imp.errBerkas" };
+    var kurang = b.kolom.filter(function (k) { return k.w && kolom.indexOf(k.k) === -1; })
+                        .map(function (k) { return k.k; });
+    if (kurang.length) return { ok: false, kunci: "imp.errKolom", vars: { k: kurang.join(", ") } };
+    return { ok: true };
+  }
+
+  global.NBImpor = {
+    urai: urai, def: def, daftar: daftar, templat: templat,
+    periksaKepala: periksaKepala, BERKAS: BERKAS
+  };
 })(window);
 
 </script>
@@ -7284,6 +7560,247 @@ window.NB_DATA.cost_assumptions = [
     return { masalah: masalah, bolehTutup: !masalah.some(function (m) { return m.blokir; }) };
   }
 
+  // --- Impor dan ekspor data (micro-app) ------------------------------------
+  // Impor memakai jalur tulis yang sama dengan layar, jadi tidak ada aturan yang bisa
+  // dilewati dengan cara mengunggah berkas. Baris yang gagal dikembalikan dengan alasannya.
+
+  function bolehImpor(kode) {
+    var b = NBImpor.def(kode);
+    if (!b) return { ok: false, kunci: "imp.errBerkas" };
+    if (b.cap === "cost.assumption" && !NBRbac.can(sesi.user, "cost.assumption")) {
+      return { ok: false, kunci: "imp.errPeran" };
+    }
+    if (b.cap !== "cost.assumption" && !NBRbac.can(sesi.user, b.cap)) {
+      return { ok: false, kunci: "imp.errPeran" };
+    }
+    return { ok: true };
+  }
+
+  function angkaDari(v) {
+    if (v === null || v === undefined || v === "") return 0;
+    return Number(String(v).replace(/[^0-9,.-]/g, "").replace(/\.(?=\d{3}\b)/g, "").replace(",", "."));
+  }
+
+  function benarDari(v) {
+    return ["1", "true", "ya", "y", "yes"].indexOf(String(v || "").toLowerCase()) !== -1;
+  }
+
+  // Periksa satu baris impor tanpa menuliskannya. Dipakai untuk pratinjau.
+  function periksaImpor(kode, r, cycleId) {
+    if (kode === "KARYAWAN") {
+      if (!r.employee_id) return { ok: false, kunci: "imp.vNik" };
+      if (!r.name) return { ok: false, kunci: "imp.vNama" };
+      if (!_dep(r.department_id)) return { ok: false, kunci: "imp.vDept", vars: { v: r.department_id } };
+      if (!db.grades.some(function (g) { return g.grade_id === r.grade_id; })) {
+        return { ok: false, kunci: "imp.vGrade", vars: { v: r.grade_id } };
+      }
+      if (!_pos(r.position_id)) return { ok: false, kunci: "imp.vPosisi", vars: { v: r.position_id } };
+      return { ok: true, aksi: _kar(r.employee_id) ? "PERBARUI" : "TAMBAH" };
+    }
+
+    if (kode === "ASUMSI") {
+      if (!db.grades.some(function (g) { return g.grade_id === r.grade_id; })) {
+        return { ok: false, kunci: "imp.vGrade", vars: { v: r.grade_id } };
+      }
+      if (angkaDari(r.gaji_pokok) <= 0) return { ok: false, kunci: "imp.vGaji" };
+      return { ok: true, aksi: "VERSI BARU" };
+    }
+
+    if (kode === "USULAN") {
+      var jaga = bolehRencana(cycleId, r.department_id);
+      if (!jaga.ok) return { ok: false, kunci: jaga.kunci || "plan.errTutup", vars: jaga.vars };
+      if (!NBActions.def(r.action_type)) return { ok: false, kunci: "imp.vAction", vars: { v: r.action_type } };
+      var calon = {
+        line_item_id: "SEMENTARA", submission_id: (submissionDepartemen(cycleId, r.department_id) || {}).submission_id || "",
+        department_id: r.department_id, action_type: r.action_type,
+        employee_id: r.employee_id || null, position_id: r.position_id || null,
+        vacancy_id: r.vacancy_id || null, new_position_title: r.new_position_title || null,
+        target_grade_id: r.target_grade_id || null, target_department_id: r.target_department_id || null,
+        vacancy_subtype: r.vacancy_subtype || null, reduction_reason: r.reduction_reason || null,
+        replacement_flag: r.replacement_flag || null,
+        quantity: angkaDari(r.quantity) || 1, effective_month: angkaDari(r.effective_month),
+        fill_immediately: benarDari(r.fill_immediately), justification: r.justification || ""
+      };
+      var kar = calon.employee_id ? _kar(calon.employee_id) : null;
+      if (calon.employee_id && !kar) return { ok: false, kunci: "imp.vKaryawan", vars: { v: calon.employee_id } };
+      var h = NBValidate.periksa(calon, {
+        semuaBaris: calon.submission_id ? db.line_items.filter(function (l) {
+          return l.submission_id === calon.submission_id;
+        }) : [],
+        gradeAsal: kar ? kar.grade_id : null,
+        currentHc: null,
+        levelGrade: function (id) {
+          var g = db.grades.filter(function (x) { return x.grade_id === id; })[0];
+          return g ? g.level : 0;
+        }
+      });
+      if (h.errors.length) {
+        return { ok: false, kunci: h.errors[0].kunci, vars: h.errors[0].vars, kode: h.errors[0].kode };
+      }
+      return { ok: true, aksi: "TAMBAH", data: calon };
+    }
+
+    if (kode === "REALISASI") {
+      var a = _alok(r.allocation_id);
+      if (!a) return { ok: false, kunci: "mon.errAlokasi" };
+      if (!NBRbac.inScope(sesi.user, db.departments, a.department_id)) {
+        return { ok: false, kunci: "plan.errLingkup" };
+      }
+      var q = angkaDari(r.quantity);
+      if (!q || q < 1) return { ok: false, kunci: "mon.errQty" };
+      if (!r.actual_date) return { ok: false, kunci: "mon.errTanggal" };
+      var c = _sik(a.cycle_id);
+      if (String(r.actual_date).slice(0, 4) !== String(c.year)) {
+        return { ok: false, kunci: "mon.errTahun", vars: { y: c.year } };
+      }
+      var sisa = a.approved_qty - a.consumed_qty;
+      if (q > sisa && ["EXTERNAL_HIRING", "VACANCY_ACTION", "POSITION_CREATION"].indexOf(a.action_type) !== -1) {
+        return { ok: false, kunci: "mon.errMelebihi", vars: { q: q, s: Math.max(0, sisa) } };
+      }
+      return { ok: true, aksi: q > sisa ? "EXCEPTION" : "TAMBAH" };
+    }
+
+    return { ok: false, kunci: "imp.errBerkas" };
+  }
+
+  function pratinjauImpor(kode, baris, cycleId) {
+    var izin = bolehImpor(kode);
+    if (!izin.ok) return { ok: false, kunci: izin.kunci };
+    var hasil = baris.map(function (r) {
+      var h = periksaImpor(kode, r, cycleId);
+      return { baris: r, ok: h.ok, aksi: h.aksi || null, data: h.data || null,
+               kunci: h.kunci || null, vars: h.vars || {}, kodeGalat: h.kode || null };
+    });
+    return {
+      ok: true, hasil: hasil,
+      valid: hasil.filter(function (h) { return h.ok; }).length,
+      galat: hasil.filter(function (h) { return !h.ok; }).length
+    };
+  }
+
+  // Terapkan hanya baris yang lolos. Baris bergalat dikembalikan supaya bisa diperbaiki.
+  function terapkanImpor(kode, baris, cycleId) {
+    var pra = pratinjauImpor(kode, baris, cycleId);
+    if (!pra.ok) return pra;
+    var lolos = pra.hasil.filter(function (h) { return h.ok; });
+    var masuk = 0;
+
+    if (kode === "KARYAWAN") {
+      lolos.forEach(function (h) {
+        var r = h.baris, e = _kar(r.employee_id);
+        if (e) {
+          ["name", "position_id", "grade_id", "department_id", "employment_status", "join_date"]
+            .forEach(function (f) { if (r[f]) e[f] = r[f]; });
+        } else {
+          var d = _dep(r.department_id);
+          db.employees.push({
+            employee_id: r.employee_id, name: r.name, position_id: r.position_id,
+            grade_id: r.grade_id, department_id: r.department_id,
+            division_id: d ? d.division_id : null, entity_id: "ENT-KSNI",
+            cost_center_id: d ? d.cost_center_id : null,
+            employment_status: r.employment_status || "Tetap",
+            join_date: r.join_date || null
+          });
+        }
+        masuk += 1;
+      });
+    }
+
+    if (kode === "ASUMSI") {
+      var tahun = _sik(cycleId) ? _sik(cycleId).year : new Date().getFullYear();
+      var versi = db.cost_assumptions.length + 1;
+      var paket = {
+        assumption_id: "CA-" + tahun + "-U" + versi,
+        effective_date: tahun + "-01-01",
+        created_by: sesi.user.user_id,
+        note: "Diunggah lewat impor",
+        grades: lolos.map(function (h) {
+          var r = h.baris;
+          return {
+            grade_id: r.grade_id, gaji_pokok: angkaDari(r.gaji_pokok),
+            tunj_grade: angkaDari(r.tunj_grade), tunj_jabatan: angkaDari(r.tunj_jabatan),
+            tunj_komunikasi: angkaDari(r.tunj_komunikasi), tunj_kehadiran: angkaDari(r.tunj_kehadiran),
+            tunj_makan: angkaDari(r.tunj_makan), tunj_pph21: angkaDari(r.tunj_pph21),
+            tunj_cop_hop: angkaDari(r.tunj_cop_hop),
+            asuransi_pihak_ketiga: angkaDari(r.asuransi_pihak_ketiga),
+            bonus_x_upah: angkaDari(r.bonus_x_upah)
+          };
+        })
+      };
+      // Paket lama tidak dihapus. Asumsi selalu bertambah versinya (BR-11).
+      db.cost_assumptions.push(paket);
+      masuk = paket.grades.length;
+    }
+
+    if (kode === "USULAN") {
+      lolos.forEach(function (h) {
+        var res = tambahBaris(cycleId, h.baris.department_id, h.data);
+        if (res.ok) masuk += 1; else { h.ok = false; h.kunci = res.kunci || "plan.errTutup"; }
+      });
+    }
+
+    if (kode === "REALISASI") {
+      lolos.forEach(function (h) {
+        var r = h.baris;
+        var res = catatActual(r.allocation_id, {
+          quantity: angkaDari(r.quantity), actual_date: r.actual_date,
+          employee_name: r.employee_name || null
+        });
+        if (res.ok) masuk += 1; else { h.ok = false; h.kunci = res.kunci || "mon.errAlokasi"; }
+      });
+    }
+
+    simpan();
+    NBAudit.tulis(sesi.user, "DATA_IMPORT", "Import", kode,
+      { key: "audit.d.impor", vars: { k: kode, n: masuk, g: pra.galat } });
+    return { ok: true, masuk: masuk, galat: pra.hasil.filter(function (h) { return !h.ok; }) };
+  }
+
+  // Ekspor balik untuk setiap berkas yang bisa diunggah, supaya siklusnya tertutup:
+  // unduh, sunting di Excel, unggah lagi.
+  function eksporData(kode, cycleId) {
+    var b = NBImpor.def(kode);
+    if (!b) return { kolom: [], baris: [] };
+    var kolom = b.kolom.map(function (k) { return { kunci: k.k, label: k.k }; });
+
+    if (kode === "KARYAWAN") {
+      return { kolom: kolom, baris: NBRbac.filterRows(sesi.user, db.departments,
+        salin(db.employees), "department_id") };
+    }
+    if (kode === "ASUMSI") {
+      var paket = asumsiBiaya(tanggalAcuan(cycleId));
+      return { kolom: kolom, baris: paket ? paket.grades : [] };
+    }
+    if (kode === "USULAN") {
+      return { kolom: kolom, baris: barisSiklusTerlihat(cycleId) };
+    }
+    if (kode === "REALISASI") {
+      return { kolom: kolom, baris: actualTerlihat(cycleId) };
+    }
+    return { kolom: kolom, baris: [] };
+  }
+
+  // Cadangan seluruh keadaan prototipe, termasuk audit, supaya bisa disimpan dan dibuka lagi.
+  function cadangan() {
+    return JSON.stringify({
+      versi: 1, dibuat: new Date().toISOString(), oleh: sesi.user ? sesi.user.user_id : null,
+      db: db, audit: NBAudit.semua()
+    }, null, 2);
+  }
+
+  function pulihkanCadangan(teks) {
+    if (!NBRbac.can(sesi.user, "admin")) return { ok: false, kunci: "imp.errPeran" };
+    var isi;
+    try { isi = JSON.parse(teks); } catch (e) { return { ok: false, kunci: "imp.errJson" }; }
+    if (!isi || !isi.db || !isi.db.departments) return { ok: false, kunci: "imp.errCadangan" };
+    db = isi.db;
+    simpan();
+    if (global.NBAudit && NBAudit.reset) NBAudit.reset();
+    NBAudit.tulis(sesi.user, "DATA_RESTORE", "Prototype", "-",
+      { key: "audit.d.pulih", vars: { t: isi.dibuat ? NBFormat.tanggal(isi.dibuat) : "-" } });
+    return { ok: true };
+  }
+
   // --- Perubahan data master ---------------------------------------------
   // Tidak ada jalur tulis lain. Setiap perubahan wajib lewat sini supaya
   // audit tidak bisa dilewati (BR-08).
@@ -7360,6 +7877,8 @@ window.NB_DATA.cost_assumptions = [
     catatActual: catatActual, batalkanActual: batalkanActual, putuskanException: putuskanException,
     ringkasMonitoring: ringkasMonitoring, actualTerlihat: actualTerlihat,
     dataLaporan: dataLaporan, notifikasi: notifikasi, periksaPenutupan: periksaPenutupan,
+    bolehImpor: bolehImpor, pratinjauImpor: pratinjauImpor, terapkanImpor: terapkanImpor,
+    eksporData: eksporData, cadangan: cadangan, pulihkanCadangan: pulihkanCadangan,
     exceptionTerlihat: exceptionTerlihat,
     alokasiBaris: alokasiBaris, ringkasAlokasi: ringkasAlokasi,
     kirimSubmission: kirimSubmission, reviewSubmission: reviewSubmission,
@@ -10112,6 +10631,250 @@ window.NB_DATA.cost_assumptions = [
 
 </script>
 <script>
+/* js/pages/data.js */
+// Layar Impor dan Ekspor Data.
+// Alur yang dijaga: unduh templat, isi di Excel, unggah, lihat pratinjau, baru terapkan.
+// Tidak ada jalur yang melewati validasi, dan tidak ada berkas yang langsung masuk
+// tanpa pengguna melihat dulu berapa baris yang lolos dan berapa yang gagal.
+(function (global) {
+  "use strict";
+
+  var T = function (k, v) { return NBi18n.t(k, v); };
+  var state = { berkas: "USULAN", pratinjau: null, namaBerkas: null };
+
+  function daftarBerkas() {
+    return NBImpor.daftar().filter(function (k) { return NBStore.bolehImpor(k).ok; });
+  }
+
+  function kartuBerkas(kode) {
+    var b = NBImpor.def(kode);
+    var wajib = b.kolom.filter(function (k) { return k.w; }).length;
+    return "<div class='nb-setting' style='margin-bottom:8px'>" +
+      NBUi.badge(T("imp.f" + kode), "is-blue") +
+      "<div style='flex:1'>" +
+        "<div class='nb-setting-label'>" + NBUi.esc(T("imp.d" + kode)) + "</div>" +
+        "<div class='nb-setting-desc'>" + NBUi.esc(T("imp.kolomInfo",
+          { n: b.kolom.length, w: wajib })) + "</div>" +
+      "</div>" +
+      "<button class='nb-btn nb-btn-outline' data-templat='" + kode + "'>" +
+        NBUi.esc(T("imp.templat")) + "</button>" +
+      "<button class='nb-btn nb-btn-outline' data-ekspor='" + kode + "'>" +
+        NBUi.esc(T("imp.eksporIsi")) + "</button>" +
+    "</div>";
+  }
+
+  function tabelPratinjau() {
+    var p = state.pratinjau;
+    if (!p) return "";
+    var kolomTampil = NBImpor.def(state.berkas).kolom.slice(0, 5).map(function (k) { return k.k; });
+
+    return "<div class='nb-card' style='margin-top:24px'>" +
+      "<div class='nb-toolbar'><div>" +
+        "<div style='font-weight:600'>" + NBUi.esc(T("imp.pratinjauJudul", { n: state.namaBerkas })) + "</div>" +
+        "<div class='nb-cell-sub'>" + NBUi.esc(T("imp.pratinjauSub",
+          { v: p.valid, g: p.galat })) + "</div>" +
+      "</div><div style='display:flex;gap:8px'>" +
+        (p.galat ? "<button class='nb-btn nb-btn-outline' id='iUnduhGalat'>" +
+          NBUi.esc(T("imp.unduhGalat")) + "</button>" : "") +
+        "<button class='nb-btn nb-btn-quiet' id='iBatal'>" + NBUi.esc(T("umum.batal")) + "</button>" +
+        (p.valid ? "<button class='nb-btn nb-btn-primary' id='iTerapkan'>" +
+          NBUi.esc(T("imp.terapkan", { n: p.valid })) + "</button>" : "") +
+      "</div></div>" +
+      "<div class='nb-tablewrap'><table class='nb-table'><thead><tr>" +
+        "<th class='nb-num'>" + NBUi.esc(T("imp.thBaris")) + "</th>" +
+        kolomTampil.map(function (k) { return "<th>" + NBUi.esc(k) + "</th>"; }).join("") +
+        "<th>" + NBUi.esc(T("imp.thHasil")) + "</th>" +
+      "</tr></thead><tbody>" + p.hasil.slice(0, 60).map(function (h) {
+        return "<tr" + (h.ok ? "" : " style='background:var(--nb-red-50)'") + ">" +
+          "<td class='nb-num nb-mono'>" + (h.baris._baris || "-") + "</td>" +
+          kolomTampil.map(function (k) {
+            return "<td class='nb-cell-sub'>" + NBUi.esc(h.baris[k] || "-") + "</td>";
+          }).join("") +
+          "<td>" + (h.ok
+            ? NBUi.badge(T("imp.a" + (h.aksi || "TAMBAH")), "is-emerald")
+            : NBUi.badge((h.kodeGalat ? h.kodeGalat + " " : "") + T(h.kunci, h.vars), "is-red")) +
+          "</td></tr>";
+      }).join("") + "</tbody></table></div>" +
+      (p.hasil.length > 60
+        ? "<p class='nb-cell-sub' style='padding:12px 20px;margin:0'>" +
+          NBUi.esc(T("lap.potong", { n: p.hasil.length })) + "</p>"
+        : "") +
+    "</div>";
+  }
+
+  function render() {
+    var u = NBStore.user();
+    var c = NBStore.siklusAktif();
+    if (!c) return "<div class='nb-card'>" + NBUi.kosong(T("dash.siklusKosong"), T("dash.siklusKosongSub")) + "</div>";
+    var daftar = daftarBerkas();
+    if (!daftar.length) {
+      return "<div class='nb-pagehead'><div><h1>" + NBUi.esc(T("imp.judul")) + "</h1>" +
+        "<p>" + NBUi.esc(T("imp.sub")) + "</p></div></div>" +
+        "<div class='nb-card'>" + NBUi.kosong(T("imp.tidakAda"), T("imp.tidakAdaSub")) + "</div>";
+    }
+    if (daftar.indexOf(state.berkas) === -1) state.berkas = daftar[0];
+
+    return "" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("imp.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("imp.sub")) + "</p></div>" +
+      (NBRbac.can(u, "admin")
+        ? "<div style='display:flex;gap:8px'>" +
+          "<button class='nb-btn nb-btn-outline' id='iCadangan'>" + NBUi.esc(T("imp.cadangan")) + "</button>" +
+          "<label class='nb-btn nb-btn-outline' style='cursor:pointer'>" + NBUi.esc(T("imp.pulihkan")) +
+          "<input type='file' id='iPulih' accept='.json' style='display:none'></label></div>"
+        : "") +
+    "</div>" +
+
+    "<div class='nb-card nb-card-pad' style='margin-bottom:24px;background:var(--nb-gray-50)'>" +
+      "<div class='nb-note'>" + NBUi.svg("shield") + "<div>" +
+      "<div style='font-weight:600'>" + NBUi.esc(T("imp.aturanJudul")) + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("imp.aturanIsi")) + "</div></div></div></div>" +
+
+    "<div class='nb-card nb-card-pad' style='margin-bottom:24px'>" +
+      "<div class='nb-card-head'>" + NBUi.svg("layers") + "<div>" +
+      "<h3>" + NBUi.esc(T("imp.unduhJudul")) + "</h3>" +
+      "<p>" + NBUi.esc(T("imp.unduhSub")) + "</p></div></div>" +
+      daftar.map(kartuBerkas).join("") +
+    "</div>" +
+
+    "<div class='nb-card nb-card-pad'>" +
+      "<div class='nb-card-head'>" + NBUi.svg("save") + "<div>" +
+      "<h3>" + NBUi.esc(T("imp.unggahJudul")) + "</h3>" +
+      "<p>" + NBUi.esc(T("imp.unggahSub")) + "</p></div></div>" +
+      "<div class='nb-setting'>" +
+        "<div style='flex:1'>" +
+          "<div class='nb-setting-label'>" + NBUi.esc(T("imp.pilihBerkas")) + "</div>" +
+          "<select class='nb-select' id='iJenis' style='margin-top:8px;width:100%'>" +
+            daftar.map(function (k) {
+              return "<option value='" + k + "'" + (k === state.berkas ? " selected" : "") + ">" +
+                     NBUi.esc(T("imp.d" + k)) + "</option>";
+            }).join("") + "</select>" +
+        "</div>" +
+        "<label class='nb-btn nb-btn-primary' style='cursor:pointer'>" + NBUi.esc(T("imp.pilihCsv")) +
+        "<input type='file' id='iFile' accept='.csv,text/csv' style='display:none'></label>" +
+      "</div>" +
+      "<div id='iPesan' class='nb-cell-sub' style='color:var(--nb-red-700);margin-top:10px'></div>" +
+    "</div>" +
+
+    tabelPratinjau();
+  }
+
+  function bacaBerkas(file, selesai) {
+    var fr = new FileReader();
+    fr.onload = function () { selesai(String(fr.result)); };
+    fr.onerror = function () { NBUi.toast(T("imp.errBaca"), "error"); };
+    fr.readAsText(file, "utf-8");
+  }
+
+  function mount() {
+    var c = NBStore.siklusAktif();
+
+    document.querySelectorAll("button[data-templat]").forEach(function (b) {
+      b.onclick = function () {
+        var kode = b.dataset.templat;
+        NBReport.unduh("templat-" + kode.toLowerCase() + ".csv", NBImpor.templat(kode));
+        NBUi.toast(T("imp.templatTerunduh", { n: T("imp.d" + kode) }));
+      };
+    });
+
+    document.querySelectorAll("button[data-ekspor]").forEach(function (b) {
+      b.onclick = function () {
+        var kode = b.dataset.ekspor;
+        var data = NBStore.eksporData(kode, c.cycle_id);
+        NBReport.unduh(kode.toLowerCase() + "-" + c.cycle_id + ".csv",
+          NBReport.keCsv(data.kolom, data.baris));
+        NBUi.toast(T("lap.terunduh", { n: kode.toLowerCase() + ".csv" }));
+      };
+    });
+
+    var jenis = document.getElementById("iJenis");
+    if (jenis) jenis.onchange = function () {
+      state.berkas = this.value; state.pratinjau = null; NBApp.ulang();
+    };
+
+    var file = document.getElementById("iFile");
+    if (file) file.onchange = function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      bacaBerkas(f, function (teks) {
+        var urai = NBImpor.urai(teks);
+        var cek = NBImpor.periksaKepala(state.berkas, urai.kolom);
+        if (!cek.ok) {
+          document.getElementById("iPesan").textContent = T(cek.kunci, cek.vars || {});
+          return;
+        }
+        var p = NBStore.pratinjauImpor(state.berkas, urai.baris, c.cycle_id);
+        if (!p.ok) {
+          document.getElementById("iPesan").textContent = T(p.kunci, p.vars || {});
+          return;
+        }
+        state.pratinjau = p;
+        state.namaBerkas = f.name;
+        NBApp.ulang();
+      });
+    };
+
+    var batal = document.getElementById("iBatal");
+    if (batal) batal.onclick = function () { state.pratinjau = null; NBApp.ulang(); };
+
+    var terapkan = document.getElementById("iTerapkan");
+    if (terapkan) terapkan.onclick = function () {
+      var p = state.pratinjau;
+      NBUi.konfirmasi({
+        judul: T("imp.terapkanJudul"), pesan: T("imp.terapkanPesan", { n: p.valid, g: p.galat }),
+        ok: T("imp.terapkan", { n: p.valid }), batal: T("umum.batal")
+      }, function () {
+        var res = NBStore.terapkanImpor(state.berkas,
+          p.hasil.map(function (h) { return h.baris; }), c.cycle_id);
+        state.pratinjau = null;
+        NBUi.toast(res.ok ? T("imp.berhasil", { n: res.masuk, g: res.galat.length })
+                          : T(res.kunci, res.vars || {}), res.ok ? "ok" : "error");
+        NBApp.ulang();
+      });
+    };
+
+    var unduhGalat = document.getElementById("iUnduhGalat");
+    if (unduhGalat) unduhGalat.onclick = function () {
+      var gagal = state.pratinjau.hasil.filter(function (h) { return !h.ok; });
+      var kolom = NBImpor.def(state.berkas).kolom.map(function (k) { return { kunci: k.k, label: k.k }; });
+      kolom.push({ kunci: "_alasan", label: "alasan_gagal" });
+      var baris = gagal.map(function (h) {
+        return Object.assign({}, h.baris, { _alasan: T(h.kunci, h.vars) });
+      });
+      NBReport.unduh("gagal-" + state.berkas.toLowerCase() + ".csv", NBReport.keCsv(kolom, baris));
+    };
+
+    var cadangan = document.getElementById("iCadangan");
+    if (cadangan) cadangan.onclick = function () {
+      var nama = "cadangan-mpp-" + new Date().toISOString().slice(0, 10) + ".json";
+      var ok = NBReport.unduh(nama, NBStore.cadangan(), "application/json");
+      NBUi.toast(ok ? T("lap.terunduh", { n: nama }) : T("lap.gagalUnduh"), ok ? "ok" : "error");
+    };
+
+    var pulih = document.getElementById("iPulih");
+    if (pulih) pulih.onchange = function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      bacaBerkas(f, function (teks) {
+        NBUi.konfirmasi({
+          judul: T("imp.pulihkan"), pesan: T("imp.pulihkanPesan"),
+          ok: T("imp.pulihkan"), batal: T("umum.batal"), gaya: "nb-btn-soft-danger"
+        }, function () {
+          var res = NBStore.pulihkanCadangan(teks);
+          NBUi.toast(res.ok ? T("imp.pulihBerhasil") : T(res.kunci), res.ok ? "ok" : "error");
+          if (res.ok) { state.pratinjau = null; NBApp.ulang(); }
+        });
+      });
+    };
+  }
+
+  global.NBPages = global.NBPages || {};
+  global.NBPages.data = { render: render, mount: mount };
+})(window);
+
+</script>
+<script>
 /* js/pages/admin.js */
 // Layar Administrasi (bab 64 dan 65). Milik OD.
 // Isinya sengaja hanya membaca dan satu aksi berat, yaitu penutupan siklus, karena
@@ -10390,6 +11153,7 @@ window.NB_DATA.cost_assumptions = [
     { id: "monitoring",  i18n: "nav.monitoring",  cap: null },
     { id: "laporan",     i18n: "nav.laporan",     cap: null },
     { id: "audit",       i18n: "nav.audit",       cap: null },
+    { id: "data",        i18n: "nav.data",        cap: null },
     { id: "admin",       i18n: "nav.admin",       cap: "admin" }
   ];
 
