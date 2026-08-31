@@ -117,6 +117,11 @@ body.nb-app {
 
 h1, h2, h3, h4, .nb-head { font-family: var(--nb-font-head); letter-spacing: -.02em; }
 
+/* Ikon sebaris selalu punya ukuran dasar. SVG tanpa atribut lebar akan memenuhi lebar
+   induknya, dan itu sudah dua kali lolos ke layar. Aturan komponen di bawah menimpanya
+   karena letaknya lebih akhir dengan bobot yang sama. */
+.nb-app svg { width: 16px; height: 16px; flex: none; }
+
 .nb-container { max-width: var(--nb-maxw); margin: 0 auto; padding: 0 var(--nb-sp-6); }
 .nb-mono { font-family: var(--nb-font-mono); font-size: var(--nb-fs-sub); color: var(--nb-gray-800); }
 .nb-muted { color: var(--nb-gray-500); }
@@ -353,6 +358,13 @@ h1, h2, h3, h4, .nb-head { font-family: var(--nb-font-head); letter-spacing: -.0
 .nb-code button { border: 0; background: transparent; padding: 2px; cursor: pointer; color: var(--nb-gray-400); }
 .nb-code button:hover { color: var(--nb-gray-700); }
 .nb-code svg { width: 14px; height: 14px; }
+
+/* Matriks bulanan. Kolom pertama menempel di kiri supaya nama unit tetap terbaca
+   saat dua belas kolom bulan digeser mendatar. */
+.nb-matriks th, .nb-matriks td { padding: 10px var(--nb-sp-4); white-space: nowrap; }
+.nb-matriks-label { position: sticky; left: 0; z-index: 1; background: var(--nb-white);
+                    min-width: 190px; box-shadow: 1px 0 0 var(--nb-gray-100); }
+.nb-matriks tr.is-active .nb-matriks-label { background: #FEF6F6; }
 
 /* ==========================================================================
    BADGE STATUS
@@ -4045,6 +4057,27 @@ window.NB_DATA.cost_assumptions = [
       "imp.vKaryawan": "Karyawan {v} tidak ada",
       "audit.d.impor": "Mengimpor data {k}, {n} baris masuk dan {g} baris dilewati",
       "audit.d.pulih": "Memulihkan cadangan bertanggal {t}",
+      // Matriks bulanan
+      "nav.matriks": "Matriks Jan-Des",
+      "mx.judul": "Matriks Bulanan Januari sampai Desember",
+      "mx.sub": "Budget, actual, dan selisih {name} per bulan, dalam bentuk lembar yang biasa dipakai rapat.",
+      "mx.aturanJudul": "Angka bulanan adalah posisi akhir bulan",
+      "mx.aturanIsi": "Rekrutmen efektif Maret membuat kolom Maret sampai Desember naik satu, bukan hanya Maret. Budget berasal dari alokasi yang disetujui, actual dari tanggal masuk kerja, dan selisih selalu actual dikurangi budget.",
+      "mx.dasar": "Dasar: snapshot Current ditambah alokasi yang disetujui",
+      "mx.budget": "Budget",
+      "mx.actual": "Actual",
+      "mx.selisih": "Selisih",
+      "mx.thUnit": "Unit dan ukuran",
+      "mx.thDesember": "Posisi Des",
+      "mx.modeHc": "Headcount",
+      "mx.modeRp": "Rupiah",
+      "mx.levelDept": "Per departemen",
+      "mx.levelPosisi": "Per jabatan",
+      "mx.kosong": "Belum ada yang bisa ditampilkan",
+      "mx.kosongSub": "Matriks terisi setelah snapshot dirilis atau alokasi dibagikan.",
+      "mx.tanpaSnapshot": "Snapshot Current belum dirilis.",
+      "mx.tanpaSnapshotSub": "Posisi awal setiap bulan masih nol, sehingga yang terlihat baru pergerakan usulan, bukan posisi headcount sebenarnya.",
+      "lap.R10": "Matriks bulanan budget, actual, selisih",
       "audit.d.denyScope": "Percobaan mengubah data di luar lingkup akses",
       "audit.d.denyCap": "Peran tidak memiliki kapabilitas {cap}",
       "audit.d.denyScreen": "Percobaan membuka layar tanpa kapabilitas",
@@ -4879,6 +4912,27 @@ window.NB_DATA.cost_assumptions = [
       "imp.vKaryawan": "Employee {v} does not exist",
       "audit.d.impor": "Imported {k} data, {n} rows in and {g} rows skipped",
       "audit.d.pulih": "Restored a backup dated {t}",
+      // Monthly matrix
+      "nav.matriks": "Jan-Dec Matrix",
+      "mx.judul": "January to December Matrix",
+      "mx.sub": "Budget, actual, and variance for {name} by month, in the sheet layout used in meetings.",
+      "mx.aturanJudul": "Monthly figures are end of month positions",
+      "mx.aturanIsi": "A hire effective in March lifts March through December by one, not March alone. Budget comes from the approved allocation, actual from the first working day, and variance is always actual minus budget.",
+      "mx.dasar": "Basis: the Current snapshot plus approved allocations",
+      "mx.budget": "Budget",
+      "mx.actual": "Actual",
+      "mx.selisih": "Variance",
+      "mx.thUnit": "Unit and measure",
+      "mx.thDesember": "Dec position",
+      "mx.modeHc": "Headcount",
+      "mx.modeRp": "Rupiah",
+      "mx.levelDept": "By department",
+      "mx.levelPosisi": "By position",
+      "mx.kosong": "Nothing to show yet",
+      "mx.kosongSub": "The matrix fills once a snapshot is released or an allocation is distributed.",
+      "mx.tanpaSnapshot": "The Current snapshot has not been released.",
+      "mx.tanpaSnapshotSub": "The opening position of each month is still zero, so what you see is proposal movement rather than real headcount positions.",
+      "lap.R10": "Monthly budget, actual, variance matrix",
       "audit.d.denyScope": "Attempted to change data outside the access scope",
       "audit.d.denyCap": "Role lacks the capability {cap}",
       "audit.d.denyScreen": "Attempted to open a screen without the capability",
@@ -7468,6 +7522,33 @@ window.NB_DATA.cost_assumptions = [
       };
     }
 
+    if (kode === "R10") {
+      var mx = matriksBulanan(cycleId, { mode: "HC", level: "POSISI" });
+      var kolomMx = [
+        { kunci: "entitas", label: "Legal Entity" }, { kunci: "negara", label: "Negara" },
+        { kunci: "divisi", label: "Divisi" }, { kunci: "departemen", label: "Departemen" },
+        { kunci: "jabatan", label: "Jabatan" }, { kunci: "cost_center_id", label: "Cost Center" },
+        { kunci: "ukuran", label: "Ukuran" }
+      ];
+      for (var bl = 1; bl <= 12; bl++) {
+        kolomMx.push({ kunci: "b" + bl, label: NBFormat.bulanPendek(bl) });
+      }
+      kolomMx.push({ kunci: "total", label: "Posisi Desember" });
+
+      var barisMx = [];
+      mx.baris.forEach(function (b) {
+        [["Budget", "budget"], ["Actual", "actual"], ["Selisih", "selisih"]].forEach(function (pita) {
+          var o3 = { entitas: b.entitas, negara: b.negara, divisi: b.divisi,
+                     departemen: b.departemen, jabatan: b.jabatan || "-",
+                     cost_center_id: b.cost_center_id, ukuran: pita[0] };
+          for (var m2 = 0; m2 < 12; m2++) o3["b" + (m2 + 1)] = b[pita[1]][m2];
+          o3.total = b[pita[1]][11];
+          barisMx.push(o3);
+        });
+      });
+      return { kolom: kolomMx, baris: barisMx };
+    }
+
     if (kode === "R9") {
       return {
         kolom: [{ kunci: "timestamp", label: "Waktu" }, { kunci: "actor_email", label: "Aktor" },
@@ -7828,6 +7909,144 @@ window.NB_DATA.cost_assumptions = [
     return { ok: true };
   }
 
+  // --- Matriks bulanan Januari sampai Desember ------------------------------
+  // Bentuk baku laporan MPP bulanan: tiga pita baris per unit, yaitu Budget, Actual,
+  // dan Selisih, dikali dua belas kolom bulan.
+  //
+  // Keputusan yang dipakai: angka bulanan adalah POSISI AKHIR BULAN, bukan penambahan
+  // pada bulan itu. Rekrutmen efektif Maret membuat kolom Maret sampai Desember naik satu,
+  // bukan hanya Maret. Ini yang lazim dipakai di lembar MPP dan yang bisa dibandingkan
+  // langsung dengan payroll bulanan.
+
+  function biayaBulananGrade(gradeId, ctx) {
+    var r = NBCosting.bulanan(ctx.asumsi(gradeId), ctx.param);
+    return r ? r.total : 0;
+  }
+
+  // Dampak headcount satu alokasi per unit kuota, dipakai untuk memecah realisasi parsial.
+  function hcPerUnit(a) {
+    return a.approved_qty ? a.hc_impact / a.approved_qty : 0;
+  }
+
+  function matriksBulanan(cycleId, opsi) {
+    var o = opsi || {};
+    var mode = o.mode === "RP" ? "RP" : "HC";
+    var level = o.level === "POSISI" ? "POSISI" : "DEPT";
+    var ctx = konteksBiaya(cycleId);
+    var snap = snapshotAktif(cycleId);
+    var lines = snap ? snapshotBarisTerlihat(snap.snapshot_id) : [];
+    var alokasi = alokasiTerlihat(cycleId);
+    var actual = actualTerlihat(cycleId).filter(function (a) { return a.status === "RECORDED"; });
+    var deps = departemenTerlihat();
+
+    // Kunci baris: departemen, atau departemen ditambah jabatan.
+    function kunciDari(o2) {
+      if (level === "DEPT") return o2.department_id;
+      return o2.department_id + "|" + (o2.position_title || o2.new_position_title ||
+        (o2.position_id ? (_pos(o2.position_id) || {}).title : null) || "-");
+    }
+
+    var peta = {};
+    function ambil(kunci, contoh) {
+      if (peta[kunci]) return peta[kunci];
+      var d = _dep(contoh.department_id) || {};
+      var div = d.division_id ? divisi(d.division_id) : null;
+      var ent = div ? (db.entities.filter(function (e) {
+        return e.entity_id === div.entity_id; })[0] || {}) : {};
+      peta[kunci] = {
+        kunci: kunci, department_id: contoh.department_id, departemen: d.name || contoh.department_id,
+        cost_center_id: d.cost_center_id || "-",
+        divisi: div ? div.name : "-", entitas: ent.name || "-", negara: ent.country || "-",
+        jabatan: level === "POSISI" ? kunci.split("|")[1] : null,
+        awal: 0, budget: [], actual: [], selisih: []
+      };
+      for (var i = 0; i < 12; i++) {
+        peta[kunci].budget.push(0); peta[kunci].actual.push(0); peta[kunci].selisih.push(0);
+      }
+      return peta[kunci];
+    }
+
+    // 1. Posisi awal, yaitu keadaan pada snapshot Current.
+    lines.forEach(function (l) {
+      var b = ambil(kunciDari(l), l);
+      b.awal += mode === "HC" ? 1 : biayaBulananGrade(l.grade_id, ctx);
+    });
+    // Baris yang hanya muncul lewat usulan tetap perlu tempat.
+    alokasi.forEach(function (a) { ambil(kunciDari(a), a); });
+    if (level === "DEPT") deps.forEach(function (d) { ambil(d.department_id, d); });
+
+    // 2. Budget: posisi awal ditambah kumulatif alokasi yang sudah berlaku sampai bulan itu.
+    Object.keys(peta).forEach(function (kunci) {
+      var b = peta[kunci];
+      for (var m = 0; m < 12; m++) b.budget[m] = b.awal;
+    });
+    alokasi.forEach(function (a) {
+      var b = peta[kunciDari(a)];
+      if (!b) return;
+      var mulai = Math.max(1, Math.min(12, Number(a.effective_month) || 1));
+      var nilai = mode === "HC" ? a.hc_impact
+        : (a.monthly_cost || 0);   // biaya bulanan penuh alokasi, bukan yang sudah diprorata
+      for (var m = mulai - 1; m < 12; m++) b.budget[m] += nilai;
+      // Mutasi keluar mengurangi departemen asal, masuk menambah departemen tujuan.
+      if (a.action_type === "TRANSFER" && a.target_department_id) {
+        var tujuan = peta[level === "DEPT" ? a.target_department_id
+          : a.target_department_id + "|" + (kunciDari(a).split("|")[1] || "-")];
+        if (tujuan) {
+          for (var t = mulai - 1; t < 12; t++) {
+            b.budget[t] -= mode === "HC" ? 1 : (a.monthly_cost || 0);
+            tujuan.budget[t] += mode === "HC" ? 1 : (a.monthly_cost || 0);
+          }
+        }
+      }
+    });
+
+    // 3. Actual: posisi awal ditambah kumulatif realisasi menurut tanggal masuk kerja.
+    Object.keys(peta).forEach(function (kunci) {
+      var b = peta[kunci];
+      for (var m = 0; m < 12; m++) b.actual[m] = b.awal;
+    });
+    actual.forEach(function (r) {
+      var a = alokasi.filter(function (x) { return x.allocation_id === r.allocation_id; })[0];
+      if (!a) return;
+      var b = peta[kunciDari(a)];
+      if (!b) return;
+      var mulai = Math.max(1, Math.min(12, Number(r.effective_month) || 1));
+      var nilai = mode === "HC" ? hcPerUnit(a) * r.quantity
+        : (a.approved_qty ? (a.monthly_cost / a.approved_qty) * r.quantity : 0);
+      for (var m = mulai - 1; m < 12; m++) b.actual[m] += nilai;
+    });
+
+    // 4. Selisih selalu actual dikurangi budget, supaya kekurangan terbaca negatif.
+    var baris = Object.keys(peta).map(function (kunci) {
+      var b = peta[kunci];
+      for (var m = 0; m < 12; m++) {
+        b.budget[m] = Math.round(b.budget[m]);
+        b.actual[m] = Math.round(b.actual[m]);
+        b.selisih[m] = b.actual[m] - b.budget[m];
+      }
+      b.budgetAkhir = b.budget[11];
+      b.actualAkhir = b.actual[11];
+      b.selisihAkhir = b.selisih[11];
+      return b;
+    }).filter(function (b) {
+      return b.awal !== 0 || b.budget.some(function (x) { return x !== 0; }) ||
+             b.actual.some(function (x) { return x !== 0; });
+    }).sort(function (x, y) { return x.kunci < y.kunci ? -1 : 1; });
+
+    var total = { kunci: "TOTAL", departemen: null, budget: [], actual: [], selisih: [] };
+    for (var m = 0; m < 12; m++) {
+      total.budget.push(baris.reduce(function (t, b) { return t + b.budget[m]; }, 0));
+      total.actual.push(baris.reduce(function (t, b) { return t + b.actual[m]; }, 0));
+      total.selisih.push(total.actual[m] - total.budget[m]);
+    }
+    total.budgetAkhir = total.budget[11];
+    total.actualAkhir = total.actual[11];
+    total.selisihAkhir = total.selisih[11];
+
+    return { mode: mode, level: level, baris: baris, total: total,
+             assumption_id: ctx.assumption_id, punyaSnapshot: !!snap };
+  }
+
   // --- Perubahan data master ---------------------------------------------
   // Tidak ada jalur tulis lain. Setiap perubahan wajib lewat sini supaya
   // audit tidak bisa dilewati (BR-08).
@@ -7904,6 +8123,7 @@ window.NB_DATA.cost_assumptions = [
     catatActual: catatActual, batalkanActual: batalkanActual, putuskanException: putuskanException,
     ringkasMonitoring: ringkasMonitoring, actualTerlihat: actualTerlihat,
     dataLaporan: dataLaporan, notifikasi: notifikasi, periksaPenutupan: periksaPenutupan,
+    matriksBulanan: matriksBulanan,
     bolehImpor: bolehImpor, pratinjauImpor: pratinjauImpor, terapkanImpor: terapkanImpor,
     eksporData: eksporData, cadangan: cadangan, pulihkanCadangan: pulihkanCadangan,
     exceptionTerlihat: exceptionTerlihat,
@@ -10539,6 +10759,153 @@ window.NB_DATA.cost_assumptions = [
 
 </script>
 <script>
+/* js/pages/matriks.js */
+// Layar Matriks Jan sampai Des. Bentuk baku lembar MPP bulanan.
+//
+// Tiga pita baris per unit: Budget, Actual, Selisih, dikali dua belas kolom bulan.
+// Angka bulanan adalah posisi akhir bulan, bukan penambahan pada bulan itu, sehingga
+// bisa dibandingkan langsung dengan headcount payroll bulan berjalan.
+(function (global) {
+  "use strict";
+
+  var T = function (k, v) { return NBi18n.t(k, v); };
+  var state = { mode: "HC", level: "DEPT" };
+
+  function nilai(v, mode) {
+    if (mode === "RP") return NBFormat.rupiahRingkas(v);
+    return NBFormat.angka(v);
+  }
+
+  function selSelisih(v, mode) {
+    if (v === 0) return "<span class='nb-muted'>0</span>";
+    var warna = v < 0 ? "var(--nb-red-700)" : "var(--nb-emerald-fg)";
+    return "<span style='color:" + warna + ";font-weight:600'>" +
+           (v > 0 ? "+" : "") + nilai(v, mode) + "</span>";
+  }
+
+  function pita(b, kunciPita, label, mode, gaya) {
+    var sel = "";
+    for (var m = 0; m < 12; m++) {
+      sel += "<td class='nb-num nb-mono'>" +
+        (kunciPita === "selisih" ? selSelisih(b.selisih[m], mode) : nilai(b[kunciPita][m], mode)) +
+        "</td>";
+    }
+    return "<tr" + (gaya || "") + ">" +
+      "<td class='nb-matriks-label'>" + NBUi.esc(label) + "</td>" + sel +
+      "<td class='nb-num nb-mono'><b>" +
+        (kunciPita === "selisih" ? selSelisih(b.selisih[11], mode) : nilai(b[kunciPita][11], mode)) +
+      "</b></td></tr>";
+  }
+
+  function tabel(mx) {
+    if (!mx.baris.length) {
+      return NBUi.kosong(T("mx.kosong"), T("mx.kosongSub"), NBUi.svg("layers"));
+    }
+    var kepala = "<tr><th class='nb-matriks-label'>" + NBUi.esc(T("mx.thUnit")) + "</th>";
+    for (var m = 1; m <= 12; m++) {
+      kepala += "<th class='nb-num'>" + NBUi.esc(NBFormat.bulanPendek(m)) + "</th>";
+    }
+    kepala += "<th class='nb-num'>" + NBUi.esc(T("mx.thDesember")) + "</th></tr>";
+
+    var isi = mx.baris.map(function (b) {
+      var judul = "<tr class='is-active'><td class='nb-matriks-label' colspan='14'>" +
+        "<div class='nb-cell-title'>" + NBUi.esc(b.jabatan || b.departemen) + "</div>" +
+        "<div class='nb-cell-sub'>" + NBUi.esc(
+          (b.jabatan ? b.departemen + " &middot; " : "") + b.divisi + " &middot; " +
+          b.entitas + " &middot; " + b.negara + " &middot; " + b.cost_center_id
+        ).replace(/&amp;middot;/g, "&middot;") + "</div></td></tr>";
+      return judul +
+        pita(b, "budget", T("mx.budget"), mx.mode) +
+        pita(b, "actual", T("mx.actual"), mx.mode) +
+        pita(b, "selisih", T("mx.selisih"), mx.mode);
+    }).join("");
+
+    var total = "<tr class='is-active'><td class='nb-matriks-label' colspan='14'>" +
+      "<div class='nb-cell-title'>" + NBUi.esc(T("kons.totalPerusahaan")) + "</div></td></tr>" +
+      pita(mx.total, "budget", T("mx.budget"), mx.mode, " style='font-weight:600'") +
+      pita(mx.total, "actual", T("mx.actual"), mx.mode, " style='font-weight:600'") +
+      pita(mx.total, "selisih", T("mx.selisih"), mx.mode, " style='font-weight:600'");
+
+    return "<div class='nb-tablewrap'><table class='nb-table nb-matriks'>" +
+      "<thead>" + kepala + "</thead><tbody>" + isi + total + "</tbody></table></div>";
+  }
+
+  function render() {
+    var u = NBStore.user();
+    var c = NBStore.siklusAktif();
+    if (!c) return "<div class='nb-card'>" + NBUi.kosong(T("dash.siklusKosong"), T("dash.siklusKosongSub")) + "</div>";
+
+    var deps = NBStore.departemenTerlihat();
+    var bolehBiaya = deps.every(function (d) { return NBRbac.canSeeCost(u, d.department_id); });
+    if (!bolehBiaya && state.mode === "RP") state.mode = "HC";
+
+    var mx = NBStore.matriksBulanan(c.cycle_id, state);
+
+    var tombolMode = bolehBiaya
+      ? "<div class='nb-tabs'>" +
+        [["HC", "mx.modeHc"], ["RP", "mx.modeRp"]].map(function (t) {
+          return "<button class='nb-tab" + (state.mode === t[0] ? " is-active" : "") +
+                 "' data-mode='" + t[0] + "'>" + NBUi.esc(T(t[1])) + "</button>";
+        }).join("") + "</div>"
+      : NBUi.badge(T("mx.modeHc"), "is-plain");
+
+    var tombolLevel = "<div class='nb-tabs'>" +
+      [["DEPT", "mx.levelDept"], ["POSISI", "mx.levelPosisi"]].map(function (t) {
+        return "<button class='nb-tab" + (state.level === t[0] ? " is-active" : "") +
+               "' data-level='" + t[0] + "'>" + NBUi.esc(T(t[1])) + "</button>";
+      }).join("") + "</div>";
+
+    return "" +
+    "<div class='nb-pagehead'><div>" +
+      "<h1>" + NBUi.esc(T("mx.judul")) + "</h1>" +
+      "<p>" + NBUi.esc(T("mx.sub", { name: c.name })) + "</p></div>" +
+      "<button class='nb-btn nb-btn-primary' id='mxEkspor'>" + NBUi.esc(T("lap.ekspor")) + "</button>" +
+    "</div>" +
+
+    "<div class='nb-card nb-card-pad' style='margin-bottom:24px;background:var(--nb-gray-50)'>" +
+      "<div class='nb-note'>" + NBUi.svg("shield") + "<div>" +
+      "<div style='font-weight:600'>" + NBUi.esc(T("mx.aturanJudul")) + "</div>" +
+      "<div class='nb-cell-sub'>" + NBUi.esc(T("mx.aturanIsi")) + "</div></div></div></div>" +
+
+    (mx.punyaSnapshot ? "" :
+      "<div class='nb-card nb-card-pad' style='margin-bottom:24px;border-color:var(--nb-amber-bd);" +
+      "background:var(--nb-amber-bg)'><b>" + NBUi.esc(T("mx.tanpaSnapshot")) + "</b> " +
+      NBUi.esc(T("mx.tanpaSnapshotSub")) + "</div>") +
+
+    "<div class='nb-card'>" +
+      "<div class='nb-toolbar'>" +
+        "<div style='display:flex;gap:16px;align-items:center;flex-wrap:wrap'>" +
+          tombolMode + tombolLevel + "</div>" +
+        "<div class='nb-cell-sub'>" + NBUi.esc(T("mx.dasar")) + "</div>" +
+      "</div>" + tabel(mx) +
+    "</div>";
+  }
+
+  function mount() {
+    document.querySelectorAll("button[data-mode]").forEach(function (b) {
+      b.onclick = function () { state.mode = b.dataset.mode; NBApp.ulang(); };
+    });
+    document.querySelectorAll("button[data-level]").forEach(function (b) {
+      b.onclick = function () { state.level = b.dataset.level; NBApp.ulang(); };
+    });
+    var ek = document.getElementById("mxEkspor");
+    if (ek) ek.onclick = function () {
+      var c = NBStore.siklusAktif();
+      var data = NBStore.dataLaporan("R10", c.cycle_id);
+      var nama = "matriks-bulanan-" + c.cycle_id + ".csv";
+      var ok = NBReport.unduh(nama, NBReport.keCsv(data.kolom, data.baris));
+      NBUi.toast(ok ? T("lap.terunduh", { n: nama }) : T("lap.gagalUnduh"), ok ? "ok" : "error");
+      NBAudit.tulis(NBStore.user(), "REPORT_EXPORT", "Report", "R10",
+        { key: "audit.d.ekspor", vars: { id: "R10", n: data.baris.length } });
+    };
+  }
+
+  global.NBPages = global.NBPages || {};
+  global.NBPages.matriks = { render: render, mount: mount };
+})(window);
+
+</script>
+<script>
 /* js/pages/laporan.js */
 // Layar Laporan (bab 30). Sembilan laporan, semuanya memakai fungsi yang sama dengan
 // yang dipakai layar lain, sehingga angka di laporan tidak mungkin berbeda dari angka
@@ -10559,7 +10926,8 @@ window.NB_DATA.cost_assumptions = [
     { kode: "R6", i18n: "lap.R6", biaya: false },
     { kode: "R7", i18n: "lap.R7", biaya: false },
     { kode: "R8", i18n: "lap.R8", biaya: false },
-    { kode: "R9", i18n: "lap.R9", biaya: false }
+    { kode: "R9", i18n: "lap.R9", biaya: false },
+    { kode: "R10", i18n: "lap.R10", biaya: false }
   ];
 
   function bolehBiaya(u) {
@@ -10587,6 +10955,7 @@ window.NB_DATA.cost_assumptions = [
   // Kolom dianggap angka bila kuncinya memang berisi angka, bukan karena labelnya
   // kebetulan mengandung kata tertentu.
   var KUNCI_ANGKA = ["quantity", "effective_month", "hc", "requested", "approved", "variance",
+                     "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9", "b10", "b11", "b12", "total",
                      "approved_qty", "consumed_qty", "remaining_qty", "kuota", "terpakai", "sisa",
                      "utilisasi", "hcRealisasi", "kelebihan", "bulan", "baris"];
   function angka(k) {
@@ -11187,6 +11556,7 @@ window.NB_DATA.cost_assumptions = [
     { id: "review",      i18n: "nav.review",      cap: "review.decide", capAlt: "review.support" },
     { id: "approved",    i18n: "nav.approved",    cap: null },
     { id: "monitoring",  i18n: "nav.monitoring",  cap: null },
+    { id: "matriks",     i18n: "nav.matriks",     cap: null },
     { id: "laporan",     i18n: "nav.laporan",     cap: null },
     { id: "audit",       i18n: "nav.audit",       cap: null },
     { id: "data",        i18n: "nav.data",        cap: null },
