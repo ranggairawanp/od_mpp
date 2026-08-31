@@ -3107,17 +3107,29 @@ window.NB_DATA.cost_assumptions = [
     try { var v = sessionStorage.getItem(k); return v === null ? (memo[k] || null) : v; }
     catch (e) { return memo[k] || null; }
   }
+  var gagalTerakhir = null;
+
+  // Kegagalan penyimpanan tidak boleh ditelan diam-diam. Pada data besar, kuota
+  // sessionStorage sekitar 5 MB akan terlampaui, dan tanpa penanda ini pengguna
+  // baru sadar datanya hilang setelah berpindah layar.
   function set(k, v) {
     memo[k] = v;
-    try { sessionStorage.setItem(k, v); } catch (e) { /* memori saja */ }
+    try { sessionStorage.setItem(k, v); gagalTerakhir = null; return true; }
+    catch (e) {
+      gagalTerakhir = { kunci: k, ukuran: v ? v.length : 0, waktu: new Date().toISOString() };
+      return false;
+    }
   }
+
+  function statusSimpan() { return gagalTerakhir; }
   function hapus(k) {
     delete memo[k];
     try { sessionStorage.removeItem(k); } catch (e) { /* memori saja */ }
   }
   function bersihkan() { kunciDipakai.forEach(hapus); }
 
-  global.NBSimpanan = { get: get, set: set, hapus: hapus, bersihkan: bersihkan };
+  global.NBSimpanan = { get: get, set: set, hapus: hapus, bersihkan: bersihkan,
+                        statusSimpan: statusSimpan };
 })(window);
 
 </script>
@@ -3246,6 +3258,7 @@ window.NB_DATA.cost_assumptions = [
       "umum.keluar": "Keluar",
       "umum.layarTidakAda": "Layar tidak ditemukan",
       "umum.aksesDitolak": "Layar itu di luar hak akses peran Anda",
+      "umum.simpanGagal": "Data {n} MB melebihi kuota penyimpanan peramban. Perubahan hanya bertahan selama tab ini terbuka.",
 
       // Navigasi
       "nav.dashboard": "Dashboard",
@@ -3305,6 +3318,7 @@ window.NB_DATA.cost_assumptions = [
       "org.cari": "Cari nama, NIK, posisi",
       "org.kosong": "Tidak ada karyawan yang cocok",
       "org.kosongSub": "Ubah kata kunci atau filter departemen.",
+      "org.potong": "Menampilkan {n} baris pertama dari {total}. Pakai pencarian atau filter departemen untuk mempersempit.",
       "org.catatan": "Catatan departemen",
       "org.catatanSub": "Catatan bebas milik pemilik departemen. Setiap perubahan tercatat di audit.",
       "org.catatanPlaceholder": "Contoh: fokus 2027 pada penguatan tim digital.",
@@ -4084,6 +4098,7 @@ window.NB_DATA.cost_assumptions = [
       "umum.keluar": "Sign out",
       "umum.layarTidakAda": "Screen not found",
       "umum.aksesDitolak": "That screen is outside your role's access",
+      "umum.simpanGagal": "The {n} MB of data exceeds the browser storage quota. Changes only survive while this tab stays open.",
 
       "nav.dashboard": "Dashboard",
       "nav.organisasi": "Organization",
@@ -4139,6 +4154,7 @@ window.NB_DATA.cost_assumptions = [
       "org.cari": "Search name, ID, position",
       "org.kosong": "No matching employees",
       "org.kosongSub": "Change the keyword or the department filter.",
+      "org.potong": "Showing the first {n} of {total} rows. Use search or the department filter to narrow it down.",
       "org.catatan": "Department note",
       "org.catatanSub": "A free note owned by the department. Every change is recorded in the audit log.",
       "org.catatanPlaceholder": "Example: 2027 focus is strengthening the digital team.",
@@ -6206,8 +6222,16 @@ window.NB_DATA.cost_assumptions = [
     var s = _snap(snapshotId);
     if (!s || !s.lines) return [];
     var beda = [];
+    // Ditemukan saat uji beban: mencari karyawan satu per satu di dalam perulangan
+    // membuat fungsi ini berperilaku kuadratik, lima detik pada 32.000 baris.
+    // Dua peta pencarian menurunkannya menjadi linear.
+    var petaKar = {};
+    db.employees.forEach(function (e) { petaKar[e.employee_id] = e; });
+    var petaSnap = {};
+    s.lines.forEach(function (l) { petaSnap[l.employee_id] = true; });
+
     s.lines.forEach(function (l) {
-      var e = _kar(l.employee_id);
+      var e = petaKar[l.employee_id];
       if (!e) {
         beda.push({ employee_id: l.employee_id, nama: l.employee_name, field: "keberadaan",
                     snapshot: "ada", master: "tidak ada" });
@@ -6220,9 +6244,8 @@ window.NB_DATA.cost_assumptions = [
         }
       });
     });
-    var idSnap = s.lines.map(function (l) { return l.employee_id; });
     db.employees.forEach(function (e) {
-      if (idSnap.indexOf(e.employee_id) === -1) {
+      if (!petaSnap[e.employee_id]) {
         beda.push({ employee_id: e.employee_id, nama: e.name, field: "keberadaan",
                     snapshot: "tidak ada", master: "ada" });
       }
@@ -7146,9 +7169,13 @@ window.NB_DATA.cost_assumptions = [
   }
 
   function hitungUlangAlokasi(alokasi) {
-    var dipakai = db.actuals.filter(function (a) {
-      return a.allocation_id === alokasi.allocation_id && a.status === "RECORDED";
-    }).reduce(function (n, a) { return n + Number(a.quantity || 0); }, 0);
+    var dipakai = 0;
+    for (var i = 0; i < db.actuals.length; i++) {
+      var a = db.actuals[i];
+      if (a.allocation_id === alokasi.allocation_id && a.status === "RECORDED") {
+        dipakai += Number(a.quantity || 0);
+      }
+    }
     alokasi.consumed_qty = dipakai;
     alokasi.remaining_qty = Math.max(0, alokasi.approved_qty - dipakai);
     alokasi.over_qty = Math.max(0, dipakai - alokasi.approved_qty);
@@ -8130,6 +8157,7 @@ window.NB_DATA.cost_assumptions = [
 
   var T = function (k, v) { return NBi18n.t(k, v); };
   var state = { department_id: "", q: "" };
+  var BATAS_BARIS = 200;
 
   function barisKaryawan(u, list) {
     var bolehUbah = NBRbac.can(u, "master.employee.edit");
@@ -8140,7 +8168,10 @@ window.NB_DATA.cost_assumptions = [
         NBUi.kosong(T("org.kosong"), T("org.kosongSub")) + "</td></tr>";
     }
 
-    return list.map(function (e) {
+    // Ditemukan saat uji beban: menggambar 32.000 baris memakan 45 detik dan membekukan
+    // peramban. Tabel dibatasi, sisanya dicari lewat kotak pencarian.
+    var dipotong = list.length > BATAS_BARIS;
+    return list.slice(0, BATAS_BARIS).map(function (e) {
       var p = NBStore.posisi(e.position_id);
       var d = NBStore.departemen(e.department_id);
       var g = NBStore.grade(e.grade_id);
@@ -8166,7 +8197,12 @@ window.NB_DATA.cost_assumptions = [
             NBUi.esc(T("umum.ubah")) + "</button></td>"
           : "") +
       "</tr>";
-    }).join("");
+    }).join("") +
+    (dipotong
+      ? "<tr><td colspan='" + kolom + "'><div class='nb-cell-sub' style='padding:8px 0'>" +
+        NBUi.esc(T("org.potong", { n: BATAS_BARIS, total: NBFormat.angka(list.length) })) +
+        "</div></td></tr>"
+      : "");
   }
 
   function panelCatatan(u) {
@@ -11193,6 +11229,18 @@ window.NB_DATA.cost_assumptions = [
     el.style.display = "inline-flex";
   }
 
+  // Peringatan sekali jalan kalau penyimpanan sesi menolak menampung data.
+  // Diam-diam kehilangan data jauh lebih buruk daripada memberi tahu apa adanya.
+  var peringatanTampil = false;
+  function gambarPeringatanSimpan() {
+    if (peringatanTampil || !global.NBSimpanan || !NBSimpanan.statusSimpan) return;
+    var g = NBSimpanan.statusSimpan();
+    if (!g) return;
+    peringatanTampil = true;
+    NBUi.toast(NBi18n.t("umum.simpanGagal",
+      { n: Math.round(g.ukuran / 1048576 * 10) / 10 }), "error");
+  }
+
   function gambarIdentitas() {
     var u = NBStore.user();
     var deps = NBStore.departemenTerlihat();
@@ -11240,6 +11288,7 @@ window.NB_DATA.cost_assumptions = [
     gambarNav();
     gambarSiklus();
     gambarIdentitas();
+    gambarPeringatanSimpan();
     window.scrollTo(0, 0);
   }
 
