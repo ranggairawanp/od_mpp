@@ -3506,6 +3506,8 @@ window.NB_DATA.cost_assumptions = [
       "login.judul": "Masuk sebagai persona",
       "login.sub": "Prototipe tanpa autentikasi. Pilih peran untuk melihat perbedaan hak akses dan lingkup data.",
       "login.lingkup": "Lingkup: {s} ({d})",
+      "login.lingkupSemua": "Lingkup: seluruh departemen yang ada di data",
+      "login.dataDimuat": "Data yang sedang dimuat: {d} departemen, {k} karyawan. Jumlahnya mengikuti berkas struktur organisasi dan master karyawan yang diunggah, bukan angka tetap.",
       "login.batasJudul": "Batas prototipe.",
       "login.batasTeks": "Tidak ada kata sandi, tidak ada server, dan seluruh data karyawan di sini fiktif. Penyaringan lingkup akses berjalan di browser sehingga hanya berfungsi sebagai simulasi kontrol, bukan kontrol keamanan. Versi produksi wajib memakai SSO korporat dan menyaring data di sisi server.",
 
@@ -4233,6 +4235,15 @@ window.NB_DATA.cost_assumptions = [
       "imp.fASUMSI": "Biaya",
       "imp.fUSULAN": "Usulan",
       "imp.fREALISASI": "Realisasi",
+      "imp.fORGANISASI": "Struktur",
+      "imp.dORGANISASI": "Struktur organisasi, entitas sampai departemen",
+      "imp.vEntitas": "Kode dan nama legal entity wajib diisi",
+      "imp.vNegara": "Kode negara wajib diisi, misalnya ID atau MY",
+      "imp.vDivisi": "Kode dan nama divisi wajib diisi",
+      "imp.vDeptBaru": "Kode dan nama departemen wajib diisi",
+      "imp.vCostCenter": "Kode cost center wajib diisi",
+      "imp.vPindahDivisi": "Departemen {d} sudah berada di divisi {a}, tidak bisa dipindah ke {b} lewat impor",
+      "imp.vPindahEntitas": "Divisi {d} sudah berada di entitas {a}, tidak bisa dipindah ke {b} lewat impor",
       "imp.dKARYAWAN": "Data karyawan dan penempatannya",
       "imp.dASUMSI": "Asumsi biaya per grade",
       "imp.dUSULAN": "Baris usulan MPP",
@@ -4365,6 +4376,8 @@ window.NB_DATA.cost_assumptions = [
       "login.judul": "Sign in as a persona",
       "login.sub": "Prototype without authentication. Pick a role to see how access rights and data scope differ.",
       "login.lingkup": "Scope: {s} ({d})",
+      "login.lingkupSemua": "Scope: every department present in the data",
+      "login.dataDimuat": "Currently loaded: {d} departments, {k} employees. These counts follow the organization structure and employee master files that were uploaded, they are not fixed numbers.",
       "login.batasJudul": "Prototype limits.",
       "login.batasTeks": "No password, no server, and every employee record here is fictional. Access scope is filtered in the browser, so it simulates a control rather than enforcing one. The production version must use corporate SSO and filter data on the server.",
 
@@ -5088,6 +5101,15 @@ window.NB_DATA.cost_assumptions = [
       "imp.fASUMSI": "Cost",
       "imp.fUSULAN": "Proposal",
       "imp.fREALISASI": "Actual",
+      "imp.fORGANISASI": "Structure",
+      "imp.dORGANISASI": "Organization structure, entity down to department",
+      "imp.vEntitas": "Legal entity code and name are required",
+      "imp.vNegara": "Country code is required, for example ID or MY",
+      "imp.vDivisi": "Division code and name are required",
+      "imp.vDeptBaru": "Department code and name are required",
+      "imp.vCostCenter": "Cost center code is required",
+      "imp.vPindahDivisi": "Department {d} already sits under division {a} and cannot be moved to {b} by import",
+      "imp.vPindahEntitas": "Division {d} already sits under entity {a} and cannot be moved to {b} by import",
       "imp.dKARYAWAN": "Employees and their placement",
       "imp.dASUMSI": "Cost assumptions by grade",
       "imp.dUSULAN": "MPP proposal rows",
@@ -6034,6 +6056,21 @@ window.NB_DATA.cost_assumptions = [
 
   // Definisi berkas yang boleh diunggah. kolom wajib ditandai w.
   var BERKAS = {
+    // Struktur organisasi. Tanpa berkas ini, menambah departemen berarti menyunting kode,
+    // dan itu menutup jalan untuk perusahaan dengan puluhan departemen atau banyak entitas.
+    ORGANISASI: {
+      kode: "ORGANISASI", cap: "admin",
+      kolom: [
+        { k: "entity_id", w: true }, { k: "entity_name", w: true }, { k: "country", w: true },
+        { k: "division_id", w: true }, { k: "division_name", w: true },
+        { k: "department_id", w: true }, { k: "department_name", w: true },
+        { k: "cost_center_id", w: true }, { k: "cost_center_name", w: false }
+      ],
+      contoh: [{ entity_id: "ENT-KSNI", entity_name: "PT Kaldu Sari Nabati Indonesia",
+                 country: "ID", division_id: "DIV-CRP", division_name: "Corporate Services",
+                 department_id: "D-ITE", department_name: "Information Technology",
+                 cost_center_id: "CC-1400", cost_center_name: "Information Technology" }]
+    },
     KARYAWAN: {
       kode: "KARYAWAN", cap: "master.employee.edit",
       kolom: [
@@ -6250,6 +6287,13 @@ window.NB_DATA.cost_assumptions = [
   function karyawan(id) { var x = _kar(id); return x ? salin(x) : null; }
   // Pengguna aplikasi bukan karyawan. Dua entitas berbeda, jadi resolvernya juga berbeda.
   function semuaPengguna() { return salin(db.users); }
+
+  // Ringkasan ukuran data yang sedang dimuat. Dipakai halaman login, yang belum punya sesi
+  // sehingga tidak bisa memakai penyaringan lingkup.
+  function jumlahData() {
+    return { departemen: db.departments.length, karyawan: db.employees.length,
+             entitas: db.entities.length, posisi: db.positions.length };
+  }
   function pengguna(id) {
     var x = db.users.filter(function (u) { return u.user_id === id; })[0];
     return x ? salin(x) : null;
@@ -7911,6 +7955,28 @@ window.NB_DATA.cost_assumptions = [
 
   // Periksa satu baris impor tanpa menuliskannya. Dipakai untuk pratinjau.
   function periksaImpor(kode, r, cycleId) {
+    if (kode === "ORGANISASI") {
+      ["entity_id", "division_id", "department_id", "cost_center_id"].forEach(function () {});
+      if (!r.entity_id || !r.entity_name) return { ok: false, kunci: "imp.vEntitas" };
+      if (!r.country || String(r.country).trim().length < 2) return { ok: false, kunci: "imp.vNegara" };
+      if (!r.division_id || !r.division_name) return { ok: false, kunci: "imp.vDivisi" };
+      if (!r.department_id || !r.department_name) return { ok: false, kunci: "imp.vDeptBaru" };
+      if (!r.cost_center_id) return { ok: false, kunci: "imp.vCostCenter" };
+      // Departemen tidak boleh berpindah divisi diam-diam, karena seluruh konsolidasi
+      // dan laporan mengelompokkan lewat jalur entitas, divisi, departemen.
+      var adaDept = _dep(r.department_id);
+      if (adaDept && adaDept.division_id !== r.division_id) {
+        return { ok: false, kunci: "imp.vPindahDivisi",
+                 vars: { d: r.department_id, a: adaDept.division_id, b: r.division_id } };
+      }
+      var adaDiv = db.divisions.filter(function (x) { return x.division_id === r.division_id; })[0];
+      if (adaDiv && adaDiv.entity_id !== r.entity_id) {
+        return { ok: false, kunci: "imp.vPindahEntitas",
+                 vars: { d: r.division_id, a: adaDiv.entity_id, b: r.entity_id } };
+      }
+      return { ok: true, aksi: adaDept ? "PERBARUI" : "TAMBAH" };
+    }
+
     if (kode === "KARYAWAN") {
       if (!r.employee_id) return { ok: false, kunci: "imp.vNik" };
       if (!r.name) return { ok: false, kunci: "imp.vNama" };
@@ -8009,6 +8075,38 @@ window.NB_DATA.cost_assumptions = [
     var lolos = pra.hasil.filter(function (h) { return h.ok; });
     var masuk = 0;
 
+    if (kode === "ORGANISASI") {
+      lolos.forEach(function (h) {
+        var r = h.baris;
+        var ent = db.entities.filter(function (x) { return x.entity_id === r.entity_id; })[0];
+        if (ent) { ent.name = r.entity_name; ent.country = r.country; }
+        else db.entities.push({ entity_id: r.entity_id, name: r.entity_name,
+                                country: r.country, currency: r.currency || "IDR" });
+
+        var div = db.divisions.filter(function (x) { return x.division_id === r.division_id; })[0];
+        if (div) div.name = r.division_name;
+        else db.divisions.push({ division_id: r.division_id, entity_id: r.entity_id,
+                                 name: r.division_name });
+
+        var cc = db.cost_centers.filter(function (x) { return x.cost_center_id === r.cost_center_id; })[0];
+        if (cc) cc.name = r.cost_center_name || cc.name;
+        else db.cost_centers.push({ cost_center_id: r.cost_center_id,
+                                    name: r.cost_center_name || r.department_name,
+                                    owner_department_id: r.department_id });
+
+        var dep = _dep(r.department_id);
+        if (dep) {
+          dep.name = r.department_name;
+          dep.cost_center_id = r.cost_center_id;
+        } else {
+          db.departments.push({ department_id: r.department_id, division_id: r.division_id,
+                                name: r.department_name, cost_center_id: r.cost_center_id,
+                                hod_user_id: null, note: "" });
+        }
+        masuk += 1;
+      });
+    }
+
     if (kode === "KARYAWAN") {
       lolos.forEach(function (h) {
         var r = h.baris, e = _kar(r.employee_id);
@@ -8086,6 +8184,19 @@ window.NB_DATA.cost_assumptions = [
     var b = NBImpor.def(kode);
     if (!b) return { kolom: [], baris: [] };
     var kolom = b.kolom.map(function (k) { return { kunci: k.k, label: k.k }; });
+
+    if (kode === "ORGANISASI") {
+      return { kolom: kolom, baris: departemenTerlihat().map(function (d) {
+        var div = db.divisions.filter(function (x) { return x.division_id === d.division_id; })[0] || {};
+        var ent = db.entities.filter(function (x) { return x.entity_id === div.entity_id; })[0] || {};
+        var cc = db.cost_centers.filter(function (x) { return x.cost_center_id === d.cost_center_id; })[0] || {};
+        return { entity_id: ent.entity_id || "", entity_name: ent.name || "",
+                 country: ent.country || "", division_id: div.division_id || "",
+                 division_name: div.name || "", department_id: d.department_id,
+                 department_name: d.name, cost_center_id: d.cost_center_id,
+                 cost_center_name: cc.name || "" };
+      }) };
+    }
 
     if (kode === "KARYAWAN") {
       return { kolom: kolom, baris: NBRbac.filterRows(sesi.user, db.departments,
@@ -8316,6 +8427,7 @@ window.NB_DATA.cost_assumptions = [
     semuaDepartemen: semuaDepartemen, departemenTerlihat: departemenTerlihat,
     departemen: departemen, divisi: divisi, grade: grade, semuaGrade: semuaGrade,
     posisi: posisi, costCenter: costCenter, karyawan: karyawan, pengguna: pengguna, semuaPengguna: semuaPengguna,
+    jumlahData: jumlahData,
     karyawanTerlihat: karyawanTerlihat, posisiTerlihat: posisiTerlihat, vacancyTerlihat: vacancyTerlihat,
     semuaSiklus: semuaSiklus, siklus: siklus, siklusAktif: siklusAktif, bolehUbahSiklus: bolehUbahSiklus,
     buatSiklus: buatSiklus, ubahStatusSiklus: ubahStatusSiklus,
@@ -8373,6 +8485,7 @@ window.NB_DATA.cost_assumptions = [
             return d ? d.name : id;
           }).join(", ");
       var jml = NBRbac.scopeDepartments(u, deps).length;
+      var semua = u.scope.type === "ALL";
 
       return "<button class='nb-card nb-card-pad persona' data-user='" + u.user_id + "' " +
         "style='text-align:left;cursor:pointer;font-family:inherit'>" +
@@ -8385,10 +8498,12 @@ window.NB_DATA.cost_assumptions = [
           "</div></div>" +
         "<div style='margin-bottom:8px'>" + NBUi.badge(NBRbac.roleLabel(u.role), "is-plain") + "</div>" +
         "<div class='nb-cell-sub'>" + NBUi.esc(u.title) + "<br>" +
-          NBUi.esc(T("login.lingkup", {
-            s: namaLingkup,
-            d: jml === 1 ? T("umum.satuDept") : T("umum.nDept", { n: jml })
-          })) + "</div></button>";
+          NBUi.esc(semua
+            ? T("login.lingkupSemua")
+            : T("login.lingkup", {
+                s: namaLingkup,
+                d: jml === 1 ? T("umum.satuDept") : T("umum.nDept", { n: jml })
+              })) + "</div></button>";
     }).join("");
 
     return "" +
@@ -8402,6 +8517,10 @@ window.NB_DATA.cost_assumptions = [
         "background:var(--nb-amber-bg);border:1px solid var(--nb-amber-bd);color:var(--nb-amber-fg);" +
         "font-size:13px;line-height:1.6'>" +
         "<b>" + NBUi.esc(T("login.batasJudul")) + "</b> " + NBUi.esc(T("login.batasTeks")) +
+      "</div>" +
+      "<div class='nb-cell-sub' style='margin-top:14px;max-width:1220px'>" +
+        NBUi.esc(T("login.dataDimuat", { d: NBStore.jumlahData().departemen,
+          k: NBFormat.angka(NBStore.jumlahData().karyawan) })) +
       "</div>";
   }
 
@@ -11831,7 +11950,7 @@ window.NB_DATA.cost_assumptions = [
     var u = NBStore.user();
     var deps = NBStore.departemenTerlihat();
     var lingkup = u.scope.type === "ALL"
-      ? (deps.length === 1 ? NBi18n.t("umum.satuDept") : NBi18n.t("umum.nDept", { n: deps.length }))
+      ? NBi18n.t("umum.semua")
       : deps.map(function (d) { return d.name; }).join(", ");
     document.getElementById("nbUser").innerHTML =
       "<div style='text-align:right' title='" + NBUi.esc(u.name + ", " + NBRbac.roleLabel(u.role) + ", " + lingkup) + "'>" +
