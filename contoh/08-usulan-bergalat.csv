@@ -1,0 +1,8 @@
+department_id;action_type;employee_id;position_id;vacancy_id;new_position_title;target_grade_id;target_department_id;vacancy_subtype;reduction_reason;replacement_flag;quantity;effective_month;fill_immediately;justification
+D-MKT;EXTERNAL_HIRING;;POS-MKT-004;;;;;;;Additional;1;;;Bulan efektif sengaja dikosongkan untuk menguji aturan BR-01
+D-MKT;EXTERNAL_HIRING;;POS-MKT-004;;;;;;;;1;4;;Klasifikasi pengganti atau tambahan sengaja dikosongkan
+D-MKT;EXTERNAL_HIRING;;POS-MKT-004;;;;;;;Additional;1;4;;pendek
+D-MKT;PROMOTION;NBT2002;;;;4B;;;;;1;5;;Grade tujuan sengaja diturunkan untuk menguji larangan promosi turun
+D-MKT;TRANSFER;NBT2003;;;;;D-MKT;;;;1;5;;Departemen tujuan sengaja disamakan dengan departemen asal
+D-MKT;REKRUT_KILAT;;POS-MKT-004;;;;;;;Additional;1;4;;Jenis action sengaja dibuat tidak dikenal
+D-PRD;PLANNED_REDUCTION;NBT2021;;;;;;;;;1;9;;Sebab pengurangan sengaja dikosongkan untuk menguji aturan

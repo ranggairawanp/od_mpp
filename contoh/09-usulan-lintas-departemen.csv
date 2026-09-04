@@ -1,0 +1,17 @@
+department_id;action_type;employee_id;position_id;vacancy_id;new_position_title;target_grade_id;target_department_id;vacancy_subtype;reduction_reason;replacement_flag;quantity;effective_month;fill_immediately;justification
+D-SLS;EXTERNAL_HIRING;;POS-SLS-008;;;;;;;Additional;2;3;;Perluasan kanal modern trade ke dua kota baru menuntut dua area supervisor
+D-SLS;VACANCY_ACTION;;;VAC-002;;;;FILL;;Replacement;1;2;;Posisi kosong sejak November 2025 dan wilayahnya sementara dirangkap
+D-SLS;VACANCY_ACTION;;;VAC-003;;;;RETAIN;;;1;1;;Beban administrasi masih tertangani, posisi dipertahankan tanpa diisi dulu
+D-SLS;PLANNED_REDUCTION;NBT2011;;;;;;;Resign;;1;11;;Mengundurkan diri per November dan wilayahnya digabung ke regional sebelah
+D-PRD;VACANCY_ACTION;;;VAC-004;;;;FILL;;Replacement;1;2;;Line leader shift dua kosong dan menahan target output lini wafer
+D-PRD;PROMOTION;NBT2023;;;;4C;;;;;1;6;;Sudah memimpin perbaikan efisiensi lini dan siap naik ke assistant manager
+D-QAS;VACANCY_ACTION;;;VAC-005;;;;CANCEL;;;1;3;;Beban pengujian turun setelah dua lini digabung, posisi tidak diisi lagi
+D-QAS;PROMOTION;NBT2036;;;;4C;;;;;1;4;;Memimpin penyusunan ulang prosedur mutu dan layak naik ke assistant manager
+D-SCM;VACANCY_ACTION;;;VAC-006;;;;FILL;;Replacement;1;4;;Gudang bahan baku tanpa supervisor sejak April dan risikonya ke stok
+D-SCM;POSITION_CREATION;;;;Demand Planning Analyst;4B;;;;Additional;1;8;1;Peramalan permintaan masih manual dan sering meleset di musim puncak
+D-SCM;TRANSFER;NBT2044;;;;;D-QAS;;;;1;6;;Kompetensi analitiknya lebih terpakai di pengendalian mutu
+D-HCP;EXTERNAL_HIRING;;POS-HCP-026;;;;;;;Replacement;1;5;;Menggantikan recruitment officer yang pindah ke unit lain awal tahun
+D-HCP;NO_CHANGE;NBT2050;;;;;;;;;1;;;
+D-FIN;EXTERNAL_HIRING;;POS-FIN-031;;;;;;;Additional;1;9;;Volume transaksi vendor naik dan penutupan bulanan mulai terlambat
+D-FIN;GRADE_ADJUSTMENT;NBT2058;;;;4C;;;;;1;7;;Penyesuaian struktur setelah ruang lingkup pekerjaannya bertambah
+D-FIN;PLANNED_REDUCTION;NBT2057;;;;;;;Pensiun;;1;10;;Memasuki usia pensiun Oktober 2027 dan tidak digantikan

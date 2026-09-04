@@ -1,0 +1,7 @@
+﻿vacancy_id;position_id;department_id;grade_id;vacancy_date;source;status
+VAC-001;POS-MKT-004;D-MKT;4A;2025-09-15;Resign;Open
+VAC-002;POS-SLS-008;D-SLS;4B;2025-11-02;Resign;Open
+VAC-003;POS-SLS-009;D-SLS;3C;2026-01-20;Mutasi internal;Open
+VAC-004;POS-PRD-014;D-PRD;3C;2026-02-10;Promosi internal;Open
+VAC-005;POS-QAS-018;D-QAS;3C;2026-03-05;Resign;Open
+VAC-006;POS-SCM-022;D-SCM;4B;2026-04-18;Posisi baru 2026;Open

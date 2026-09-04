@@ -1,0 +1,8 @@
+﻿user_id;name;email;role;title;employee_id;scope_type
+U-OD-01;M. Dzuhri;od.lead@nabati.co.id;OD;Organization Development Lead;;ALL
+U-HOD-MKT;Ratna Puspita;hod.marketing@nabati.co.id;HOD;Marketing Director;NBT2001;TREE
+U-HOD-PRD;Teguh Nugroho;hod.produksi@nabati.co.id;HOD;Plant Manager;NBT2021;TREE
+U-HOD-SLS;Dimas Setiawan;hod.sales@nabati.co.id;HOD;General Manager Sales;NBT2009;TREE
+U-CB-01;Windha Falosa;cb.lead@nabati.co.id;CB;Compensation & Benefit Lead;;ALL
+U-MGT-01;Frans BS;cpo@nabati.co.id;MANAGEMENT;Chief People Officer;;ALL
+U-MON-01;Cahyangga Unanti;mpp.monitor@nabati.co.id;MONITOR;HC Data & Reporting;;ALL

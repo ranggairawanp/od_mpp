@@ -1,0 +1,16 @@
+{
+  "name": "mpp-micro-app",
+  "version": "1.0.0",
+  "description": "Prototipe kendali Manpower Planning. HTML, CSS, dan JavaScript tanpa framework dan tanpa build step.",
+  "private": true,
+  "scripts": {
+    "build": "python3 tools/build-standalone.py",
+    "qa": "bash tools/jalankan-qa.sh",
+    "qa:fungsional": "for f in qa/*.js; do node \"$f\"; done",
+    "qa:visual": "python3 qa/qa-tataletak.py && python3 qa/qa-ikon.py && python3 qa/qa-lokal.py"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  },
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,63 @@
+﻿employee_id;name;position_id;position_title;grade_id;legal_entity;country;directorate;division;department_id;employment_status;join_date;direct_report_id;direct_report_name;direct_report_position
+NBT2001;Prasetyo Nugroho;POS-MKT-001;Marketing Director;5C;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-MKT;Tetap;2015-11-11;;;
+NBT2002;Anisa Hartono;POS-MKT-002;Brand Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-MKT;Tetap;2017-07-06;NBT2001;Prasetyo Nugroho;Marketing Director
+NBT2003;Gunawan Ramadhan;POS-MKT-002;Brand Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-MKT;Tetap;2019-11-20;NBT2001;Prasetyo Nugroho;Marketing Director
+NBT2004;Dimas Handayani;POS-MKT-003;Assistant Brand Manager;4C;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-MKT;Tetap;2019-02-09;NBT2002;Anisa Hartono;Brand Manager
+NBT2005;Anisa Yulianti;POS-MKT-003;Assistant Brand Manager;4C;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-MKT;Tetap;2019-07-17;NBT2002;Anisa Hartono;Brand Manager
+NBT2006;Galih Hartono;POS-MKT-004;Digital Marketing Officer;4A;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-MKT;Tetap;2020-04-13;NBT2004;Dimas Handayani;Assistant Brand Manager
+NBT2007;Gunawan Yulianti;POS-MKT-004;Digital Marketing Officer;4A;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-MKT;Tetap;2020-12-26;NBT2004;Dimas Handayani;Assistant Brand Manager
+NBT2008;Reza Santoso;POS-MKT-005;Marketing Analyst Staff;3C;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-MKT;Tetap;2015-06-16;NBT2006;Galih Hartono;Digital Marketing Officer
+NBT2009;Eko Ramadhan;POS-SLS-006;General Manager Sales;5C;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2021-07-19;;;
+NBT2010;Dewi Wibowo;POS-SLS-007;Regional Sales Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2025-10-18;NBT2009;Eko Ramadhan;General Manager Sales
+NBT2011;Sari Rahayu;POS-SLS-007;Regional Sales Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2016-08-08;NBT2009;Eko Ramadhan;General Manager Sales
+NBT2012;Eko Firmansyah;POS-SLS-008;Area Sales Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;PKWT;2025-09-22;NBT2010;Dewi Wibowo;Regional Sales Manager
+NBT2013;Agus Nasution;POS-SLS-008;Area Sales Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2024-03-11;NBT2010;Dewi Wibowo;Regional Sales Manager
+NBT2014;Fajar Pratama;POS-SLS-008;Area Sales Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2025-06-21;NBT2010;Dewi Wibowo;Regional Sales Manager
+NBT2015;Krisna Halim;POS-SLS-008;Area Sales Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2022-08-07;NBT2010;Dewi Wibowo;Regional Sales Manager
+NBT2016;Nurul Permata;POS-SLS-009;Sales Admin Officer;3C;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2022-05-08;NBT2012;Eko Firmansyah;Area Sales Supervisor
+NBT2017;Ratna Gunadi;POS-SLS-009;Sales Admin Officer;3C;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2025-11-19;NBT2012;Eko Firmansyah;Area Sales Supervisor
+NBT2018;Hendra Puspita;POS-SLS-009;Sales Admin Officer;3C;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2016-02-10;NBT2012;Eko Firmansyah;Area Sales Supervisor
+NBT2019;Fajar Utami;POS-SLS-010;Merchandising Staff;3A;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2022-12-05;NBT2016;Nurul Permata;Sales Admin Officer
+NBT2020;Sinta Simanjuntak;POS-SLS-010;Merchandising Staff;3A;PT Kaldu Sari Nabati Indonesia;ID;Commercial;Commercial;D-SLS;Tetap;2019-06-08;NBT2016;Nurul Permata;Sales Admin Officer
+NBT2021;Sari Yulianti;POS-PRD-011;Plant Manager;5B;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2015-12-07;;;
+NBT2022;Bayu Prakoso;POS-PRD-012;Production Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2019-03-05;NBT2021;Sari Yulianti;Plant Manager
+NBT2023;Krisna Hidayat;POS-PRD-013;Production Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2020-10-07;NBT2022;Bayu Prakoso;Production Manager
+NBT2024;Juwita Utami;POS-PRD-013;Production Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2019-04-27;NBT2022;Bayu Prakoso;Production Manager
+NBT2025;Irfan Ramadhan;POS-PRD-013;Production Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2016-01-15;NBT2022;Bayu Prakoso;Production Manager
+NBT2026;Galih Kusuma;POS-PRD-014;Line Leader;3C;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2021-11-19;NBT2023;Krisna Hidayat;Production Supervisor
+NBT2027;Wahyu Yulianti;POS-PRD-014;Line Leader;3C;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2023-07-04;NBT2023;Krisna Hidayat;Production Supervisor
+NBT2028;Tiara Rahayu;POS-PRD-014;Line Leader;3C;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2016-04-13;NBT2023;Krisna Hidayat;Production Supervisor
+NBT2029;Lukman Suryani;POS-PRD-014;Line Leader;3C;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2017-02-20;NBT2023;Krisna Hidayat;Production Supervisor
+NBT2030;Lukman Yulianti;POS-PRD-014;Line Leader;3C;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2021-12-28;NBT2023;Krisna Hidayat;Production Supervisor
+NBT2031;Budi Maulana;POS-PRD-015;Operator Produksi;2A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2024-08-23;NBT2026;Galih Kusuma;Line Leader
+NBT2032;Hendra Maulana;POS-PRD-015;Operator Produksi;2A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2016-04-15;NBT2026;Galih Kusuma;Line Leader
+NBT2033;Irfan Nugroho;POS-PRD-015;Operator Produksi;2A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;Tetap;2018-02-06;NBT2026;Galih Kusuma;Line Leader
+NBT2034;Fajar Wibowo;POS-PRD-015;Operator Produksi;2A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-PRD;PKWT;2017-08-03;NBT2026;Galih Kusuma;Line Leader
+NBT2035;Andi Prakoso;POS-QAS-016;QA Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-QAS;Tetap;2023-11-18;;;
+NBT2036;Putri Purnama;POS-QAS-017;QA Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-QAS;Tetap;2017-08-16;NBT2035;Andi Prakoso;QA Manager
+NBT2037;Dedi Hidayat;POS-QAS-017;QA Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-QAS;PKWT;2025-05-17;NBT2035;Andi Prakoso;QA Manager
+NBT2038;Indah Hidayat;POS-QAS-018;QC Analyst;3C;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-QAS;PKWT;2025-08-26;NBT2036;Putri Purnama;QA Supervisor
+NBT2039;Gunawan Anggraini;POS-QAS-018;QC Analyst;3C;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-QAS;PKWT;2024-05-15;NBT2036;Putri Purnama;QA Supervisor
+NBT2040;Melati Wijaya;POS-QAS-018;QC Analyst;3C;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-QAS;Tetap;2021-11-06;NBT2036;Putri Purnama;QA Supervisor
+NBT2041;Hendra Ramadhan;POS-QAS-019;QC Inspector;3A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-QAS;Tetap;2019-01-14;NBT2038;Indah Hidayat;QC Analyst
+NBT2042;Satria Simanjuntak;POS-SCM-020;Supply Chain Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-SCM;Tetap;2019-05-14;;;
+NBT2043;Kartika Kusuma;POS-SCM-021;Demand Planner;4B;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-SCM;Tetap;2017-11-21;NBT2042;Satria Simanjuntak;Supply Chain Manager
+NBT2044;Ayu Wijaya;POS-SCM-021;Demand Planner;4B;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-SCM;Tetap;2017-12-21;NBT2042;Satria Simanjuntak;Supply Chain Manager
+NBT2045;Ilham Halim;POS-SCM-022;Warehouse Supervisor;4A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-SCM;Tetap;2023-03-09;NBT2043;Kartika Kusuma;Demand Planner
+NBT2046;Bayu Setiawan;POS-SCM-022;Warehouse Supervisor;4A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-SCM;Tetap;2024-04-11;NBT2043;Kartika Kusuma;Demand Planner
+NBT2047;Vina Maulana;POS-SCM-023;Logistic Admin Staff;3A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-SCM;Tetap;2025-12-15;NBT2045;Ilham Halim;Warehouse Supervisor
+NBT2048;Dedi Puspita;POS-SCM-023;Logistic Admin Staff;3A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-SCM;Tetap;2022-08-15;NBT2045;Ilham Halim;Warehouse Supervisor
+NBT2049;Teguh Mahendra;POS-SCM-023;Logistic Admin Staff;3A;PT Kaldu Sari Nabati Indonesia;ID;Operations;Operations;D-SCM;Tetap;2021-09-07;NBT2045;Ilham Halim;Warehouse Supervisor
+NBT2050;Putri Suryani;POS-HCP-024;Human Capital Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-HCP;Tetap;2021-06-16;;;
+NBT2051;Dimas Puspita;POS-HCP-025;HC Business Partner;4C;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-HCP;Tetap;2020-10-04;NBT2050;Putri Suryani;Human Capital Manager
+NBT2052;Citra Nugroho;POS-HCP-025;HC Business Partner;4C;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-HCP;Tetap;2016-08-27;NBT2050;Putri Suryani;Human Capital Manager
+NBT2053;Dimas Halim;POS-HCP-026;Recruitment Officer;4A;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-HCP;Tetap;2022-08-22;NBT2051;Dimas Puspita;HC Business Partner
+NBT2054;Dedi Halim;POS-HCP-026;Recruitment Officer;4A;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-HCP;Tetap;2019-10-21;NBT2051;Dimas Puspita;HC Business Partner
+NBT2055;Juwita Anggraini;POS-HCP-027;HC Admin Staff;3A;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-HCP;Tetap;2019-07-03;NBT2053;Dimas Halim;Recruitment Officer
+NBT2056;Taufik Prakoso;POS-FIN-028;Finance Manager;5A;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-FIN;Tetap;2021-06-13;;;
+NBT2057;Nurul Gunadi;POS-FIN-029;Accounting Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-FIN;Tetap;2015-03-16;NBT2056;Taufik Prakoso;Finance Manager
+NBT2058;Wahyu Nugroho;POS-FIN-029;Accounting Supervisor;4B;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-FIN;Tetap;2024-10-01;NBT2056;Taufik Prakoso;Finance Manager
+NBT2059;Sari Utami;POS-FIN-030;Tax Officer;4A;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-FIN;Tetap;2017-01-04;NBT2057;Nurul Gunadi;Accounting Supervisor
+NBT2060;Sari Siregar;POS-FIN-031;AP/AR Officer;3C;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-FIN;Tetap;2017-09-08;NBT2059;Sari Utami;Tax Officer
+NBT2061;Bayu Santoso;POS-FIN-031;AP/AR Officer;3C;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-FIN;Tetap;2024-02-12;NBT2059;Sari Utami;Tax Officer
+NBT2062;Nurul Halim;POS-FIN-032;Finance Admin Staff;3A;PT Kaldu Sari Nabati Indonesia;ID;Corporate;Corporate Services;D-FIN;Tetap;2022-03-27;NBT2060;Sari Siregar;AP/AR Officer

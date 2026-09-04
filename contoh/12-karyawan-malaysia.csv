@@ -1,0 +1,8 @@
+employee_id;name;position_id;grade_id;department_id;employment_status;join_date;direct_report_id
+MY001;Ahmad Faizal;MY-P1;5A;MY-PRD;Tetap;2018-04-02;
+MY002;Lim Wei Jian;MY-P2;4B;MY-PRD;Tetap;2020-01-06;MY001
+MY003;Siti Nurhaliza;MY-P3;2A;MY-PRD;PKWT;2023-03-13;MY002
+MY004;Muthu Kumar;MY-P3;2A;MY-PRD;PKWT;2023-03-13;MY002
+MY005;Nurul Aisyah;MY-P3;2A;MY-PRD;Tetap;2021-08-02;MY002
+MY006;Tan Mei Ling;MY-P4;4B;MY-SCM;Tetap;2019-07-01;
+MY007;Rajesh Pillai;MY-P5;3A;MY-SCM;Tetap;2022-02-14;MY006
