@@ -539,7 +539,7 @@ svg.nb-bagan { width: auto; height: auto; max-width: none; display: block; }
   .nb-empty svg { width: 20px; height: 20px; }
   td .nb-muted svg { width: 15px; height: 15px; vertical-align: middle; }
 </style>
-<script>window.NB_BUILD = {"build": 14, "tanggal": "2026-09-04"};</script></head>
+<script>window.NB_BUILD = {"build": 20, "tanggal": "2026-09-04"};</script></head>
 <body class="nb-app">
 
 <header class="nb-appbar is-stacked">
@@ -1688,6 +1688,9 @@ window.NB_DATA.cost_assumptions = [];
       "imp.pilihCsv": "Pilih berkas CSV",
       "imp.templat": "Templat",
       "imp.eksporIsi": "Ekspor isi",
+      "imp.isiAda": "{n} baris tersimpan",
+      "imp.isiKosong": "belum ada isinya",
+      "imp.isiKosongPesan": "Belum ada isi untuk diekspor. Unggah berkasnya lebih dulu.",
       "imp.kolomInfo": "{n} kolom, {w} di antaranya wajib",
       "imp.fKARYAWAN": "Master",
       "imp.fASUMSI": "Biaya",
@@ -1822,7 +1825,7 @@ window.NB_DATA.cost_assumptions = [];
       "bagan.legOrang": "Orang",
       "bagan.legVacancy": "Vacancy terbuka",
       "bagan.legAlokasi": "Alokasi belum terisi",
-      "bagan.legKlik": "Angka di pojok kotak: jumlah bawahan, klik untuk membuka",
+      "bagan.legKlik": "Angka di pojok kotak: jumlah bawahan langsung. Tanda tambah berarti kotak terlipat, angkanya seluruh orang yang disembunyikan. Klik untuk membuka.",
       "nav.eksekutif": "Ringkasan Eksekutif",
       "login.build": "Build {b}, {t}.",
       "exec.judul": "Ringkasan Eksekutif",
@@ -2763,6 +2766,9 @@ window.NB_DATA.cost_assumptions = [];
       "imp.pilihCsv": "Choose a CSV file",
       "imp.templat": "Template",
       "imp.eksporIsi": "Export content",
+      "imp.isiAda": "{n} rows stored",
+      "imp.isiKosong": "nothing stored yet",
+      "imp.isiKosongPesan": "There is nothing to export yet. Upload the file first.",
       "imp.kolomInfo": "{n} columns, {w} of them required",
       "imp.fKARYAWAN": "Master",
       "imp.fASUMSI": "Cost",
@@ -2897,7 +2903,7 @@ window.NB_DATA.cost_assumptions = [];
       "bagan.legOrang": "Person",
       "bagan.legVacancy": "Open vacancy",
       "bagan.legAlokasi": "Unfilled allocation",
-      "bagan.legKlik": "Number on a box: direct reports, click to open",
+      "bagan.legKlik": "Number on a box: direct reports. A plus sign means the box is collapsed and the number is everyone hidden below it. Click to open.",
       "nav.eksekutif": "Executive Summary",
       "login.build": "Build {b}, {t}.",
       "exec.judul": "Executive Summary",
@@ -3540,6 +3546,22 @@ window.NB_DATA.cost_assumptions = [];
   function simpulTampak(akarId, pohon, dibuka, opsi) {
     var o = opsi || {};
     var hasil = [], jumlah = 0;
+
+    // Seluruh turunan di bawah daftar anak, dipakai untuk angka pada kotak yang terlipat.
+    function turunanDalam(daftarAnak) {
+      var n = 0, antre = daftarAnak.slice(), sudah = {};
+      while (antre.length) {
+        var id = antre.shift();
+        if (sudah[id]) continue;
+        sudah[id] = true;
+        var cucu = (pohon.anak[id] || []).filter(function (c) {
+          return !o.batasDept || (pohon.peta[c] && pohon.peta[c].department_id === o.batasDept);
+        });
+        n += cucu.length;
+        cucu.forEach(function (c) { antre.push(c); });
+      }
+      return n;
+    }
     var akar = pohon.peta[akarId];
     if (!akar) return { simpul: [], terpotong: false };
 
@@ -3555,7 +3577,8 @@ window.NB_DATA.cost_assumptions = [];
       // Kedalaman awal: dua tingkat di bawah akar dibuka, selebihnya menunggu klik.
       if (kedalaman >= (o.kedalamanAwal || 2) && !dibuka[id]) lipat = totalBawah > 0;
       var simpul = { id: id, e: e, induk: induk, kedalaman: kedalaman, anak: [],
-                     jumlahBawahan: totalBawah, terlipat: lipat && totalBawah > 0, jenis: "orang" };
+                     jumlahBawahan: totalBawah, jumlahSemua: totalBawah + turunanDalam(anak),
+                     terlipat: lipat && totalBawah > 0, jenis: "orang" };
       hasil.push(simpul); jumlah += 1;
       if (jumlah > BATAS_KOTAK) { simpul.terlipat = totalBawah > 0; return simpul; }
       if (!simpul.terlipat) {
@@ -3638,7 +3661,7 @@ window.NB_DATA.cost_assumptions = [];
           var cx = x + LEBAR - 18, cy = y + TINGGI - 14;
           out.push('<circle cx="' + cx + '" cy="' + cy + '" r="10" fill="' + (n.terlipat ? '#F1F6FE' : '#F3F4F6') + '" stroke="' + (n.terlipat ? '#C5DAFB' : '#E6E7EB') + '"/>');
           out.push('<text x="' + cx + '" y="' + (cy + 3.5) + '" font-size="9.5" text-anchor="middle" fill="' + (n.terlipat ? '#273FA9' : '#394150') + '">' +
-                   (n.terlipat ? ('+' + n.jumlahBawahan) : n.jumlahBawahan) + '</text>');
+                   (n.terlipat ? ('+' + (n.jumlahSemua || n.jumlahBawahan)) : n.jumlahBawahan) + '</text>');
         }
         out.push('</g>');
       } else {
@@ -10937,19 +10960,26 @@ window.NB_DATA.cost_assumptions = [];
     return NBImpor.daftar().filter(function (k) { return NBStore.bolehImpor(k).ok; });
   }
 
-  function kartuBerkas(kode) {
+  function kartuBerkas(kode, cycleId) {
     var b = NBImpor.def(kode);
     var wajib = b.kolom.filter(function (k) { return k.w; }).length;
+    // Ekspor isi dimatikan bila belum ada isinya. Sebelumnya tombol tetap bisa diklik dan
+    // mengunduh berkas berisi kepala kolom saja, yang terasa seperti tidak terjadi apa-apa.
+    var jumlah = 0;
+    try { jumlah = NBStore.eksporData(kode, cycleId).baris.length; } catch (e) { jumlah = 0; }
     return "<div class='nb-setting' style='margin-bottom:8px'>" +
       NBUi.badge(T("imp.f" + kode), "is-blue") +
       "<div style='flex:1'>" +
         "<div class='nb-setting-label'>" + NBUi.esc(T("imp.d" + kode)) + "</div>" +
         "<div class='nb-setting-desc'>" + NBUi.esc(T("imp.kolomInfo",
-          { n: b.kolom.length, w: wajib })) + "</div>" +
+          { n: b.kolom.length, w: wajib })) + " &middot; " +
+          NBUi.esc(jumlah ? T("imp.isiAda", { n: NBFormat.angka(jumlah) }) : T("imp.isiKosong")) +
+        "</div>" +
       "</div>" +
       "<button class='nb-btn nb-btn-outline' data-templat='" + kode + "'>" +
         NBUi.esc(T("imp.templat")) + "</button>" +
-      "<button class='nb-btn nb-btn-outline' data-ekspor='" + kode + "'>" +
+      "<button class='nb-btn nb-btn-outline' data-ekspor='" + kode + "'" +
+        (jumlah ? "" : " disabled title='" + NBUi.esc(T("imp.isiKosong")) + "'") + ">" +
         NBUi.esc(T("imp.eksporIsi")) + "</button>" +
     "</div>";
   }
@@ -11028,7 +11058,7 @@ window.NB_DATA.cost_assumptions = [];
       "<div class='nb-card-head'>" + NBUi.svg("layers") + "<div>" +
       "<h3>" + NBUi.esc(T("imp.unduhJudul")) + "</h3>" +
       "<p>" + NBUi.esc(T("imp.unduhSub")) + "</p></div></div>" +
-      daftar.map(kartuBerkas).join("") +
+      daftar.map(function (k) { return kartuBerkas(k, c ? c.cycle_id : null); }).join("") +
     "</div>" +
 
     "<div class='nb-card nb-card-pad'>" +
@@ -11075,6 +11105,7 @@ window.NB_DATA.cost_assumptions = [];
       b.onclick = function () {
         var kode = b.dataset.ekspor;
         var data = NBStore.eksporData(kode, c ? c.cycle_id : null);
+        if (!data.baris.length) { NBUi.toast(T("imp.isiKosongPesan"), "error"); return; }
         NBReport.unduh(kode.toLowerCase() + "-" + (c ? c.cycle_id : "master") + ".csv",
           NBReport.keCsv(data.kolom, data.baris));
         NBUi.toast(T("lap.terunduh", { n: kode.toLowerCase() + ".csv" }));
