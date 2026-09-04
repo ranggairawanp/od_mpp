@@ -1,6 +1,0 @@
-﻿department_id;action_type;employee_id;position_id;vacancy_id;new_position_title;target_grade_id;target_department_id;vacancy_subtype;reduction_reason;replacement_flag;quantity;effective_month;fill_immediately;justification
-D-MKT;PROMOTION;NBT2004;;;;5A;;;;;1;4;;Kandidat sudah memimpin dua peluncuran merek dan siap naik ke Brand Manager.
-D-MKT;VACANCY_ACTION;;POS-MKT-004;VAC-001;;;;FILL;;Replacement;1;2;;Posisi kosong sejak September 2025 dan menahan eksekusi kampanye digital.
-D-MKT;POSITION_CREATION;;;;Marketing Data Analyst;4C;;;;Additional;1;7;1;Analisis kinerja kampanye masih manual dan tersebar di beberapa tim.
-D-PRD;EXTERNAL_HIRING;;POS-PRD-015;;;;;;;Additional;3;3;;Penambahan satu shift produksi mengikuti rencana kapasitas lini wafer 2027.
-D-PRD;PLANNED_REDUCTION;NBT2033;;;;;;;Pensiun;;1;9;;Memasuki usia pensiun pada September 2027, tidak digantikan.

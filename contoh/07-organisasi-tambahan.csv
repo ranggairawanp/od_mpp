@@ -1,8 +1,0 @@
-entity_id;entity_name;country;directorate_id;directorate_name;division_id;division_name;department_id;department_name;cost_center_id;cost_center_name
-ENT-KSNI;PT Kaldu Sari Nabati Indonesia;ID;DIR-CRP;Corporate;DIV-CRP;Corporate Services;D-ITE;Information Technology;CC-1400;Information Technology
-ENT-KSNI;PT Kaldu Sari Nabati Indonesia;ID;DIR-CRP;Corporate;DIV-CRP;Corporate Services;D-LGL;Legal & Corporate Affairs;CC-1300;Legal & Corporate Affairs
-ENT-KSNI;PT Kaldu Sari Nabati Indonesia;ID;DIR-OPS;Operations;DIV-OPS;Operations;D-RND;Research & Development;CC-4100;Research & Development
-ENT-KSNI;PT Kaldu Sari Nabati Indonesia;ID;DIR-OPS;Operations;DIV-OPS;Operations;D-ENG;Engineering & Maintenance;CC-3400;Engineering & Maintenance
-ENT-KSNI;PT Kaldu Sari Nabati Indonesia;ID;DIR-OPS;Operations;DIV-OPS;Operations;D-PRB;Produksi Biskuit;CC-3500;Produksi Biskuit
-ENT-KSNI;PT Kaldu Sari Nabati Indonesia;ID;DIR-COM;Commercial;DIV-COM;Commercial;D-SGT;Sales General Trade;CC-2300;Sales General Trade
-ENT-KSNI;PT Kaldu Sari Nabati Indonesia;ID;DIR-COM;Commercial;DIV-COM;Commercial;D-EXP;Export;CC-2400;Export

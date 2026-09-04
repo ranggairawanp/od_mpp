@@ -1,6 +1,0 @@
-position_id;code;title;grade_id;department_id;is_unique;headcount_slot
-MY-P1;MY-P1;Plant Manager;5A;MY-PRD;1;1
-MY-P2;MY-P2;Production Supervisor;4B;MY-PRD;0;3
-MY-P3;MY-P3;Operator;2A;MY-PRD;0;40
-MY-P4;MY-P4;Warehouse Supervisor;4B;MY-SCM;1;1
-MY-P5;MY-P5;Warehouse Staff;3A;MY-SCM;0;10

@@ -1,5 +1,0 @@
-grade_id;entity_id;fixed_income;variable_income;company_coverage;accrual_thr;accrual_bonus
-2A;ENT-NBM;1900;250;280;158;158
-3A;ENT-NBM;2800;300;380;233;233
-4B;ENT-NBM;5200;450;620;433;650
-5A;ENT-NBM;9500;700;950;792;1188

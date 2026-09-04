@@ -1,3 +1,0 @@
-entity_id;entity_name;country;currency;directorate_id;directorate_name;division_id;division_name;department_id;department_name;cost_center_id;cost_center_name
-ENT-NBM;Nabati Malaysia Sdn Bhd;MY;MYR;MY-DIR;Malaysia Operations;MY-OPS;Operations Malaysia;MY-PRD;Produksi Johor;MY-CC-01;Produksi Johor
-ENT-NBM;Nabati Malaysia Sdn Bhd;MY;MYR;MY-DIR;Malaysia Operations;MY-OPS;Operations Malaysia;MY-SCM;Supply Chain Johor;MY-CC-02;Supply Chain Johor
